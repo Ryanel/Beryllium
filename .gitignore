@@ -11,3 +11,9 @@
 *.lai
 *.la
 *.a
+
+# Toolkit
+toolkit/binutils/
+toolkit/build-binutils/*
+toolkit/binutils-2.22/
+toolkit/*.tar.gz
