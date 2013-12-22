@@ -24,4 +24,16 @@ uint8_t textmode_read(int x,int y)
 }
 void textmode_scroll()
 {
+	uint16_t *video_memory=(uint16_t*)0xB8000;
+	uint16_t blank = 0x20  | (attributeByte << 8);
+	int i;
+	for (i = 0*80; i < 24*80; i++)
+	{
+		video_memory[i] = video_memory[i+80];
+	}
+
+	for (i = 24*80; i < 25*80; i++)
+	{
+		video_memory[i] = blank;
+	}
 }
