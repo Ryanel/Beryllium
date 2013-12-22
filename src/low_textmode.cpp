@@ -13,9 +13,10 @@ void textmode_setcursor(int x,int y)
 void textmode_write(int x,int y,uint8_t data)
 {
 	uint16_t *video_memory=(uint16_t*)0xB8000;
+	uint16_t attribute = attributeByte << 8;
 	uint16_t *write_to;
-	write_to = video_memory + (y * 80 + x);
-	*write_to = data | attributeByte;
+	write_to = video_memory + ((y * 80) + x);
+	*write_to = data | attribute;
 }
 uint8_t textmode_read(int x,int y)
 {
