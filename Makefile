@@ -29,13 +29,9 @@ kernel: boot ${KERNEL_FILES}
 	@clang++ -c ${OPTIONS} ${CLANG_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
-	-rm -rf *.o
-	-rm -rf boot/*.o
-	-rm -rf src/*.o
+	-rm -rf *.o boot/*.o src/*.o
 	-rm -rf kernel.elf
 prep-dist:
-	-rm -rf *~
-	-rm -rf boot/*~
-	-rm -rf src/*~
+	-rm -rf *~ boot/*~ src/*~
 run:
 	qemu -kernel kernel.elf
