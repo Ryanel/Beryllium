@@ -7,16 +7,53 @@ int term_y;
 ///
 ///Determines if the screen needs to be scrolled, and scrolls.
 ///
+bool statusBar=true;
+const char *statusBarTitle;
+
 void scroll()
 {
-	if(term_y >= 25)
+	if(statusBar)
 	{
-		textmode_scroll();
+		if(term_y >= 25)
+		{
+			textmode_scroll(0,24);
 
-		term_y = 24;
+			term_y = 24;
+		}
+	}
+	else
+	{
+		if(term_y >= 24)
+		{
+			textmode_scroll(0,23);
+
+			term_y = 23;
+		}
 	}
 }
 
+void terminal_clear_statusbar()
+{
+	int i = 0;
+	while (i!=80)
+	{
+		textmode_write_color(i,24,' ',STATUS_BAR_ATTRIBUTE);
+		i++;
+	}
+	
+}
+
+void terminal_set_statusbar(const char *c)
+{
+	
+	int i = 0;
+	terminal_clear_statusbar();
+	while (c[i])
+	{
+		textmode_write_color(i+1,24,c[i++],STATUS_BAR_ATTRIBUTE);
+	}
+	
+}
 
 ///
 ///Better than textmode_write, it formats the output at a basic level.
@@ -75,7 +112,7 @@ void terminal_clear()
 	int i=0;
 	while(i!=24)
 	{
-		textmode_scroll();
+		textmode_scroll(0,24);
 		i++;
 	}
 	//FIXME: CLEAR THE FRAMEBUFFER INSTEAD
@@ -89,4 +126,5 @@ void terminal_init()
 	term_y=0;
 	textmode_setcursor(0,0);
 	terminal_clear();
+	terminal_set_statusbar("Terminal");
 }

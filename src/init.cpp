@@ -11,9 +11,11 @@ void wait(int ii)
 extern "C" void kernel_init()
 {
 	terminal_init();
+	terminal_set_statusbar("Beryllium initialisation");
 	print("Beryllium has booted\n");
 	cpu_disableinterrupts();
 	print("CPU: Interrupts disabled\n");
 	//TODO: Start subsystems
+	terminal_set_statusbar("Beryllium initialisation -- halted");
 	asm("hlt");
 }
