@@ -58,7 +58,7 @@ void terminal_set_statusbar(const char *c)
 ///
 ///Better than textmode_write, it formats the output at a basic level.
 ///
-void printc(char c)
+void printc(unsigned char c)
 {
 	if (c == 0x08 && term_x) //Backspace
 	{

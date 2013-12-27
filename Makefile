@@ -1,5 +1,6 @@
 KERNEL_FILES := $(patsubst %.cpp,%.o,$(wildcard src/*.cpp)) $(patsubst %.c,%.o,$(wildcard src/*.c)) $(patsubst %.s,%.o,$(wildcard src/*.s))
 LOW_FILES := $(patsubst %.cpp,%.o,$(wildcard src/low/*.cpp)) $(patsubst %.s,%.o,$(wildcard src/low/*.s))
+LIB_FILES := $(patsubst %.cpp,%.o,$(wildcard src/lib/*.cpp))
 BOOT_FILES := $(patsubst %.s,%.o,$(wildcard boot/*.s))
 
 LD := ./toolkit/binutils/bin/i586-elf-ld
@@ -16,9 +17,11 @@ boot: ${BOOT_FILES}
 
 low: ${LOW_FILES}
 
-kernel: boot low ${KERNEL_FILES}
+lib: ${LIB_FILES}
+
+kernel: boot low lib ${KERNEL_FILES}
 	@echo "Linking Kernel"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${LOW_FILES} ${KERNEL_FILES}
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES}
 %.o: %.s
 	@echo "Making: " $@
 	@nasm -f elf -o $@ $<
