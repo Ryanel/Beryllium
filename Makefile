@@ -32,7 +32,7 @@ kernel: boot low ${KERNEL_FILES}
 	@clang++ -c ${OPTIONS} ${CLANG_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
-	-rm -rf *.o boot/*.o src/*.o src/low/*.o
+	-rm -rf *.od boot/*.o src/*.o src/low/*.o
 	-rm -rf kernel.elf
 prep-dist:
 	-rm -rf *~ boot/*~ src/*~

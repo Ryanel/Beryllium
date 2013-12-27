@@ -1,5 +1,5 @@
 #include <terminal.h>
-#include <low_cpu.h>
+#include <x86.h>
 void wait(int ii)
 {
 	int i=0;
@@ -11,11 +11,7 @@ void wait(int ii)
 extern "C" void kernel_init()
 {
 	terminal_init();
-	terminal_set_statusbar("Beryllium initialisation");
-	print("Beryllium has booted\n");
-	cpu_disableinterrupts();
-	print("CPU: Interrupts disabled\n");
-	//TODO: Start subsystems
-	terminal_set_statusbar("Beryllium initialisation -- halted");
+	print("Beryllium v. 0.0.0.1 (git) has booted\n");
+	init_x86();
 	asm("hlt");
 }
