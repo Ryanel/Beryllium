@@ -2,6 +2,8 @@
 #include <types.h>
 #include <idt.h>
 #include <terminal.h>
+#include <stdio.h>
+#include <x86.h>
 struct idt_entry idt[256];
 struct idt_ptr idtp;
 
@@ -18,13 +20,17 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, uns
 
 int idt_setup()
 {
-    idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
-    idtp.base = (unsigned int)&idt;
+	idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
+	idtp.base = (unsigned int)&idt;
 
-    memset(&idt, 0, sizeof(struct idt_entry) * 256);
+	memset(&idt, 0, sizeof(struct idt_entry) * 256);
 
-    idt_load();
+	isrs_setup();
 
+	idt_load();
+	printf("CPU: Interrupts are Setup\n");
+	asm("sti");
+	printf("CPU: Interrupts enabled\n");
 	print("CPU: IDT Setup\n");
-    return 0;
+	return 0;
 }
