@@ -6,5 +6,5 @@
 void init_x86();
 void gdt_setup();
 void idt_setup();
-
+int isrs_setup();
 #endif
