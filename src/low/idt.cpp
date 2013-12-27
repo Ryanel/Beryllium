@@ -29,8 +29,6 @@ int idt_setup()
 
 	idt_load();
 	printf("CPU: Interrupts are Setup\n");
-	asm("sti");
-	printf("CPU: Interrupts enabled\n");
 	print("CPU: IDT Setup\n");
 	return 0;
 }
