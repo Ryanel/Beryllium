@@ -20,6 +20,7 @@ INCLUDE_DIR := "./src/includes"
 
 ARCH := x86
 CROSS_CLANG := -target i586-elf
+ASM := nasm -f elfb
 
 all:clean boot kernel
 
@@ -34,7 +35,7 @@ kernel: boot low lib ${KERNEL_FILES}
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES}
 %.o: %.s
 	@echo "Making: " $@
-	@nasm -f elf -o $@ $<
+	@${ASM} -o $@ $<
 
 %.o: %.c
 	@echo "Making: " $@
