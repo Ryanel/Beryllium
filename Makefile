@@ -1,16 +1,26 @@
-KERNEL_FILES := $(patsubst %.cpp,%.o,$(wildcard src/*.cpp)) $(patsubst %.c,%.o,$(wildcard src/*.c)) $(patsubst %.s,%.o,$(wildcard src/*.s))
+BOOT_FILES := boot/boot.s
+BOOT_PI_FILES := boot/boot_pi.s
+
+KERNEL_FILES := $(patsubst %.cpp,%.o,$(wildcard src/*.cpp)) $(patsubst %.c,%.o,$(wildcard src/*.c))
+
 LOW_FILES := $(patsubst %.cpp,%.o,$(wildcard src/low/*.cpp)) $(patsubst %.s,%.o,$(wildcard src/low/*.s))
+
 LIB_FILES := $(patsubst %.cpp,%.o,$(wildcard src/lib/*.cpp))
-BOOT_FILES := $(patsubst %.s,%.o,$(wildcard boot/*.s))
+
+CC:=clang
+CPP:=clang++
+C_OPTIONS := 
+CPP_OPTIONS := 
+CLANG_OPTIONS := -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -target i586-elf
 
 LD := ./toolkit/binutils/bin/i586-elf-ld
 LFLAGS := -m elf_i386
 LD_SCRIPT := src/link.ld
 INCLUDE_DIR := "./src/includes"
 
-C_OPTIONS := -O2 
-CPP_OPTIONS := -O2
-CLANG_OPTIONS := -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -target i586-elf
+ARCH := x86
+CROSS_CLANG := -target i586-elf
+
 all:clean boot kernel
 
 boot: ${BOOT_FILES}
@@ -28,11 +38,11 @@ kernel: boot low lib ${KERNEL_FILES}
 
 %.o: %.c
 	@echo "Making: " $@
-	@clang -c ${OPTIONS} ${CLANG_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
+	@${CC} -c ${C_OPTIONS} ${CLANG_OPTIONS} ${CROSS_CLANG} -I${INCLUDE_DIR} -o $@ $<
 
 %.o: %.cpp
 	@echo "Making: " $@
-	@clang++ -c ${OPTIONS} ${CLANG_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
+	@${CPP} -c ${CPP_OPTIONS} ${CLANG_OPTIONS} ${CROSS_CLANG} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
 	-rm -rf *.od boot/*.o src/*.o src/low/*.o
