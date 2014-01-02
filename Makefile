@@ -10,7 +10,7 @@ INCLUDE_DIR := "./src/includes"
 
 C_OPTIONS := -O2 
 CPP_OPTIONS := -O2
-CLANG_OPTIONS := -target i586-elf
+CLANG_OPTIONS := -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -target i586-elf
 all:clean boot kernel
 
 boot: ${BOOT_FILES}
