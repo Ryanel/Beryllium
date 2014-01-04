@@ -1,5 +1,5 @@
-BOOT_FILES := boot/boot.s
-BOOT_PI_FILES := boot/boot_pi.s
+BOOT_FILES := boot/boot.o
+BOOT_PI_FILES := boot/boot_pi.o
 
 KERNEL_FILES := $(patsubst %.cpp,%.o,$(wildcard src/*.cpp)) $(patsubst %.c,%.o,$(wildcard src/*.c))
 
