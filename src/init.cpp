@@ -4,6 +4,7 @@
 #include <version.h>
 extern "C" void kernel_init()
 {
+	asm("cli");
 	terminal_init();
 	printf("Beryllium %s v. %s (%s) \n",BERYLLIUM_RELEASE,BERYLLIUM_VERSION,BERYLLIUM_SOURCE);
 	init_x86();
