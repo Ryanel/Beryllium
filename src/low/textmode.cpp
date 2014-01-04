@@ -30,7 +30,7 @@ void textmode_write_color(int x,int y,uint8_t data, uint8_t attr)
 
 uint8_t textmode_read(int x,int y)
 {
-	return 0;
+	return 0 * (x + y);
 }
 void textmode_scroll(int from,int to) //0 and 24
 {

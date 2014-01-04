@@ -50,7 +50,8 @@ void terminal_set_statusbar(const char *c)
 	terminal_clear_statusbar();
 	while (c[i])
 	{
-		textmode_write_color(i,24,c[i++],STATUS_BAR_ATTRIBUTE);
+		textmode_write_color(i,24,c[i],STATUS_BAR_ATTRIBUTE);
+		i++;
 	}
 	
 }

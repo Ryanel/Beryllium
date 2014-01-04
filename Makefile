@@ -10,8 +10,8 @@ LIB_FILES := $(patsubst %.cpp,%.o,$(wildcard src/lib/*.cpp))
 CC:=toolkit/cross/build/bin/clang
 CPP:=toolkit/cross/build/bin/clang++ 
 C_OPTIONS := 
-CPP_OPTIONS := 
-CLANG_OPTIONS := -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -target i586-elf
+CPP_OPTIONS := -fno-exceptions -fno-rtti
+CLANG_OPTIONS := -ffreestanding -O2 -Wall -Wextra  -target i586-elf
 
 LD := ./toolkit/binutils/bin/i586-elf-ld
 LFLAGS := -m elf_i386
