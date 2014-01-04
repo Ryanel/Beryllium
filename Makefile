@@ -7,8 +7,8 @@ LOW_FILES := $(patsubst %.cpp,%.o,$(wildcard src/low/*.cpp)) $(patsubst %.s,%.o,
 
 LIB_FILES := $(patsubst %.cpp,%.o,$(wildcard src/lib/*.cpp))
 
-CC:=clang
-CPP:=clang++
+CC:=toolkit/cross/build/bin/clang
+CPP:=toolkit/cross/build/bin/clang++ 
 C_OPTIONS := 
 CPP_OPTIONS := 
 CLANG_OPTIONS := -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -target i586-elf
@@ -20,7 +20,7 @@ INCLUDE_DIR := "./src/includes"
 
 ARCH := x86
 CROSS_CLANG := -target i586-elf
-ASM := nasm -f elfb
+ASM := nasm -f elf 
 
 all:clean boot kernel
 

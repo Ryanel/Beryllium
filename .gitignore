@@ -19,5 +19,5 @@ toolkit/binutils-2.22/
 toolkit/*.tar.gz
 toolkit/cross/*
 kernel.elf
-
+libiconv*
 .DS_Store
