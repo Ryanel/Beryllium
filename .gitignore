@@ -22,3 +22,5 @@ kernel.elf
 
 libiconv*
 .DS_Store
+
+*.iso

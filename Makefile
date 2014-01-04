@@ -22,6 +22,10 @@ ARCH := x86
 CROSS_CLANG := -target i586-elf
 ASM := nasm -f elf 
 
+GENISO := xorriso -as mkisofs
+
+.PHONY: iso clean
+
 all:clean boot kernel
 
 boot: ${BOOT_FILES}
@@ -53,3 +57,9 @@ prep-dist:
 run:
 	@echo "Remember! Use make run to test the kernel! Implement it into a OS if you wish to test other fuctions!"
 	qemu -kernel kernel.elf
+
+iso:
+	@echo "Creating ISO..."
+	cp kernel.elf iso/kernel.elf
+	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o cdrom.iso iso
+
