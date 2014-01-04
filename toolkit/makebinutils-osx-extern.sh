@@ -15,7 +15,7 @@ function grab () {
 } #Credit Kevin Lange (klange) for grab function
 echo "Building binutils"
 grab "binutils" "http://ftp.gnu.org/gnu/binutils" "binutils-2.22.tar.gz"
-grab "libiconv" "ftp://ftp.gnu.org/gnu/libiconv/" "libiconv-1.14.tar.gz"
+grab "libiconv" "ftp://ftp.gnu.org/gnu/libiconv" "libiconv-1.14.tar.gz"
 echo "Extracting..."
 tar -xf binutils-2.22.tar.gz
 tar -xf libiconv-1.14.tar.gz
