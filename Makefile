@@ -7,8 +7,8 @@ LOW_FILES := $(patsubst %.cpp,%.o,$(wildcard src/low/*.cpp)) $(patsubst %.s,%.o,
 
 LIB_FILES := $(patsubst %.cpp,%.o,$(wildcard src/lib/*.cpp))
 
-CC:=toolkit/cross/build/bin/clang
-CPP:=toolkit/cross/build/bin/clang++ 
+CC:=clang
+CPP:=clang++
 C_OPTIONS := 
 CPP_OPTIONS := -fno-exceptions -fno-rtti
 CLANG_OPTIONS := -ffreestanding -O2 -Wall -Wextra  -target i586-elf
