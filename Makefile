@@ -13,7 +13,7 @@ C_OPTIONS :=
 CPP_OPTIONS := -fno-exceptions -fno-rtti
 CLANG_OPTIONS := -ffreestanding -O2 -Wall -Wextra  -target i586-elf
 
-LD := /usr/local/cross/bin/i586-elf-ld #./toolkit/binutils/bin/i586-elf-ld
+LD := ./toolkit/binutils/bin/i586-elf-ld
 LFLAGS := -m elf_i386
 LD_SCRIPT := src/link.ld
 INCLUDE_DIR := "./src/includes"
