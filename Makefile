@@ -26,7 +26,7 @@ GENISO := xorriso -as mkisofs
 
 .PHONY: iso clean
 
-all:clean boot kernel
+all:clean boot kernel iso run
 
 boot: ${BOOT_FILES}
 
@@ -56,7 +56,7 @@ prep-dist:
 	-rm -rf *~ boot/*~ src/*~
 run:
 	@echo "Remember! Use make run to test the kernel! Implement it into a OS if you wish to test other fuctions!"
-	qemu -kernel kernel.elf
+	qemu-system-i386 -cdrom cdrom.iso
 
 iso:
 	@echo "Creating ISO..."
