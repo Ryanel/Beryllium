@@ -15,7 +15,7 @@ void init_x86()
 	gdt_setup();
 	terminal_set_statusbar("x86: Initialising IDT");
 	idt_setup();
-	//terminal_set_statusbar("x86: Initialising Interrupts");
-	//isrs_setup();
+	terminal_set_statusbar("x86: Initialising Interrupts");
+	isrs_setup();
 	terminal_set_statusbar("x86: Done");
 }
