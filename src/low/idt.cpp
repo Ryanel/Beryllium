@@ -17,18 +17,16 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, uns
     idt[num].flags = flags;
 }
 
-
 int idt_setup()
 {
-	idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
-	idtp.base = (unsigned int)&idt;
+    idtp.limit = (sizeof (struct idt_entry) * 256) - 1;
+    idtp.base = (unsigned int)&idt;
 
-	memset(&idt, 0, sizeof(struct idt_entry) * 256);
+    memset(&idt, 0, sizeof(struct idt_entry) * 256);
 
-	isrs_setup();
+    idt_load();
 
-	idt_load();
-	printf("CPU: Interrupts are Setup\n");
 	print("CPU: IDT Setup\n");
-	return 0;
+    return 0;
 }
+
