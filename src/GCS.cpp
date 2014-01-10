@@ -9,7 +9,8 @@ GCS::GCS()
 
 GCS *GCS::instance() {
 	if (!gcs_instance)
-		gcs_instance = new GCS();
+		//gcs_instance = new GCS();
+		
 	return gcs_instance;
 }
 

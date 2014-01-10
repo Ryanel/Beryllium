@@ -5,7 +5,13 @@ typedef struct {
 	signed long status;
 } futex_t;
 
-int futex_up(futex_t *futex);
-int futex_down(futex_t *futex);
+inline int futex_up(futex_t *futex)
+{
+	futex->status = futex->status + 1;
+}
+inline int futex_down(futex_t *futex)
+{
+	futex->status = futex->status - 1;
+}
 
 #endif

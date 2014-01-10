@@ -15,6 +15,7 @@ class GCS { //Note, singleton class
 	public:
 		static GCS *instance();
 		bool getBool(int index);
+		void writeBool(int index, bool value);
 };
 
 #endif
