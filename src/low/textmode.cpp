@@ -2,6 +2,8 @@
 #include <types.h>
 #include <ports.h>
 uint8_t attributeByte = (0 << 4) | (15  & 0x0F);
+
+uint8_t defaultAttribute = (0 << 4) | (15  & 0x0F);
 void textmode_setcursor(int x,int y)
 {
 	uint16_t location = y * 80 + x;
@@ -9,6 +11,17 @@ void textmode_setcursor(int x,int y)
 	outb(0x3D5, location >> 8);
 	outb(0x3D4, 15);
 	outb(0x3D5, location);
+}
+
+void textmode_setcolor(uint8_t back,uint8_t fore)
+{
+	attributeByte = (back << 4) | (fore  & 0x0F);
+}
+
+
+void textmode_resetcolor()
+{
+	attributeByte = defaultAttribute;
 }
 void textmode_write(int x,int y,uint8_t data)
 {

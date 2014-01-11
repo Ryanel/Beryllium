@@ -7,4 +7,6 @@ void textmode_write_color(int x,int y,uint8_t data, uint8_t attr);
 uint8_t textmode_read(int x,int y);
 void textmode_scroll(int from,int to);
 void textmode_setcursor(int x,int y);
+void textmode_setcolor(uint8_t back,uint8_t fore);
+void textmode_resetcolor();
 #endif

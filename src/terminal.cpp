@@ -4,6 +4,7 @@
 
 int term_x;
 int term_y;
+
 ///
 ///Determines if the screen needs to be scrolled, and scrolls.
 ///
