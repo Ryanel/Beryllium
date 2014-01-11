@@ -7,6 +7,8 @@ LOW_FILES := $(patsubst %.cpp,%.o,$(wildcard src/low/*.cpp)) $(patsubst %.s,%.o,
 
 LIB_FILES := $(patsubst %.cpp,%.o,$(wildcard src/lib/*.cpp))
 
+DRIVER_FILES := $(patsubst %.cpp,%.o,$(wildcard src/drivers/*.cpp))
+
 CC:=clang
 CPP:=clang++
 C_OPTIONS := 
@@ -27,7 +29,7 @@ GENISO := xorriso -as mkisofs
 
 .PHONY: iso clean
 
-all:clean boot kernel iso run
+all:clean boot kernel drivers iso run
 
 boot: ${BOOT_FILES}
 
@@ -35,9 +37,10 @@ low: ${LOW_FILES}
 
 lib: ${LIB_FILES}
 
-kernel: boot low lib ${KERNEL_FILES}
+drivers: ${DRIVER_FILES}
+kernel: boot low lib drivers ${KERNEL_FILES}
 	@echo "Linking Kernel"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES}
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES} ${DRIVER_FILES}
 %.o: %.s
 	@echo "Making: " $@
 	@${ASM} -o $@ $<
@@ -57,7 +60,7 @@ prep-dist:
 	-rm -rf *~ boot/*~ src/*~
 run:
 	@echo "Remember! Use make run to test the kernel! Implement it into a OS if you wish to test other fuctions!"
-	qemu-system-i386 -cdrom cdrom.iso
+	qemu-system-i386 -serial stdio -cdrom cdrom.iso
 
 iso:
 	@echo "Creating ISO..."

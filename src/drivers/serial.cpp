@@ -1,4 +1,6 @@
 #include <drivers/serial.h>
+#include <ports.h>
+#include <stdio.h>
 void serial_init() {
 	outb(COM1 + 1, 0x00);    // Disable all interrupts
 	outb(COM1 + 3, 0x80);    // Enable DLAB (set baud rate divisor)
@@ -9,19 +11,28 @@ void serial_init() {
 	outb(COM1 + 4, 0x0B);    // IRQs enabled, RTS/DSR set
 }
 int serial_received() {
-	return inb(PORT + 5) & 1;
+	return inb(COM1 + 5) & 1;
 }
 
 char serial_read() {
 	while (serial_received() == 0);
 
-	return inb(PORT);
+	return inb(COM1);
 }
 int serial_is_transmit_empty() {
-	return inb(PORT + 5) & 0x20;
+	return inb(COM1 + 5) & 0x20;
 }
 
 void serial_write(char a) {
 	while (serial_is_transmit_empty() == 0);
-	outb(PORT,a);
+	outb(COM1,a);
+}
+
+void serial_print(const char *c)
+{
+	int i = 0;
+	while (c[i])
+	{
+		serial_write(c[i++]);
+	}
 }

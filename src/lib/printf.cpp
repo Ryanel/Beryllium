@@ -2,6 +2,7 @@
 #include <terminal.h> /* stdout, putchar(), fputs() (but not printf() :) */
 #include <stdarg.h>
 #include <types.h>
+#include <drivers/serial.h>
 /* flags used in processing format string */
 #define	PR_LJ	0x01	/* left justify */
 #define	PR_CA	0x02	/* use A-F instead of a-f for hex */
@@ -15,6 +16,8 @@
 2^32-1 in base 8 has 11 digits (add 5 for trailing NUL and for slop) */
 #define	PR_BUFLEN	16
 #define NULL 0
+
+#define TERM_WRITETOSERIAL 1
 
 unsigned int strlen(unsigned char *str)
 {
@@ -295,6 +298,10 @@ You must write your own putchar()
 int vprintf_help(unsigned c, void **ptr)
 {
 	printc(c);
+	if(TERM_WRITETOSERIAL)
+	{
+		serial_write(c);
+	}
 	return 0 ;
 }
 /*****************************************************************************
