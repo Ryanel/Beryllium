@@ -11,6 +11,6 @@ extern "C" void kernel_init()
 	serial_print("All messages will be relayed from the terminal to serial output\n");
 	klog(LOG_INFO,"KERN","Beryllium %s v. %s (%s) \n",BERYLLIUM_RELEASE,BERYLLIUM_VERSION,BERYLLIUM_SOURCE);
 	init_x86();
-	klog(LOG_INFO,"KERN","Finished initialising...\n")
+	klog(LOG_INFO,"KERN","Finished initialising...\n");
 	asm("hlt");
 }
