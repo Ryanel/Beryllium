@@ -26,7 +26,7 @@ int idt_setup()
 
     idt_load();
 
-	klog(0,"CPU","IDT Setup\n");
+	klog(LOG_DEBUG,"CPU","IDT Setup\n");
     return 0;
 }
 
