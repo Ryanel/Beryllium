@@ -26,7 +26,7 @@ int idt_setup()
 
     idt_load();
 
-	print("CPU: IDT Setup\n");
+	printf("CPU: IDT Setup\n");
     return 0;
 }
 

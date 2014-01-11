@@ -3,6 +3,7 @@
 ///
 #include <types.h>
 #include <terminal.h>
+#include <stdio.h>
 #include <low_cpu.h>
 #include <x86.h>
 #include <isr.h>
@@ -10,7 +11,7 @@ void init_x86()
 {
 	terminal_set_statusbar("x86: Initialising...");
 	cpu_disableinterrupts();
-	print("CPU: Interrupts disabled\n");
+	printf("CPU: Interrupts disabled\n");
 	terminal_set_statusbar("x86: Initialising GDT");
 	gdt_setup();
 	terminal_set_statusbar("x86: Initialising IDT");
