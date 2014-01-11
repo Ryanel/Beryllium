@@ -33,5 +33,5 @@ void gdt_setup()
 
 	gdt_flush();
 
-	klog(0,"CPU","GDT Setup\n");
+	klog(LOG_DEBUG,"CPU","GDT Setup\n");
 }

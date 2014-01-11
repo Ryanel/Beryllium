@@ -7,7 +7,7 @@
 *  Currently used as a base for Beryllium; will change once it is working. (Aka. this is a control)
 * */
 #include <x86.h>
-#include <stdio.h>
+#include <log.h>
 #include <idt.h>
 #include <isr.h>
 #include <low_cpu.h>
@@ -127,8 +127,8 @@ extern "C" void fault_handler(struct regs *r)
 {
     if (r->int_no < 32)
     {
-        printf("Encountered interupt %d (%s)!\n",r->int_no,exception_messages[r->int_no]);
-        printf("Halting...\n");
+        klog(LOG_PANIC,"SYS","Encountered interupt %d (%s)!\n",r->int_no,exception_messages[r->int_no]);
+        klog(LOG_PANIC,"SYS","Halting...\n");
 		asm("hlt");
     }
 }

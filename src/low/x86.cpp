@@ -11,7 +11,7 @@ void init_x86()
 {
 	terminal_set_statusbar("x86: Initialising...");
 	cpu_disableinterrupts();
-	klog(0,"CPU","Interrupts disabled\n");
+	klog(LOG_DEBUG,"CPU","Interrupts disabled\n");
 	terminal_set_statusbar("x86: Initialising GDT");
 	gdt_setup();
 	terminal_set_statusbar("x86: Initialising IDT");
