@@ -7,12 +7,11 @@ LOW_FILES := $(patsubst %.cpp,%.o,$(wildcard src/low/*.cpp)) $(patsubst %.s,%.o,
 
 LIB_FILES := $(patsubst %.cpp,%.o,$(wildcard src/lib/*.cpp))
 
-CC:=clang
-CPP:=clang++
-C_OPTIONS := 
-CPP_OPTIONS :=
-CLANG_OPTIONS := -ffreestanding -target i586-elf
-
+CC:=/usr/local/cross/bin/i586-elf-gcc
+CPP:=/usr/local/cross/bin/i586-elf-g++
+C_OPTIONS :=  -ffreestanding
+CPP_OPTIONS := -ffreestanding
+CLANG_OPTIONS := 
 
 LD := ./toolkit/binutils/bin/i586-elf-ld
 LFLAGS := -m elf_i386
