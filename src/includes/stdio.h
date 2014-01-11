@@ -3,4 +3,5 @@
 #include <stdarg.h>
 /// wikipedia.org/printf
 int printf(const char *fmt, ...);
+int vprintf(const char *fmt, va_list args);
 #endif

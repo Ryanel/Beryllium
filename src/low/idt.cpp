@@ -2,7 +2,7 @@
 #include <types.h>
 #include <idt.h>
 #include <terminal.h>
-#include <stdio.h>
+#include <log.h>
 #include <x86.h>
 struct idt_entry idt[256];
 struct idt_ptr idtp;
@@ -26,7 +26,7 @@ int idt_setup()
 
     idt_load();
 
-	printf("CPU: IDT Setup\n");
+	klog(0,"CPU","IDT Setup\n");
     return 0;
 }
 

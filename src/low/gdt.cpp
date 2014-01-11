@@ -1,5 +1,5 @@
 #include <types.h>
-#include <stdio.h>
+#include <log.h>
 #include <low_cpu.h>
 #include <gdt.h>
 ///////////////////////////////////////
@@ -33,5 +33,5 @@ void gdt_setup()
 
 	gdt_flush();
 
-	printf("CPU: GDT Setup\n");
+	klog(0,"CPU","GDT Setup\n");
 }
