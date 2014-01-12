@@ -29,16 +29,13 @@ void timer_handler(struct regs *r)
 	}
 }
 
-/* Sets up the system clock by installing the timer handler
-*  into IRQ0 */
 void pit_install()
 {
-	/* Installs 'timer_handler' to IRQ0 */
 	irq_install_handler(0);
 	pit_phase(1000);
 }
 
-int pit_has_ticked() //If no ticks, returns 0, else it returns how many ticks have happened since the last call;
+int pit_has_ticked()
 {
 	int retval=timer_ticks-timer_ticks_old;
 	timer_ticks_old=timer_ticks;
