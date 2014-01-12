@@ -15,20 +15,20 @@ void scroll()
 {
 	if(statusBar)
 	{
-		if(term_y >= 25)
-		{
-			textmode_scroll(0,24);
-
-			term_y = 24;
-		}
-	}
-	else
-	{
 		if(term_y >= 24)
 		{
 			textmode_scroll(0,23);
 
 			term_y = 23;
+		}
+	}
+	else
+	{
+		if(term_y >= 25)
+		{
+			textmode_scroll(0,24);
+
+			term_y = 24;
 		}
 	}
 }

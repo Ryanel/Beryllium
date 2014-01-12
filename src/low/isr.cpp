@@ -12,6 +12,7 @@
 #include <isr.h>
 #include <low_cpu.h>
 #include <types.h>
+#include <error.h>
 extern "C" void isr0();
 extern "C" void isr1();
 extern "C" void isr2();
@@ -127,8 +128,8 @@ extern "C" void fault_handler(struct regs *r)
 {
     if (r->int_no < 32)
     {
-        klog(LOG_PANIC,"SYS","Encountered interupt %d (%s)!\n",r->int_no,exception_messages[r->int_no]);
-        klog(LOG_PANIC,"SYS","Halting...\n");
+        klog(LOG_PANIC,"SYS","Encountered interrupt %d (%s)!\n",r->int_no,exception_messages[r->int_no]);
+        panic("Encountered unhandled interrupt\n");
 		asm("hlt");
     }
 }

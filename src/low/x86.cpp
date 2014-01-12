@@ -7,6 +7,7 @@
 #include <low_cpu.h>
 #include <x86.h>
 #include <isr.h>
+void pit_install();
 void init_x86()
 {
 	terminal_set_statusbar("x86: Initialising...");
@@ -18,5 +19,8 @@ void init_x86()
 	idt_setup();
 	terminal_set_statusbar("x86: Initialising Interrupts");
 	isrs_setup();
+	irq_install();
+	pit_install();
+	asm("sti");
 	terminal_set_statusbar("Beryllium");
 }
