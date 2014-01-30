@@ -1,5 +1,8 @@
 #include <stdlib.h>
 #include <types.h>
+
+uint32_t placement_address = 0xA00000;
+
 uint32_t kmalloc(uint32_t sz)
 {
 	uint32_t tmp = placement_address;
