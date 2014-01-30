@@ -29,7 +29,7 @@ GENISO := xorriso -as mkisofs
 
 .PHONY: iso clean
 
-all:clean boot kernel drivers iso run
+all:clean boot kernel drivers iso
 
 boot: ${BOOT_FILES}
 
