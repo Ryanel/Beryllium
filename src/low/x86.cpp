@@ -7,9 +7,11 @@
 #include <low_cpu.h>
 #include <x86.h>
 #include <isr.h>
+#include <low_paging.h>
 void pit_install();
 void init_x86()
 {
+	asm("cli");
 	terminal_set_statusbar("x86: Initialising...");
 	cpu_disableinterrupts();
 	klog(LOG_DEBUG,"CPU","Interrupts disabled\n");
@@ -21,5 +23,6 @@ void init_x86()
 	isrs_setup();
 	irq_install();
 	pit_install();
+	paging_init();
 	asm("sti");
 }
