@@ -19,6 +19,15 @@ char serial_read() {
 
 	return inb(COM1);
 }
+
+char serial_read_nowait() {
+	if(serial_received() == 1)
+	{
+		return inb(COM1);
+	}
+	return 0;
+	
+}
 int serial_is_transmit_empty() {
 	return inb(COM1 + 5) & 0x20;
 }
