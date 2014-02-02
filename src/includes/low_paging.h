@@ -3,6 +3,5 @@
 #include <types.h>
 #include <isr.h>
 void paging_init();
-void switch_page_directory(page_directory_t*);
-void page_fault(registers_t regs);
+void paging_fault(struct regs *regs);
 #endif

@@ -9,6 +9,7 @@
 #include <x86.h>
 #include <log.h>
 #include <idt.h>
+#include <irq.h>
 #include <isr.h>
 #include <low_cpu.h>
 #include <types.h>
@@ -124,6 +125,7 @@ const char *exception_messages[] =
     "Reserved",
     "Reserved"
 };
+extern "C" void irq_handler(struct regs *r);
 extern "C" void fault_handler(struct regs *r)
 {
     if (r->int_no < 32)
@@ -131,5 +133,9 @@ extern "C" void fault_handler(struct regs *r)
         klog(LOG_PANIC,"SYS","Encountered interrupt %d (%s)!\n",r->int_no,exception_messages[r->int_no]);
         panic("Encountered unhandled interrupt\n");
 		asm("hlt");
+    }
+    else
+    {
+        irq_handler(r);
     }
 }
