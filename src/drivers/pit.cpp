@@ -1,12 +1,12 @@
-//pit.cpp
 #include <log.h>
 #include <x86.h>
-//#include <irq.h>
 #include <isr.h>
 #include <idt.h>
-void irq_install_handler(int no);
 #include <ports.h>
 #include <drivers/serial.h>
+#include <drivers/timer.h>
+void irq_install_handler(int no);
+
 void pit_phase(int hz)
 {
 	int divisor = 1193180 / hz;       /* Calculate our divisor */
@@ -17,16 +17,12 @@ void pit_phase(int hz)
 int timer_ticks = 0;
 int timer_ticks_old = 0;
 
-int getUptime();
+
 void timer_handler(struct regs *r)
 {
-	/* Increment our 'tick count' */
 	timer_ticks++;
-	//printf("One second has passed\n");
-	if((timer_ticks % 1000)==0)
-	{
-		klog(LOG_INFO,"PIT","Timer is working! Uptime:%d seconds\n",getUptime());
-	}
+	recieveTick(0);
+
 }
 
 void pit_install()
@@ -40,11 +36,6 @@ int pit_has_ticked()
 	int retval=timer_ticks-timer_ticks_old;
 	timer_ticks_old=timer_ticks;
 	return retval;
-}
-
-int getUptime()
-{
-	return timer_ticks/1000;
 }
 
 void pit_wait(int ticks)

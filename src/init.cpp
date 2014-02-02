@@ -3,6 +3,7 @@
 #include <log.h>
 #include <version.h>
 #include <drivers/serial.h>
+#include <stdio.h>
 extern "C" void kernel_init()
 {
 	asm("cli");
