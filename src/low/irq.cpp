@@ -5,41 +5,22 @@
 #include <error.h>
 #include <idt.h> 
 #include <log.h>
-extern "C" void irq0();
-extern "C" void irq1();
-extern "C" void irq2();
-extern "C" void irq3();
-extern "C" void irq4();
-extern "C" void irq5();
-extern "C" void irq6();
-extern "C" void irq7();
-extern "C" void irq8();
-extern "C" void irq9();
-extern "C" void irq10();
-extern "C" void irq11();
-extern "C" void irq12();
-extern "C" void irq13();
-extern "C" void irq14();
-extern "C" void irq15();
+#include <irq.h>
 
 /* This array is actually an array of function pointers. We use
 *  this to handle custom IRQ handlers for a given IRQ */
-bool irq_routines[16] =
-{
-	0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0
-};
+interrupt_handler_t interrupt_handlers [256];
 
 /* This installs a custom IRQ handler for the given IRQ */
-void irq_install_handler(int irq)
+void register_interrupt_handler (uint8_t n, interrupt_handler_t h)
 {
-	irq_routines[irq] = true;
+	interrupt_handlers [n] = h;
 }
 
 /* This clears the handler for a given IRQ */
-void irq_uninstall_handler(int irq)
+void deregister_interrupt_handler (uint8_t n)
 {
-	irq_routines[irq] = false;
+	interrupt_handlers [n] = 0;
 }
 
 void irq_remap(void)
@@ -78,29 +59,11 @@ void irq_install()
 	idt_set_gate(47, (unsigned)irq15, 0x08, 0x8E);
 	return;
 }
-void timer_handler(struct regs *r);
 extern "C" void irq_handler(struct regs *r)
 {
 	/* This is a blank function pointer */
-	bool handler;
-
-	/* Find out if we have a custom handler to run for this
-	*  IRQ, and then finally, run it */
-	handler = irq_routines[r->int_no - 32];
-	if (handler)
-	{
-		switch((r->int_no - 32))
-		{
-			case 0x0:
-				timer_handler(r);
-				break;
-			default:
-				klog(LOG_DEBUG,"IRQ","No handler installed for int 0x%X!\n",r->int_no - 32);
-				//panic("Unhandled IRQ!\n");
-				break;
-		}
-	}
-
+	if (interrupt_handlers[r->int_no] != 0)
+		interrupt_handlers[r->int_no] (r);
 	/* If the IDT entry that was invoked was greater than 40
 	*  (meaning IRQ8 - 15), then we need to send an EOI to
 	*  the slave controller */
