@@ -7,9 +7,34 @@
 #include <irq.h>
 #include <stdlib.h>
 #include <string.h>
+
+unsigned int page_aligned_end = (((unsigned int*)end) & 0xFFFFF000) + 0x1000;
+unsigned int *page_directory = (unsigned int*)page_aligned_end;
+
+unsigned int *first_page_table = page_directory + 1024;
+
 void paging_init()
 {
-	
+	//Clear page directory
+	int i = 0;
+	for(i = 0; i < 1024; i++)
+	{
+		//attribute: supervisor level, read/write, not present.
+		page_directory[i] = 0 | 2; 
+	}
+	for(i = 0; i < 1024; i++)
+	{
+	    first_page_table[i] = address | 3; // attributes: supervisor level, read/write, present.
+	    address = address + 4096; //advance the address to the next page boundary
+	}
+	page_directory[0] = first_page_table; 
+	page_directory[0] |= 3;// attributes: supervisor level, read/write, present
+
+	asm volatile("mov %0, %%cr3":: "b"(page_directory));
+	unsigned int cr0;
+	asm volatile("mov %%cr0, %0": "=b"(cr0));
+	cr0 |= 0x80000000;
+	asm volatile("mov %0, %%cr0":: "b"(cr0));
 }
 
 void paging_fault(struct regs *regs)
