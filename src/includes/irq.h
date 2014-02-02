@@ -1,6 +1,7 @@
 #ifndef X86_IRQ_H
 #define X86_IRQ_H
 #include <isr.h>
+#include <types.h>
 #define IRQ0 32
 #define IRQ1 33
 #define IRQ2 34

@@ -2,11 +2,10 @@
 #include <x86.h>
 #include <isr.h>
 #include <idt.h>
+#include <irq.h>
 #include <ports.h>
 #include <drivers/serial.h>
 #include <drivers/timer.h>
-void irq_install_handler(int no);
-
 void pit_phase(int hz)
 {
 	int divisor = 1193180 / hz;       /* Calculate our divisor */
@@ -27,7 +26,7 @@ void timer_handler(struct regs *r)
 
 void pit_install()
 {
-	irq_install_handler(0);
+	register_interrupt_handler(IRQ0,&timer_handler);
 	pit_phase(1000);
 }
 
