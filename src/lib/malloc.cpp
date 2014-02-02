@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <types.h>
 
-uint32_t placement_address = 0xA00000;
+extern uint32_t placement_address;
 
 uint32_t kmalloc(uint32_t sz)
 {
@@ -9,7 +9,7 @@ uint32_t kmalloc(uint32_t sz)
 	placement_address += sz;
 	return tmp;
 }
-uint32_t kmalloc(uint32_t sz, int align)
+uint32_t kmalloc_a(uint32_t sz, int align)
 {
 	if (align == 1 && (placement_address & 0xFFFFF000)) // If the address is not already page-aligned
 	{
@@ -21,7 +21,7 @@ uint32_t kmalloc(uint32_t sz, int align)
 	placement_address += sz;
 	return tmp;
 }
-uint32_t kmalloc(uint32_t sz, int align, uint32_t *phys)
+uint32_t kmalloc_ap(uint32_t sz, int align, uint32_t *phys)
 {
 	if (align == 1 && (placement_address & 0xFFFFF000)) // If the address is not already page-aligned
 	{
