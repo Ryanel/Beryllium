@@ -22,5 +22,4 @@ void init_x86()
 	irq_install();
 	pit_install();
 	asm("sti");
-	terminal_set_statusbar("Beryllium");
 }

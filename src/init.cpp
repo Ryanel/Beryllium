@@ -9,9 +9,8 @@ extern "C" void kernel_init()
 	asm("cli");
 	terminal_init();
 	serial_init();
-	printf("Beryllium %s v. %s (%s) \n",BERYLLIUM_RELEASE,BERYLLIUM_VERSION,BERYLLIUM_SOURCE);
 	init_x86();
 	klog(LOG_INFO,"KERN","Finished initialising...\n");
-	klog(LOG_INFO,"KERN","Nothing to do: halting\n");
+	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.1 (git)");
 	asm("hlt");
 }
