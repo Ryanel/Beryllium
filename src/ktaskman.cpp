@@ -1,12 +1,25 @@
 #include <stdio.h>
 #include <drivers/serial.h>
+#include <drivers/timer.h>
+
+void terminal_clear();
+void panic(const char* reason);
 int cyclic_tasks(int tick)
 {
-	if((tick % 1000) == 0)
+	if((tick % 10) == 0)
 	{
 		if(serial_received())
 		{
-			printf("Recieved key (serial):%c\n",serial_read_nowait());
+			char c = serial_read_nowait();
+			
+			if(c == 'p')
+			{
+				panic("User caused kernel to crash over interactive console\n");
+			}
+			else
+			{
+				printf("Serial : '%c' was recieved. Not a command\n",c);
+			}
 		}
 	}
 	return 0;
