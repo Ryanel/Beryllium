@@ -5,7 +5,7 @@
 #define PANIC_MSG_BAR "   ==================================PANIC===================================   "
 void panic(const char* reason)
 {
-	terminal_set_statusbar(PANIC_MSG_BAR);
+	//terminal_set_statusbar(PANIC_MSG_BAR);
 	textmode_setcolor(0,0xC);
 	printf(PANIC_MSG_BAR);
 	textmode_resetcolor();
