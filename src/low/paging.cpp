@@ -21,7 +21,7 @@ unsigned int page_aligned_end = (((unsigned int*)end) && 0xFFFFF000) + 0x1000;
 #define OFFSET_FROM_BIT(a) (a%(8*4))
 
 // Static function to set a bit in the frames bitset
-static void set_frame(uint32_t frame_addr)
+void set_frame(uint32_t frame_addr)
 {
 	uint32_t frame = frame_addr/0x1000;
 	uint32_t idx = INDEX_FROM_BIT(frame);
@@ -30,7 +30,7 @@ static void set_frame(uint32_t frame_addr)
 }
 
 // Static function to clear a bit in the frames bitset
-static void clear_frame(uint32_t frame_addr)
+void clear_frame(uint32_t frame_addr)
 {
 	uint32_t frame = frame_addr/0x1000;
 	uint32_t idx = INDEX_FROM_BIT(frame);
@@ -39,7 +39,7 @@ static void clear_frame(uint32_t frame_addr)
 }
 
 // Static function to test if a bit is set.
-static uint32_t test_frame(uint32_t frame_addr)
+uint32_t test_frame(uint32_t frame_addr)
 {
 	uint32_t frame = frame_addr/0x1000;
 	uint32_t idx = INDEX_FROM_BIT(frame);
@@ -48,7 +48,7 @@ static uint32_t test_frame(uint32_t frame_addr)
 }
 
 // Static function to find the first free frame.
-static uint32_t first_frame()
+uint32_t first_frame()
 {
 	uint32_t i, j;
 	for (i = 0; i < INDEX_FROM_BIT(nframes); i++)
