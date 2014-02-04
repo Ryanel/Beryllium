@@ -6,15 +6,15 @@
 *  Notes: No warranty expressed or implied. Use at own risk.
 *  Currently used as a base for Beryllium; will change once it is working. (Aka. this is a control)
 * */
-#include <x86.h>
+#include <x86/x86.h>
 #include <log.h>
-#include <idt.h>
-#include <irq.h>
-#include <isr.h>
-#include <low_cpu.h>
+#include <x86/idt.h>
+#include <x86/irq.h>
+#include <x86/isr.h>
+#include <x86/low_cpu.h>
 #include <types.h>
 #include <error.h>
-#include <low_paging.h>
+#include <x86/low_paging.h>
 extern "C" void isr0();
 extern "C" void isr1();
 extern "C" void isr2();

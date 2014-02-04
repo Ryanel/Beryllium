@@ -1,9 +1,9 @@
 #include <log.h>
-#include <x86.h>
-#include <isr.h>
-#include <idt.h>
-#include <irq.h>
-#include <ports.h>
+#include <x86/x86.h>
+#include <x86/isr.h>
+#include <x86/idt.h>
+#include <x86/irq.h>
+#include <x86/ports.h>
 #include <drivers/serial.h>
 #include <drivers/timer.h>
 void pit_phase(int hz)

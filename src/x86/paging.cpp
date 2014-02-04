@@ -1,11 +1,11 @@
 #include <types.h>
-#include <low_paging.h>
+#include <x86/low_paging.h>
 #include <log.h>
-#include <x86.h>
-#include <isr.h>
-#include <idt.h>
-#include <irq.h>
-#include <placement_malloc.h>
+#include <x86/x86.h>
+#include <x86/isr.h>
+#include <x86/idt.h>
+#include <x86/irq.h>
+#include <x86/placement_malloc.h>
 #include <string.h>
 
 uint32_t *frames;

@@ -4,10 +4,10 @@
 #include <types.h>
 #include <terminal.h>
 #include <log.h>	
-#include <low_cpu.h>
-#include <x86.h>
-#include <isr.h>
-#include <low_paging.h>
+#include <x86/low_cpu.h>
+#include <x86/x86.h>
+#include <x86/isr.h>
+#include <x86/low_paging.h>
 void pit_install();
 void init_x86()
 {

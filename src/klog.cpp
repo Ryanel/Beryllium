@@ -1,7 +1,7 @@
 #include <log.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include <low_textmode.h>
+#include <drivers/low_textmode.h>
 void klog(int mode, const char *title, const char *fmt, ...)
 {
 	switch (mode)

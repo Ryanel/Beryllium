@@ -1,4 +1,4 @@
-#include <low_paging.h>
+#include <x86/low_paging.h>
 #include <lib/liballoc.h>
 /** This function is supposed to lock the memory data structures. It
  * could be as simple as disabling interrupts or acquiring a spinlock.

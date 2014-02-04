@@ -1,5 +1,5 @@
 #include <terminal.h>
-#include <x86.h>
+#include <x86/x86.h>
 #include <log.h>
 #include <version.h>
 #include <drivers/serial.h>

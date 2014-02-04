@@ -1,9 +1,9 @@
 #include <string.h>
 #include <types.h>
-#include <idt.h>
+#include <x86/idt.h>
 #include <terminal.h>
 #include <log.h>
-#include <x86.h>
+#include <x86/x86.h>
 struct idt_entry idt[256];
 struct idt_ptr idtp;
 

@@ -1,6 +1,6 @@
 #include <terminal.h>
 #include <types.h>
-#include <low_textmode.h>
+#include <drivers/low_textmode.h>
 
 int term_x;
 int term_y;

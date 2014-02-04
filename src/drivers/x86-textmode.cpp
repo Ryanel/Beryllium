@@ -1,6 +1,6 @@
-#include <low_textmode.h>
+#include <drivers/low_textmode.h>
 #include <types.h>
-#include <ports.h>
+#include <x86/ports.h>
 uint8_t attributeByte = (0 << 4) | (15  & 0x0F);
 
 uint8_t defaultAttribute = (0 << 4) | (15  & 0x0F);
