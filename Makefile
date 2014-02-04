@@ -3,11 +3,13 @@ BOOT_PI_FILES := boot/boot_pi.o
 
 KERNEL_FILES := $(patsubst %.cpp,%.o,$(wildcard src/*.cpp)) $(patsubst %.c,%.o,$(wildcard src/*.c))
 
-LOW_FILES := $(patsubst %.cpp,%.o,$(wildcard src/low/*.cpp)) $(patsubst %.s,%.o,$(wildcard src/low/*.s))
+LOW_FILES := $(patsubst %.cpp,%.o,$(wildcard src/low/*.cpp))
 
 LIB_FILES := $(patsubst %.cpp,%.o,$(wildcard src/lib/*.cpp))
 
 DRIVER_FILES := $(patsubst %.cpp,%.o,$(wildcard src/drivers/*.cpp))
+
+X86_FILES := $(patsubst %.cpp,%.o,$(wildcard src/x86/*.cpp)) $(patsubst %.s,%.o,$(wildcard src/x86/*.s))
 
 CC:=clang
 CPP:=clang++
@@ -35,12 +37,14 @@ boot: ${BOOT_FILES}
 
 low: ${LOW_FILES}
 
+x86f: ${X86_FILES}
+
 lib: ${LIB_FILES}
 
 drivers: ${DRIVER_FILES}
-kernel: boot low lib drivers ${KERNEL_FILES}
+kernel: boot low lib drivers x86f ${KERNEL_FILES}
 	@echo "Linking Kernel"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES} ${DRIVER_FILES}
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${X86_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES} ${DRIVER_FILES}
 %.o: %.s
 	@echo "Making: " $@
 	@${ASM} -o $@ $<
@@ -54,7 +58,7 @@ kernel: boot low lib drivers ${KERNEL_FILES}
 	@${CPP} -c ${CPP_OPTIONS} ${CLANG_OPTIONS} ${CROSS_CLANG} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
-	-rm -rf *.od boot/*.o src/*.o src/low/*.o
+	-rm -rf *.o boot/*.o src/*.o src/low/*.o src/lib/*.o src/drivers/*.o src/x86/*.o
 	-rm -rf kernel.elf
 prep-dist:
 	-rm -rf *~ boot/*~ src/*~
