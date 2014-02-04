@@ -9,7 +9,7 @@ uint32_t timer_low = 0;
 uint32_t device = 0; //0 - pit, 1 - rtc. Used as the source. Will be replaced by a driver_t;
 uint32_t device_resoulution = 1; //How many ticks make a millisecond
 
-void switchDevice(uint32_t device_id)
+void timer_switchDevice(uint32_t device_id)
 {
 	switch (device_id)
 	{
@@ -18,12 +18,12 @@ void switchDevice(uint32_t device_id)
 			device_resoulution = 1;
 			break;
 		default:
-			switchDevice(0);
+			timer_switchDevice(0);
 			break;
 	}
 }
 
-void recieveTick(uint32_t device_id)
+void timer_recieveTick(uint32_t device_id)
 {
 	if(device_id==device)
 	{
@@ -37,17 +37,40 @@ void recieveTick(uint32_t device_id)
 	}
 }
 
-uint32_t getTimerHi()
+uint32_t timer_getHi()
 {
 	return timer_hi;
 }
 
-uint32_t getTimerLow()
+uint32_t timer_getDevice()
+{
+	return device;
+}
+
+const char* timer_getDeviceString(uint32_t device)
+{
+	switch(device)
+	{
+		case 0x0:
+			return "Programmable interrupt timer";
+		case 0x1:
+			return "Real time clock";
+		default:
+			return "Unknown";
+	}
+}
+
+uint32_t timer_getDeviceRes()
+{
+	return device_resoulution;
+}
+
+uint32_t timer_getLow()
 {
 	return timer_low;
 }
 
-int getUptime()
+int timer_getUptime()
 {
 	return timer_hi/(device_resoulution*1000);
 }

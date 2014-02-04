@@ -1,2 +1,3 @@
 #include <types.h>
-uint32_t placement_address;
+extern uint32_t end;
+uint32_t placement_address = (uint32_t)&end;

@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <placement_malloc.h>
 #include <types.h>
 
 extern uint32_t placement_address;

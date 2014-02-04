@@ -14,6 +14,7 @@
 #include <low_cpu.h>
 #include <types.h>
 #include <error.h>
+#include <low_paging.h>
 extern "C" void isr0();
 extern "C" void isr1();
 extern "C" void isr2();
@@ -130,6 +131,10 @@ extern "C" void fault_handler(struct regs *r)
 {
     if (r->int_no < 32)
     {
+        if(r->int_no == 14)
+        {
+            paging_fault(r);
+        }
         klog(LOG_PANIC,"SYS","Encountered interrupt %d (%s)!\n",r->int_no,exception_messages[r->int_no]);
         panic("Encountered unhandled interrupt\n");
 		asm("hlt");

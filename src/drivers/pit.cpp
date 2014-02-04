@@ -20,7 +20,7 @@ int timer_ticks_old = 0;
 void timer_handler(struct regs *r)
 {
 	timer_ticks++;
-	recieveTick(0);
+	timer_recieveTick(0);
 
 }
 

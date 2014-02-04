@@ -16,10 +16,6 @@ int cyclic_tasks(int tick)
 			{
 				panic("User caused kernel to crash over interactive console\n");
 			}
-			else
-			{
-				printf("Serial : '%c' was recieved. Not a command\n",c);
-			}
 		}
 	}
 	return 0;

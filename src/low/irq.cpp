@@ -15,12 +15,22 @@ interrupt_handler_t interrupt_handlers [256];
 void register_interrupt_handler (uint8_t n, interrupt_handler_t h)
 {
 	interrupt_handlers [n] = h;
+	if(n>31)
+	{
+		klog(LOG_DEBUG,"IRQ","Registered irq handler for %d (IRQ%d) at 0x%X\n",n,n-32,h);
+	}
+	else
+	{
+		klog(LOG_DEBUG,"IRQ","Registered irq handler for %d at 0x%X\n",n,h);
+	}
+	
 }
 
 /* This clears the handler for a given IRQ */
 void deregister_interrupt_handler (uint8_t n)
 {
 	interrupt_handlers [n] = 0;
+	klog(LOG_DEBUG,"IRQ","Deregistered irq handler for %d\n",n);
 }
 
 void irq_remap(void)
