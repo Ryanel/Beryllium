@@ -16,6 +16,10 @@ int cyclic_tasks(int tick)
 			{
 				panic("User caused kernel to crash over interactive console\n");
 			}
+			else if (c == ']')
+			{
+				printf("");
+			}
 		}
 	}
 	return 0;

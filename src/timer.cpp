@@ -30,7 +30,7 @@ void timer_recieveTick(uint32_t device_id)
 		timer_hi++;
 		if((timer_hi % (device_resoulution * 1000)) == 0)
 		{
-			//klog(LOG_DEBUG,"CTimer","Device %d, resolution = %d (tick no %d)\n",device_id,device_resoulution,timer_hi);
+			klog(LOG_DEBUG,"CTimer","Device %d (%s), resolution = %d (tick no %d)\n",device_id,timer_getDeviceString(device_id),device_resoulution,timer_hi);
 			timer_low++;
 		}
 		cyclic_tasks(timer_hi);
