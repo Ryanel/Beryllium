@@ -298,10 +298,9 @@ You must write your own putchar()
 int vprintf_help(unsigned c, void **ptr)
 {
 	printc(c);
-	if(TERM_WRITETOSERIAL)
-	{
+	#ifdef ENABLE_SERIAL
 		serial_write(c);
-	}
+	#endif
 	return 0 ;
 }
 /*****************************************************************************

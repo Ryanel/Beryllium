@@ -7,4 +7,5 @@
 #define LOG_INFO 4
 #define LOG_DEBUG 5
 void klog(int mode, const char *title, const char *fmt, ...);
+void klog_setmask(int mode);
 #endif

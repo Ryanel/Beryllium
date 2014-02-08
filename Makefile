@@ -1,3 +1,5 @@
+COMPILE_OPTIONS := -D DEBUG
+
 BOOT_FILES := boot/boot.o
 BOOT_PI_FILES := boot/boot_pi.o
 
@@ -14,9 +16,8 @@ X86_FILES := $(patsubst %.cpp,%.o,$(wildcard src/x86/*.cpp)) $(patsubst %.s,%.o,
 CC:=clang
 CPP:=clang++
 C_OPTIONS := 
-CPP_OPTIONS :=
+CPP_OPTIONS := 
 CLANG_OPTIONS := -ffreestanding -target i586-elf
-
 
 LD := ./toolkit/binutils/bin/i586-elf-ld
 LFLAGS := -m elf_i386
@@ -51,11 +52,11 @@ kernel: boot low lib drivers x86f ${KERNEL_FILES}
 
 %.o: %.c
 	@echo "Making: " $@
-	@${CC} -c ${C_OPTIONS} ${CLANG_OPTIONS} ${CROSS_CLANG} -I${INCLUDE_DIR} -o $@ $<
+	@${CC} -c ${C_OPTIONS} ${CLANG_OPTIONS} ${CROSS_CLANG} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 %.o: %.cpp
 	@echo "Making: " $@
-	@${CPP} -c ${CPP_OPTIONS} ${CLANG_OPTIONS} ${CROSS_CLANG} -I${INCLUDE_DIR} -o $@ $<
+	@${CPP} -c ${CPP_OPTIONS} ${CLANG_OPTIONS} ${CROSS_CLANG} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
 	-rm -rf *.o boot/*.o src/*.o src/low/*.o src/lib/*.o src/drivers/*.o src/x86/*.o
