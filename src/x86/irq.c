@@ -69,7 +69,7 @@ void irq_install()
 	idt_set_gate(47, (unsigned)irq15, 0x08, 0x8E);
 	return;
 }
-extern "C" void irq_handler(struct regs *r)
+void irq_handler(struct regs *r)
 {
 	/* This is a blank function pointer */
 	if (interrupt_handlers[r->int_no] != 0)

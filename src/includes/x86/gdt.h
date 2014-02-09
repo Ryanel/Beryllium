@@ -16,7 +16,7 @@ struct gdt_ptr
     unsigned short limit;
     unsigned int base;
 } __attribute__((packed));
-extern "C" void gdt_flush();
+extern void gdt_flush();
 void gdt_set_gate(int num, unsigned long base, unsigned long limit, unsigned char access, unsigned char gran);
 
 #endif

@@ -3,21 +3,21 @@ COMPILE_OPTIONS := -D DEBUG
 BOOT_FILES := boot/boot.o
 BOOT_PI_FILES := boot/boot_pi.o
 
-KERNEL_FILES := $(patsubst %.cpp,%.o,$(wildcard src/*.cpp)) $(patsubst %.c,%.o,$(wildcard src/*.c))
+KERNEL_FILES := $(patsubst %.c,%.o,$(wildcard src/*.c))
 
-LOW_FILES := $(patsubst %.cpp,%.o,$(wildcard src/low/*.cpp))
+LOW_FILES := $(patsubst %.c,%.o,$(wildcard src/low/*.c))
 
-LIB_FILES := $(patsubst %.cpp,%.o,$(wildcard src/lib/*.cpp))
+LIB_FILES := $(patsubst %.c,%.o,$(wildcard src/lib/*.c))
 
-DRIVER_FILES := $(patsubst %.cpp,%.o,$(wildcard src/drivers/*.cpp))
+DRIVER_FILES := $(patsubst %.c,%.o,$(wildcard src/drivers/*.c))
 
-X86_FILES := $(patsubst %.cpp,%.o,$(wildcard src/x86/*.cpp)) $(patsubst %.s,%.o,$(wildcard src/x86/*.s))
+X86_FILES := $(patsubst %.c,%.o,$(wildcard src/x86/*.c)) $(patsubst %.s,%.o,$(wildcard src/x86/*.s))
 
 CC:=clang
 CPP:=clang++
-C_OPTIONS := 
+C_OPTIONS := -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 CPP_OPTIONS := 
-CLANG_OPTIONS := -ffreestanding -target i586-elf
+CLANG_OPTIONS := -target i586-elf
 
 LD := ./toolkit/binutils/bin/i586-elf-ld
 LFLAGS := -m elf_i386

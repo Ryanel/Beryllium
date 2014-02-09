@@ -15,7 +15,7 @@ page_directory_t* kernel_directory;
 page_directory_t* current_directory;
 extern unsigned int* end;
 extern unsigned int placement_address;
-unsigned int page_aligned_end = (((unsigned int*)end) && 0xFFFFF000) + 0x1000;
+unsigned int page_aligned_end;
 
 #define INDEX_FROM_BIT(a) (a/(8*4))
 #define OFFSET_FROM_BIT(a) (a%(8*4))
@@ -160,6 +160,7 @@ void paging_switch_directory(page_directory_t *dir)
 
 void paging_init()
 {
+	page_aligned_end = (((unsigned int*)end) && 0xFFFFF000) + 0x1000;
 	//Clear page directory
 	uint32_t mem_end_page = 0x1000000; //TODO: Make dynamic from data recieved from multiboot
 	nframes = mem_end_page / 0x1000; //FIXME: Make sure mem_end_page is divisible by 0x1000
