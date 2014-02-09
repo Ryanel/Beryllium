@@ -6,7 +6,6 @@
 #include <x86/x86.h>
 #include <drivers/serial.h>
 #include <boot/multiboot.h>
-#include <lib/liballoc.h>
 extern "C" void kernel_init(int magic,struct multiboot *mboot)
 {
 	#ifdef OPT_RELEASE
