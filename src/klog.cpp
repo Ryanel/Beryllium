@@ -4,7 +4,7 @@
 #include <drivers/low_textmode.h>
 
 int klog_mask = LOG_DEBUG;
-
+static int background = 0;
 void klog(int mode, const char *title, const char *fmt, ...)
 {
 	if( mode <= klog_mask)
@@ -12,25 +12,25 @@ void klog(int mode, const char *title, const char *fmt, ...)
 		switch (mode)
 		{
 			case LOG_PANIC:
-				textmode_setcolor(0,0xC);
+				textmode_setcolor(background,0xC);
 				break;
 			case LOG_SEVERE:
-				textmode_setcolor(0,0x6);
+				textmode_setcolor(background,0x6);
 				break;
 			case LOG_ERROR:
-				textmode_setcolor(0,0x4);
+				textmode_setcolor(background,0x4);
 				break;
 			case LOG_WARN:
-				textmode_setcolor(0,0xE);
+				textmode_setcolor(background,0xE);
 				break;
 			case LOG_INFO:
-				textmode_setcolor(0,0x9);
+				textmode_setcolor(background,0x9);
 				break;
 			case LOG_DEBUG:
-				textmode_setcolor(0,0x9);///was 0x8;
+				textmode_setcolor(background,0x8);///was 0x8;
 				break;
 			default:
-				textmode_setcolor(0,0x7);
+				textmode_setcolor(background,0x7);
 		}
 		printf("[%s]:", title);
 		va_list args;

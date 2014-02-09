@@ -25,7 +25,7 @@ extern "C" void kernel_init(int magic,struct multiboot *mboot)
 	init_x86();
 
 	klog(LOG_INFO,"KERN","Finished initialising...\n");
-	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.1 (git)");
+	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.2 (git)");
 
 	video_init();
 
