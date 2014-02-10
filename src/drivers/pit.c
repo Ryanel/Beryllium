@@ -6,6 +6,10 @@
 #include <x86/ports.h>
 #include <drivers/serial.h>
 #include <drivers/timer.h>
+
+unsigned long timer_ticks = 0;
+unsigned long timer_ticks_old = 0;
+
 void pit_phase(int hz)
 {
 	int divisor = 1193180 / hz;       /* Calculate our divisor */
@@ -13,12 +17,10 @@ void pit_phase(int hz)
 	outb(0x40, divisor & 0xFF);   /* Set low byte of divisor */
 	outb(0x40, divisor >> 8);     /* Set high byte of divisor */
 }
-int timer_ticks = 0;
-int timer_ticks_old = 0;
-
 
 void timer_handler(struct regs *r)
 {
+	if(r->int_no) {} // Used to disable unused argument warning
 	timer_ticks++;
 	timer_recieveTick(0);
 
@@ -37,7 +39,7 @@ int pit_has_ticked()
 	return retval;
 }
 
-void pit_wait(int ticks)
+void pit_wait(unsigned int ticks)
 {
 	unsigned int eticks;
 

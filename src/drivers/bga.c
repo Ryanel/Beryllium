@@ -1,8 +1,22 @@
 #include <x86/ports.h>
 #include <drivers/bga.h>
+#include <framebuffer.h>
 #include <stdio.h>
 
 bool bga_isinit = false;
+
+framebuffer_t bga_getFramebuffer()
+{
+	framebuffer_t builder;
+	builder.memory_start = (uint8_t *)0xE0000000;
+	builder.width = 800;
+	builder.height = 600;
+	builder.depth = 32;
+	builder.pitch = 3200;
+	builder.pixwidth = 4;
+	return builder;
+}
+
 void bga_writeregister(uint16_t index, uint16_t value)
 {
 	outw(BGA_VBE_DISPI_IOPORT_INDEX, index);
@@ -34,7 +48,7 @@ int bga_init()
 	{
 		return 1;
 	}
-	bga_setmode(640,480,0x20,1,1);
+	bga_setmode(800,600,32,1,0);
 	bga_isinit = true;
 	return 0;
 }

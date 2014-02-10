@@ -15,7 +15,7 @@ X86_FILES := $(patsubst %.c,%.o,$(wildcard src/x86/*.c)) $(patsubst %.s,%.o,$(wi
 
 CC:=clang
 CPP:=clang++
-C_OPTIONS := -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+C_OPTIONS := -std=gnu99 -ffreestanding -O2 -Wall 
 CPP_OPTIONS := 
 CLANG_OPTIONS := -target i586-elf
 

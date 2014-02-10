@@ -39,7 +39,7 @@ int do_printf(const char *fmt, va_list args, fnptr_t fn, void *ptr)
 	unsigned flags, actual_wd, count, given_wd;
 	unsigned char *where, buf[PR_BUFLEN];
 	unsigned char state, radix;
-	unsigned char *color_value;
+	//unsigned char *color_value;
 	long num;
 
 	state = flags = count = given_wd = 0;
@@ -150,9 +150,9 @@ DO_NUM:				if(flags & PR_32)
 				else if(flags & PR_16)
 				{
 					if(flags & PR_SG)
-						num = va_arg(args, short);
+						num = va_arg(args, int); // was short
 					else
-						num = va_arg(args, unsigned short);
+						num = va_arg(args, unsigned int); // was unsigned short
 				}
 /* no h nor l: sizeof(int) bits (signed or unsigned) */
 				else
@@ -194,7 +194,7 @@ OK, I found my mistake. The math here is _always_ unsigned */
 				flags &= ~PR_LZ;
 				where--;
 				*where = (unsigned char)va_arg(args,
-					unsigned char);
+					unsigned int); // was unsigned char
 				actual_wd = 1;
 				goto EMIT2;
 				break;
@@ -262,8 +262,8 @@ SPRINTF
 *****************************************************************************/
 static int vsprintf_help(unsigned c, void **ptr)
 {
-	char *dst;
 
+	char *dst;
 	dst = (char*) *ptr;
 	*dst++ = (char)c;
 	*ptr = dst;

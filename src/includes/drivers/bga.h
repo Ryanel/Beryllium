@@ -2,6 +2,7 @@
 #define BGA_H
 
 #include <types.h>
+#include <framebuffer.h>
 
 #define BGA_VBE_DISPI_IOPORT_INDEX 0x01CE
 #define BGA_VBE_DISPI_IOPORT_DATA 0x01CF
@@ -28,5 +29,5 @@ uint16_t bga_readregister(uint16_t index);
 void bga_setmode(unsigned int width, unsigned int height, unsigned int bitdepth, int linearframebuffer, int clearvideomemory);
 int bga_isavalable();
 int bga_init();
-
+framebuffer_t bga_getFramebuffer();
 #endif

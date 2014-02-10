@@ -66,6 +66,7 @@ uint32_t first_frame()
 			}
 		}
 	}
+	return -1;
 }
 
 
@@ -83,7 +84,7 @@ void paging_fault(struct regs *regs)
 	int reserved = regs->err_code & 0x8;     // Overwritten CPU-reserved bits of page entry?
 	int id = regs->err_code & 0x10;          // Caused by an instruction fetch?
 
-	klog(LOG_PANIC,"PANIC","Page fault at 0x%X (present %d, rw %d, usermode %d, reserved %d)\n",faulting_address,present,rw,us,reserved);
+	klog(LOG_PANIC,"PANIC","Page fault at 0x%X (present %d, rw %d, usermode %d, reserved %d, id %d)\n",faulting_address,present,rw,us,reserved, id);
 	asm("cli");
 	asm("hlt");
 }
@@ -171,7 +172,7 @@ void paging_init()
 	memset(kernel_directory, 0, sizeof(page_directory_t));
 	current_directory = kernel_directory;
 
-	int i = 0;
+	unsigned int i = 0;
 	while (i < placement_address)
 	{
 		// Kernel code is readable but not writeable from userspace.
