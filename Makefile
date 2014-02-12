@@ -80,7 +80,7 @@ rpi-image: kernel.elf
 
 clean: prep-dist
 	-rm -rf *.o boot/*.o src/*.o src/low/*.o src/lib/*.o src/drivers/*.o src/x86/*.o
-	-rm -rf kernel.elf
+	-rm -rf kernel.elf kernel.img
 prep-dist:
 	-rm -rf *~ boot/*~ src/*~
 run:
