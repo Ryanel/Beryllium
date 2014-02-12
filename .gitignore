@@ -14,13 +14,17 @@
 
 # Toolkit
 toolkit/binutils/
+toolkit/binutils-pi/
 toolkit/build-binutils/*
+toolkit/build-binutils-pi/*
 toolkit/binutils-2.22/
 toolkit/*.tar.gz
+toolkit/*.tar.bz2
 toolkit/cross/*
 kernel.elf
-
+toolkit/arm-2008q3/
 libiconv*
 .DS_Store
 
 *.iso
+*.img

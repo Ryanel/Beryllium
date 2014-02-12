@@ -1,8 +1,8 @@
-#include <drivers/bga.h>
 #include <log.h>
 
 #ifdef X86
 #include <drivers/low_textmode.h>
+#include <drivers/bga.h>
 #endif
 #ifdef ARM
 
@@ -12,6 +12,7 @@ int video_device = 0; //Textmode x86
 
 int video_graphics_init() //returns 0 if failed, 1 if sucessfull
 {
+	#ifdef X86
 	if(!bga_isavalable())
 	{
 		klog(LOG_WARN,"VIDEO","BGA unsupported, setting terminal as output\n");
@@ -26,6 +27,8 @@ int video_graphics_init() //returns 0 if failed, 1 if sucessfull
 	}
 	#endif
 	return 1;
+	#endif
+	return 0;
 }
 
 void video_printchar(int x,int y, unsigned char c)

@@ -1,14 +1,16 @@
 #include <log.h>
 #include <error.h>
-#include <terminal.h>
+#include <video.h>
 #include <stdio.h>
 #define PANIC_MSG_BAR "   ==================================PANIC===================================   "
 void panic(const char* reason)
 {
 	//terminal_set_statusbar(PANIC_MSG_BAR);
-	textmode_setcolor(0,0xC);
+	video_setattributetext(0,0xC);
+	#ifdef X86
 	printf(PANIC_MSG_BAR);
-	textmode_resetcolor();
+	#endif
+	video_resetattributetext();
 	klog(LOG_PANIC,"PANIC",reason);
 	klog(LOG_PANIC,"PANIC","Debug output:\n");
 	klog(LOG_PANIC,"PANIC","Debug register output unimplemented\n");
@@ -18,5 +20,7 @@ void panic(const char* reason)
 void halt()
 {
 	klog(LOG_INFO,"KERN","Halting...\n");
+	#ifdef X86
 	asm("hlt");
+	#endif
 }

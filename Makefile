@@ -14,11 +14,12 @@ X86_FILES := $(patsubst %.c,%.o,$(wildcard src/x86/*.c)) $(patsubst %.s,%.o,$(wi
 
 ARM_FILES := $(patsubst %.c,%.o,$(wildcard src/arm/*.c)) $(patsubst %.s,%.o,$(wildcard src/arm/*.s))
 
-CC:=clang -DX86
+CC:=clang -DX86 -target i586-elf
 CPP:=clang++
 C_OPTIONS := -std=gnu99 -ffreestanding -O2 -Wall 
 CPP_OPTIONS := 
-CLANG_OPTIONS := -target i586-elf
+CLANG_OPTIONS := 
+ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi
 
 LD := ./toolkit/binutils/bin/i586-elf-ld
 LFLAGS := -m elf_i386
@@ -45,23 +46,25 @@ lib: ${LIB_FILES}
 
 drivers: ${DRIVER_FILES}
 
+kernel: boot low lib drivers x86f ${KERNEL_FILES}
+	@echo "Linking Kernel"
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${X86_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES} ${DRIVER_FILES}
+
 #ARM
 boot-arm: ${BOOT_FILES}
 
 arm-files: ${ARM_FILES}
 
 arm:
-	make clean kernel-arm iso run BOOT_FILES=boot/boot_pi.o CC="clang -DARM"
+	make clean kernel-arm rpi-image BOOT_FILES=boot/boot_pi.o CC="${ARMTK}-gcc -DARM" ASM=${ARMTK}-as LD=${ARMTK}-ld LFLAGS="" LD_SCRIPT=src/arm/rpi.ld
 
 kernel-arm: boot-arm low lib arm-files ${KERNEL_FILES}
 	@echo "Linking Kernel"
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${ARM_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES}
+
+rpi-image: kernel.elf
+	$(ARMTK)-objcopy kernel.elf -O binary kernel.img
 #Generic
-
-kernel: boot low lib drivers x86f ${KERNEL_FILES}
-	@echo "Linking Kernel"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${X86_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES} ${DRIVER_FILES}
-
 
 %.o: %.s
 	@echo "Making: " $@
@@ -69,11 +72,11 @@ kernel: boot low lib drivers x86f ${KERNEL_FILES}
 
 %.o: %.c
 	@echo "Making: " $@
-	@${CC} -c ${C_OPTIONS} ${CLANG_OPTIONS} ${CROSS_CLANG} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
+	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 %.o: %.cpp
 	@echo "Making: " $@
-	@${CPP} -c ${CPP_OPTIONS} ${CLANG_OPTIONS} ${CROSS_CLANG} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
+	@${CPP} -c ${CPP_OPTIONS}  ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
 	-rm -rf *.o boot/*.o src/*.o src/low/*.o src/lib/*.o src/drivers/*.o src/x86/*.o

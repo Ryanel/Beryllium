@@ -25,6 +25,7 @@ void timer_switchDevice(uint32_t device_id)
 
 void timer_recieveTick(uint32_t device_id)
 {
+	#ifdef X86
 	if(device_id==device)
 	{
 		timer_hi++;
@@ -35,6 +36,7 @@ void timer_recieveTick(uint32_t device_id)
 		}
 		cyclic_tasks(timer_hi);
 	}
+	#endif
 }
 
 uint32_t timer_getHi()
@@ -69,8 +71,9 @@ uint32_t timer_getLow()
 {
 	return timer_low;
 }
-
+#ifdef X86
 int timer_getUptime()
 {
 	return timer_hi/(device_resoulution*1000);
 }
+#endif
