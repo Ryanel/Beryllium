@@ -1,6 +1,6 @@
 #include <terminal.h>
 #include <types.h>
-#include <drivers/low_textmode.h>
+#include <video.h>
 
 int term_x;
 int term_y;
@@ -17,7 +17,7 @@ void scroll()
 	{
 		if(term_y >= 24)
 		{
-			textmode_scroll(0,23);
+			video_scroll(0,23);
 
 			term_y = 23;
 		}
@@ -26,7 +26,7 @@ void scroll()
 	{
 		if(term_y >= 25)
 		{
-			textmode_scroll(0,24);
+			video_scroll(0,24);
 
 			term_y = 24;
 		}
@@ -38,7 +38,7 @@ void terminal_clear_statusbar()
 	int i = 0;
 	while (i!=80)
 	{
-		textmode_write_color(i,24,' ',STATUS_BAR_ATTRIBUTE);
+		video_printcoloredchar(i,24,' ',STATUS_BAR_ATTRIBUTE);
 		i++;
 	}
 	
@@ -51,7 +51,7 @@ void terminal_set_statusbar(const char *c)
 	terminal_clear_statusbar();
 	while (c[i])
 	{
-		textmode_write_color(i,24,c[i],STATUS_BAR_ATTRIBUTE);
+		video_printcoloredchar(i,24,c[i],STATUS_BAR_ATTRIBUTE);
 		i++;
 	}
 	
@@ -82,7 +82,7 @@ void printc(unsigned char c)
 	}
 	else if(c >= ' ') //Anything else
 	{
-		textmode_write(term_x,term_y,c);
+		video_printchar(term_x,term_y,c);
 		term_x++;
 	}
 
@@ -95,7 +95,7 @@ void printc(unsigned char c)
 	// Scroll the screen if needed.
 	scroll();
 	// Move the hardware cursor.
-	textmode_setcursor(term_x,term_y);
+	video_setcursor(term_x,term_y);
 }
 
 ///
@@ -114,7 +114,7 @@ void terminal_clear()
 	int i=0;
 	while(i!=23)
 	{
-		textmode_scroll(0,23);
+		video_scroll(0,23);
 		i++;
 	}
 	term_x = 0;
@@ -128,7 +128,7 @@ void terminal_init()
 {
 	term_x=0;
 	term_y=0;
-	textmode_setcursor(0,0);
+	video_setcursor(0,0);
 	terminal_clear();
 	terminal_set_statusbar("Terminal");
 }

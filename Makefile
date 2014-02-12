@@ -1,7 +1,6 @@
 COMPILE_OPTIONS := -D DEBUG
 
 BOOT_FILES := boot/boot.o
-BOOT_PI_FILES := boot/boot_pi.o
 
 KERNEL_FILES := $(patsubst %.c,%.o,$(wildcard src/*.c))
 
@@ -13,7 +12,9 @@ DRIVER_FILES := $(patsubst %.c,%.o,$(wildcard src/drivers/*.c))
 
 X86_FILES := $(patsubst %.c,%.o,$(wildcard src/x86/*.c)) $(patsubst %.s,%.o,$(wildcard src/x86/*.s))
 
-CC:=clang
+ARM_FILES := $(patsubst %.c,%.o,$(wildcard src/arm/*.c)) $(patsubst %.s,%.o,$(wildcard src/arm/*.s))
+
+CC:=clang -DX86
 CPP:=clang++
 C_OPTIONS := -std=gnu99 -ffreestanding -O2 -Wall 
 CPP_OPTIONS := 
@@ -33,7 +34,7 @@ GENISO := xorriso -as mkisofs
 .PHONY: iso clean
 
 all:clean boot kernel drivers iso
-
+#=== x86 ====
 boot: ${BOOT_FILES}
 
 low: ${LOW_FILES}
@@ -43,9 +44,25 @@ x86f: ${X86_FILES}
 lib: ${LIB_FILES}
 
 drivers: ${DRIVER_FILES}
+
+#ARM
+boot-arm: ${BOOT_FILES}
+
+arm-files: ${ARM_FILES}
+
+arm:
+	make clean kernel-arm iso run BOOT_FILES=boot/boot_pi.o CC="clang -DARM"
+
+kernel-arm: boot-arm low lib arm-files ${KERNEL_FILES}
+	@echo "Linking Kernel"
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${ARM_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES}
+#Generic
+
 kernel: boot low lib drivers x86f ${KERNEL_FILES}
 	@echo "Linking Kernel"
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${X86_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES} ${DRIVER_FILES}
+
+
 %.o: %.s
 	@echo "Making: " $@
 	@${ASM} -o $@ $<
