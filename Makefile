@@ -16,7 +16,7 @@ ARM_FILES := $(patsubst %.c,%.o,$(wildcard src/arm/*.c)) $(patsubst %.s,%.o,$(wi
 
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS := -std=gnu99 -ffreestanding -O2 -Wall 
+C_OPTIONS := -std=gnu99 -ffreestanding -Wall 
 CPP_OPTIONS := 
 CLANG_OPTIONS := 
 ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi
