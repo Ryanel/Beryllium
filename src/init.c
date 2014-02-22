@@ -19,6 +19,7 @@ void kernel_init_x86(int magic,struct multiboot *mboot)
 	asm("cli");
 
 	terminal_init();
+	klog(LOG_INFO,"#","Beryllium initialising...\n");
 	#ifdef ENABLE_SERIAL
 	serial_init();
 	#endif
@@ -39,7 +40,6 @@ void kernel_init_x86(int magic,struct multiboot *mboot)
 	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.2 (git)");
 
 	video_graphics_init();
-
 	asm("hlt");
 }
 #endif

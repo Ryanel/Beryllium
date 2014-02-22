@@ -80,6 +80,8 @@ rpi-image: kernel.elf
 
 clean: prep-dist
 	-rm -rf *.o boot/*.o src/*.o src/low/*.o src/lib/*.o src/drivers/*.o src/x86/*.o
+	-rm -rf util/*.o util/*.bin
+	-rm -rf *.iso
 	-rm -rf kernel.elf kernel.img
 prep-dist:
 	-rm -rf *~ boot/*~ src/*~
@@ -89,6 +91,20 @@ run:
 
 iso:
 	@echo "Creating ISO..."
-	cp kernel.elf iso/kernel.elf
+	@cp kernel.elf iso/kernel.elf
 	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o cdrom.iso iso
 
+util: util-iboot-iso
+	@echo "Built Utilities"
+
+util/iboot.bin:
+	@nasm util/iboot-iso.s -f bin -o util/iboot.bin
+
+util-iboot: util/iboot.bin
+	@cp util/iboot.bin iso/boot/iboot.bin
+	@echo "Integrated Bootloader Built"
+
+util-iboot-iso: util-iboot
+	@echo "Creating iboot ISO..."
+	@cp kernel.elf iso/kernel.elf
+	@${GENISO} -R -J -c boot/bootcat -b boot/iboot.bin -no-emul-boot -boot-load-size 4 iso -o iboot.iso
