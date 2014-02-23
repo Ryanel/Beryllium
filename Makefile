@@ -1,4 +1,4 @@
-COMPILE_OPTIONS := -D DEBUG
+COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL
 
 BOOT_FILES := boot/boot.o
 
@@ -107,4 +107,4 @@ util-iboot: util/iboot.bin
 util-iboot-iso: util-iboot
 	@echo "Creating iboot ISO..."
 	@cp kernel.elf iso/kernel.elf
-	@${GENISO} -R -J -c boot/bootcat -b boot/iboot.bin -no-emul-boot -boot-load-size 4 iso -o iboot.iso
+	@${GENISO} -R -J -c boot/bootcat -b boot/iboot.bin -no-emul-boot -boot-info-table -boot-load-size 4 iso -o iboot.iso
