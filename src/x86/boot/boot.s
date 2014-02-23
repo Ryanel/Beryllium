@@ -35,14 +35,14 @@ mboot:
   dd  start                     ; Kernel entry point (initial EIP).
 section .text
 [GLOBAL start]
-[EXTERN kernel_init]              
+[EXTERN kernel_x86_binding_init]
 
 start:
   mov ebp, 0
   push ebx                   ; Load multiboot header location
   push eax                   ; Magic #
   cli                         ; Disable interrupts.
-  call kernel_init
+  call kernel_x86_binding_init
   pop eax                     ; Pop for consistanty?
   pop ebx
   jmp $                       ; Enter an infinite loop, to stop the processor
