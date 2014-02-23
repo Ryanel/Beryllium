@@ -143,5 +143,5 @@ void terminal_init()
 	#endif
 	video_setcursor(term_x,term_y);
 	//terminal_clear();
-	terminal_set_statusbar("Terminal");
+	terminal_set_statusbar("Beryllium Kernel... (loading)");
 }

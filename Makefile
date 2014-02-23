@@ -1,18 +1,23 @@
+ARCH := x86
+ARCH_DIRECTORY := src/${ARCH}
 COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL
 
-BOOT_FILES := boot/boot.o
+BOOT_FILES := $(patsubst %.c,%.o,$(wildcard src/boot/*.c))
+ARCH_BOOT_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.s)) $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.c))
+
+ARCH_LOW_FILES := $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/low/*.c)) $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}/low/*.s))
+
+LIB_FILES := $(patsubst %.c,%.o,$(wildcard src/lib/*.c))
+ARCH_LIB_FILES := $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/lib/*.c))
+
+DRIVER_FILES := $(patsubst %.c,%.o,$(wildcard src/drivers/*.c))
+ARCH_DRIVER_FILES  := $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/drivers/*.c))
 
 KERNEL_FILES := $(patsubst %.c,%.o,$(wildcard src/*.c))
 
-LOW_FILES := $(patsubst %.c,%.o,$(wildcard src/low/*.c))
+ARCH_FILES := $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/*.c))
+SRC_FILES := ${BOOT_FILES} ${KERNEL_FILES} ${DRIVER_FILES} ${LIB_FILES} ${ARCH_FILES} ${ARCH_BOOT_FILES} ${ARCH_LOW_FILES} ${ARCH_LIB_FILES} ${ARCH_DRIVER_FILES}
 
-LIB_FILES := $(patsubst %.c,%.o,$(wildcard src/lib/*.c))
-
-DRIVER_FILES := $(patsubst %.c,%.o,$(wildcard src/drivers/*.c))
-
-X86_FILES := $(patsubst %.c,%.o,$(wildcard src/x86/*.c)) $(patsubst %.s,%.o,$(wildcard src/x86/*.s))
-
-ARM_FILES := $(patsubst %.c,%.o,$(wildcard src/arm/*.c)) $(patsubst %.s,%.o,$(wildcard src/arm/*.s))
 
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
@@ -21,49 +26,37 @@ CPP_OPTIONS :=
 CLANG_OPTIONS := 
 ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi
 
-LD := ./toolkit/binutils/bin/i586-elf-ld
 LFLAGS := -m elf_i386
-LD_SCRIPT := src/link.ld
+LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
 INCLUDE_DIR := "./src/includes"
 
-ARCH := x86
+
 CROSS_CLANG := -target i586-elf
 ASM := nasm -f elf 
 
 GENISO := xorriso -as mkisofs
-
+	
 .PHONY: iso clean
 
-all:clean boot kernel drivers iso
-#=== x86 ====
+all:clean kernel iso
+
+arch-boot: ${ARCH_BOOT_FILES}
 boot: ${BOOT_FILES}
 
-low: ${LOW_FILES}
-
-x86f: ${X86_FILES}
+arch-low: ${ARCH_LOW_FILES}
 
 lib: ${LIB_FILES}
+arch-lib: ${ARCH_LIB_FILES}
+
+arch-files: ${ARCH_FILES}
 
 drivers: ${DRIVER_FILES}
+arch-drivers: ${ARCH_DRIVER_FILES}
 
-kernel: boot low lib drivers x86f ${KERNEL_FILES}
+kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers ${KERNEL_FILES}
 	@echo "Linking Kernel"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${X86_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES} ${DRIVER_FILES}
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${SRC_FILES}
 
-#ARM
-boot-arm: ${BOOT_FILES}
-
-arm-files: ${ARM_FILES}
-
-arm:
-	make clean kernel-arm rpi-image BOOT_FILES=boot/boot_pi.o CC="${ARMTK}-gcc -DARM" ASM=${ARMTK}-as LD=${ARMTK}-ld LFLAGS="" LD_SCRIPT=src/arm/rpi.ld
-
-kernel-arm: boot-arm low lib arm-files ${KERNEL_FILES}
-	@echo "Linking Kernel"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${BOOT_FILES} ${ARM_FILES} ${LOW_FILES} ${LIB_FILES} ${KERNEL_FILES}
-
-rpi-image: kernel.elf
-	$(ARMTK)-objcopy kernel.elf -O binary kernel.img
 #Generic
 
 %.o: %.s
@@ -79,12 +72,14 @@ rpi-image: kernel.elf
 	@${CPP} -c ${CPP_OPTIONS}  ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
-	-rm -rf *.o boot/*.o src/*.o src/low/*.o src/lib/*.o src/drivers/*.o src/x86/*.o
+	-rm -rf src/*.o src/lib/*.o src/drivers/*.o ${ARCH_DIRECTORY}/*.o ${ARCH_DIRECTORY}/boot/*.o ${ARCH_DIRECTORY}/drivers/*.o ${ARCH_DIRECTORY}/lib/*.o ${ARCH_DIRECTORY}/low/*.o
 	-rm -rf util/*.o util/*.bin
 	-rm -rf *.iso
 	-rm -rf kernel.elf kernel.img
+
 prep-dist:
 	-rm -rf *~ boot/*~ src/*~
+
 run:
 	@echo "Remember! Use make run to test the kernel! Implement it into a OS if you wish to test other fuctions!"
 	qemu-system-i386 -serial stdio -cdrom cdrom.iso

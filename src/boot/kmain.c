@@ -5,7 +5,7 @@
 #include <version.h>
 void kmain()
 {
-	klog(LOG_INFO,"#","Beryllium initialising...\n");
+	klog(LOG_INFO,"KERN","Beryllium initialising...\n");
 #ifdef DEBUG
 	klog(LOG_WARN,"KERN","This kernel is a debug kernel! Some things might not work properly!\n");
 #endif
