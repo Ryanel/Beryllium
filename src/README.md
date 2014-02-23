@@ -47,4 +47,4 @@ Contains configuration and source files for the ARM architecture. Follows the fo
 
 src/arm/[platform]
 ---------
-Contains configuration and source files tailored for that specific platform, such as the Raspberry Pi.
+Contains configuration and source files tailored for that specific platform, such as the Raspberry Pi. Inherits and mutes everything in src/arm/
