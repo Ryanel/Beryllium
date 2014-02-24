@@ -31,10 +31,7 @@ void timer_handler(struct regs *r)
 void pit_install()
 {
 	data->type 			= IO_TYPE_TIMER;
-	data->isDangerous	= 0;
 	data->isQueueable	= 0;
-	data->from 			= IO_FROM_TIMER;
-	data->to 			= IO_TO_IO;
 	data->isHandled 	= 0;
 	data->data			= 0x0;
 	register_interrupt_handler(IRQ0,&timer_handler);

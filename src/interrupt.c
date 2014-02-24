@@ -8,13 +8,6 @@ void io_interrupt_recieve(interrupt_message_t *data)
 	{
 		return;
 	}
-	if(data->isDangerous)
-	{
-		klog(LOG_SEVERE,"IO","Encountered dangerous interrupt!\n");
-		io_interrupt_handle_dangerous(data);
-		return;
-
-	}
 	if(data->isQueueable)
 	{
 		//TODO:Add to queue and return
@@ -31,27 +24,22 @@ void io_interrupt_docyclic()
 
 void io_interrupt_handle(interrupt_message_t *data)
 {
-	if(data->isDangerous)
-	{
-		return;
-	}
 	
 	switch(data->type)
 	{
 		case IO_TYPE_TIMER:
 			timer_recieveTick(data->data);
+			io_interrupt_docyclic();
+			break;
+		case IO_TYPE_IO:
+			break;
+		case IO_TYPE_EXCEPTION:
+			klog(LOG_SEVERE,"IO","Exception type 0x%X!\n",data->data);
+			asm("hlt");
 			break;
 		default:
-			klog(LOG_DEBUG,"IO:Unknown","type: %d; danger: %d; queue: %d; from: %d; to: %d; data: 0x%X; handled: %d\n",data->type,data->isDangerous,data->isQueueable,data->from,data->to,data->data,data->isHandled);
+			klog(LOG_DEBUG,"IO:Unknown","type: %d; danger: %d; queue: %d; data: 0x%X; handled: %d\n",data->type,data->isDangerous,data->isQueueable,data->data,data->isHandled);
 	}
 	data->isHandled = 1;
 
-}
-
-void io_interrupt_handle_dangerous(interrupt_message_t *data)
-{
-	if(!data->isDangerous)
-	{
-		return;
-	}
 }
