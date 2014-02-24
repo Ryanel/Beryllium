@@ -38,7 +38,7 @@ void io_interrupt_handle(interrupt_message_t *data)
 			asm("hlt");
 			break;
 		default:
-			klog(LOG_DEBUG,"IO:Unknown","type: %d; danger: %d; queue: %d; data: 0x%X; handled: %d\n",data->type,data->isDangerous,data->isQueueable,data->data,data->isHandled);
+			klog(LOG_DEBUG,"IO:Unknown","type: %d; queue: %d; data: 0x%X; handled: %d\n",data->type,data->isQueueable,data->data,data->isHandled);
 	}
 	data->isHandled = 1;
 
