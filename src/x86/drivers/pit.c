@@ -24,7 +24,7 @@ void timer_handler(struct regs *r)
 {
 	if(r->int_no) {} // Used to disable unused argument warning
 	timer_ticks++;
-	//timer_recieveTick(0);
+	data->isHandled = 0;
 	io_interrupt_recieve(data);
 }
 
@@ -36,7 +36,7 @@ void pit_install()
 	data->from 			= IO_FROM_TIMER;
 	data->to 			= IO_TO_IO;
 	data->isHandled 	= 0;
-	data->data			= 0xFA;
+	data->data			= 0x0;
 	register_interrupt_handler(IRQ0,&timer_handler);
 	pit_phase(1000);
 }

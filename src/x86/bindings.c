@@ -5,6 +5,8 @@
 #include <terminal.h>
 #include <x86/x86.h>
 #include <kmain.h>
+#include <drivers/serial.h>
+#include <boot/multiboot.h>
 #include <log.h>
 void kernel_x86_binding_init(int magic,struct multiboot *mboot)
 {

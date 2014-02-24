@@ -23,4 +23,7 @@ typedef struct {
 #define IO_FROM_IO IO_TO_IO
 
 void io_interrupt_recieve(interrupt_message_t *data);
+void io_interrupt_docyclic();
+void io_interrupt_handle(interrupt_message_t *data);
+void io_interrupt_handle_dangerous(interrupt_message_t *data);
 #endif
