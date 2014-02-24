@@ -27,17 +27,13 @@ src/lib/
 ---------
 Contains any generic components that aren't geared towards one thing.
 
-src/low/ [Depreciated, will be removing in next release]
----------
-Contains low level components. Depreciated
-
 src/x86/
 ---------
 Contains configuration and source files for the x86 architecture. Follows the formatting of /src.
 ### Warning
 This is compilied for i586-elf! This means that the resulting binary is not for x86_64. See x86_64.
 
-src/x86_64/
+src/x86/x64/
 ---------
 Contains configuration and source files for the x86_64 architecture. Mainly command switches and small bits of custom code for 64-bit support.
 

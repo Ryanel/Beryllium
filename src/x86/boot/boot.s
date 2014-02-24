@@ -33,12 +33,19 @@ mboot:
   dd  bss                       ; End of kernel '.data' section.
   dd  end                       ; End of kernel.
   dd  start                     ; Kernel entry point (initial EIP).
+section .bs_stack
+align 4
+stack_bottom:
+times 16384 db 0
+stack_top:
+
 section .text
 [GLOBAL start]
 [EXTERN kernel_x86_binding_init]
 
 start:
-  mov ebp, 0
+  ;mov ebp, 0
+  mov esp, stack_top
   push ebx                   ; Load multiboot header location
   push eax                   ; Magic #
   cli                         ; Disable interrupts.
