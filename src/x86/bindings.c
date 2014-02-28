@@ -11,21 +11,21 @@
 void kernel_x86_binding_init(int magic,struct multiboot *mboot)
 {
 	#ifdef IS_RELEASE
-    klog_setmask(LOG_INFO);
+	klog_setmask(LOG_INFO);
 	#endif
 
-    terminal_init();
+	terminal_init();
 
 	#ifdef ENABLE_SERIAL
 	serial_init();
 	#endif
-    klog(LOG_INFO,"x86","Loading x86 components...\n");
-    if(magic!=0x2BADB002)
+	klog(LOG_INFO,"x86","Loading x86 components...\n");
+	if(magic!=0x2BADB002)
 	{
 		printf("Multiboot Magic number : 0x%X! It should equal 0x2BADB002. Halting...\n",magic);
-        return;
+		return;
 	}
-    init_x86();
-    klog(LOG_INFO,"x86","Done\n");
-    kmain();
+	init_x86();
+	klog(LOG_INFO,"x86","Done\n");
+	kmain();
 }
