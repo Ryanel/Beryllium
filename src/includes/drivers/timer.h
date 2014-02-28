@@ -8,4 +8,5 @@ uint32_t timer_getLow();
 uint32_t timer_getDevice();
 const char* timer_getDeviceString(uint32_t device);
 uint32_t timer_getDeviceRes();
+uint32_t timer_getUptime();
 #endif

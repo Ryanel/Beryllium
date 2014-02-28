@@ -1,6 +1,6 @@
 ARCH := x86
 ARCH_DIRECTORY := src/${ARCH}
-COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL
+COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D KLOG_TITLE_TIME
 
 BOOT_FILES := $(patsubst %.c,%.o,$(wildcard src/boot/*.c))
 ARCH_BOOT_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.s)) $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.c))
@@ -21,7 +21,7 @@ SRC_FILES := ${BOOT_FILES} ${KERNEL_FILES} ${DRIVER_FILES} ${LIB_FILES} ${ARCH_F
 
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS := -std=gnu99 -ffreestanding -Wall 
+C_OPTIONS := -std=gnu99 -ffreestanding -Wall  -g
 CPP_OPTIONS := 
 CLANG_OPTIONS := 
 ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi

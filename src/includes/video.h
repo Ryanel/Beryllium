@@ -16,4 +16,6 @@ void video_setcursor(int x,int y);
 void video_setattributetext(unsigned char back, unsigned char fore);
 
 void video_resetattributetext();
+
+int video_graphics_capable();
 #endif

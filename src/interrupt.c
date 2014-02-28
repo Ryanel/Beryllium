@@ -2,8 +2,17 @@
 #include <types.h>
 #include <interrupt.h>
 #include <drivers/timer.h>
+
+int interrupt_sys_working = 0;
+
+int isInterruptWorking()
+{
+	return interrupt_sys_working;
+}
+
 void io_interrupt_recieve(interrupt_message_t *data)
 {
+	interrupt_sys_working = 1;
 	if(data->isHandled)
 	{
 		return;

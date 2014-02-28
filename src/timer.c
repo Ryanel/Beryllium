@@ -70,7 +70,7 @@ uint32_t timer_getLow()
 	return timer_low;
 }
 #ifdef X86
-int timer_getUptime()
+uint32_t timer_getUptime()
 {
 	return timer_hi/(device_resoulution*1000);
 }

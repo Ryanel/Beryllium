@@ -31,6 +31,11 @@ int video_graphics_init() //returns 0 if failed, 1 if sucessfull
 	return 0;
 }
 
+int video_graphics_capable()
+{
+	return !bga_isavalable();
+}
+
 void video_printchar(int x,int y, unsigned char c)
 {
 	#ifdef X86

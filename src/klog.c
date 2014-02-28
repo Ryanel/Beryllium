@@ -2,12 +2,11 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <video.h>
-
+#include <drivers/timer.h>
 int klog_mask = LOG_DEBUG;
 static int background = 0;
 void klog(int mode, const char *title, const char *fmt, ...)
 {
-	#ifdef X86
 	if( mode <= klog_mask)
 	{
 		switch (mode)
@@ -33,7 +32,11 @@ void klog(int mode, const char *title, const char *fmt, ...)
 			default:
 				video_setattributetext(background,0x7);
 		}
-		printf("[%s]:", title);
+		#ifdef KLOG_TITLE_TIME
+		printf("[%08d]:",timer_getHi());
+		#else
+		printf("[%s]:",title);
+		#endif
 		va_list args;
 		int rv;
 		va_start(args, fmt);
@@ -41,7 +44,6 @@ void klog(int mode, const char *title, const char *fmt, ...)
 		va_end(args);
 		video_resetattributetext();
 	}
-	#endif
 }
 
 void klog_setmask(int mode)
