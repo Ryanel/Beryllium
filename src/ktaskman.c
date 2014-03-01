@@ -68,8 +68,8 @@ int cyclic_tasks(int tick)
 				case 'q':
 					printf("Halting...\n");
 					asm("cli");
-					printf("This is our final goodbye; there is no way for the kernel to revive itself. You killed it. \n");
-					klog(LOG_PANIC,"KERN","Status: Interrupts disabled, kernel halted.");
+					printf("This is our final goodbye; there is no way for the kernel to revive itself. You killed it.\n");
+					klog(LOG_PANIC,"KERN","Status: Interrupts disabled, kernel halted.\n");
 					asm("hlt");
 					printf("Kernel was brought back up. Continuing...\n");
 					break;
