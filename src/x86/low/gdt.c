@@ -9,7 +9,7 @@
 struct gdt_entry gdt[3];
 struct gdt_ptr gp;
 
-void gdt_set_gate(int num, unsigned long base, unsigned long limit, unsigned char access, unsigned char gran)
+void gdt_set_gate(volatile int num,volatile unsigned long base,volatile unsigned long limit,volatile unsigned char access,volatile unsigned char gran)
 {
 	gdt[num].base_low = (base & 0xFFFF);
 	gdt[num].base_middle = (base >> 16) & 0xFF;

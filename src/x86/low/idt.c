@@ -5,7 +5,7 @@
 #include <log.h>
 #include <x86/x86.h>
 struct idt_entry idt[256];
-struct idt_ptr idtp;
+volatile struct idt_ptr idtp;
 
 void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags)
 {
@@ -26,7 +26,7 @@ int idt_setup()
 
     idt_load();
 
-	klog(LOG_DEBUG,"CPU","IDT Setup\n");
+    klog(LOG_DEBUG,"CPU","IDT Setup\n");
     return 0;
 }
 
