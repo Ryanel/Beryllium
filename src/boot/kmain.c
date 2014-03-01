@@ -4,17 +4,9 @@
 #include <log.h>
 #include <drivers/timer.h>
 #include <version.h>
-
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
-
-void enter_user_mode()
-{
-	#ifdef X86
-	x86_switch_to_usermode();
-	#endif
-}
 
 void kmain()
 {
@@ -34,14 +26,8 @@ void kmain()
 	klog(LOG_INFO,"KERN","Finished basic initialisation\n");
 	video_graphics_init();
 
-	/* DISABLED USER MODE.
-	klog(LOG_DEBUG,"KERN","Entering user mode...\n");
-
-	enter_user_mode();
-	*/
 	while(1)
 	{
 
 	}
-	//halt();
 }

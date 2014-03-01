@@ -2,6 +2,7 @@
 #include <error.h>
 #include <video.h>
 #include <stdio.h>
+#include <x86/isr.h>
 #define PANIC_MSG_BAR "   ==================================PANIC===================================   "
 void panic(const char* reason)
 {
@@ -12,15 +13,29 @@ void panic(const char* reason)
 	#endif
 	video_resetattributetext();
 	klog(LOG_PANIC,"PANIC",reason);
-	klog(LOG_PANIC,"PANIC","Debug output:\n");
-	klog(LOG_PANIC,"PANIC","Debug register output unimplemented\n");
 	halt();
 }
-
 void halt()
 {
-	klog(LOG_INFO,"KERN","Halting...\n");
+	klog(LOG_INFO,"KERN","Halting!\n");
+
 	#ifdef X86
+	asm("cli");
+	asm("hlt");
+	#endif
+}
+void halt_regs(registers_t* regs)
+{
+	klog(LOG_INFO,"KERN","Halting!\n");
+
+	#ifdef X86
+	asm("cli");
+	printf("Registers:\n");
+	printf("| eax 0x%X; ebx 0x%X; ecx 0x%X; edx 0x%X\n",regs->eax,regs->ebx,regs->ecx,regs->edx);
+	printf("| esp 0x%X; ebp 0x%X; err 0x%X; efl 0x%X\n",regs->esp,regs->ebp,regs->err_code,regs->eflags);
+	printf("| usp 0x%X; eip 0x%X; esi 0x%X; edi 0x%X\n",regs->useresp,regs->ebp,regs->esi,regs->edi);
+	printf("| cs 0x%X; ds 0x%X; es 0x%X; fs 0x%X\n",regs->cs,regs->ds,regs->es,regs->fs);
+	printf("| gs  0x%X\n",regs->gs);
 	asm("hlt");
 	#endif
 }

@@ -136,7 +136,7 @@ extern void fault_handler(struct regs *r)
             paging_fault(r);
         }
         klog(LOG_PANIC,"SYS","Encountered interrupt %d (%s)!\n",r->int_no,exception_messages[r->int_no]);
-        panic("Encountered unhandled interrupt\n");
+        halt_regs(r);
 		asm("hlt");
     }
     else
