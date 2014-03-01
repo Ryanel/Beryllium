@@ -21,7 +21,7 @@ SRC_FILES := ${BOOT_FILES} ${KERNEL_FILES} ${DRIVER_FILES} ${LIB_FILES} ${ARCH_F
 
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS := -std=gnu99 -ffreestanding -Wall  -g
+C_OPTIONS :=-ffreestanding -Wall -g
 CPP_OPTIONS := 
 CLANG_OPTIONS := 
 ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi
