@@ -8,7 +8,7 @@
 #include <drivers/serial.h>
 #include <boot/multiboot.h>
 #include <log.h>
-void kernel_x86_binding_init(int magic,struct multiboot *mboot)
+void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot)
 {
 	#ifdef IS_RELEASE
 	klog_setmask(LOG_INFO);

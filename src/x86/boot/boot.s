@@ -45,7 +45,7 @@ section .text
 
 start:
 	mov esp, stack_top
-	mov ebp, 0
+	;mov ebp, 0
 	push ebx
 	push eax
 	cli
