@@ -4,8 +4,8 @@
 #ifdef X86
 #include <x86/ports.h>
 #endif
-int term_x;
-int term_y;
+volatile uint32_t term_x;
+volatile uint32_t term_y;
 
 ///
 ///Determines if the screen needs to be scrolled, and scrolls.

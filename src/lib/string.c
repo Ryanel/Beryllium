@@ -51,3 +51,25 @@ void *memset(void *dest,int val,size_t n) {
 	}
   return dest;
 }
+
+void memmove(void *dest, const void *src, size_t n)
+{
+	size_t i;
+	unsigned char *a = dest;
+	const unsigned char *b = src;
+
+	if(src < dest)
+	{
+		for (i = n; i > 0; --i)
+		{
+			a[i-1] = b[i-1];
+		}
+	}
+	else
+	{
+		for (i = 0; i < n; ++i)
+		{
+			a[i] = b[i];
+		}
+	}
+}
