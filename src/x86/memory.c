@@ -64,6 +64,23 @@ void* memory_alloc_pages(int pages)
 	mutex_unlock(mmac_lock);
 	return ptr;
 }
+void memory_dealloc_pages(int pages)
+{
+	if(pages <= 0)
+	{
+		return;
+	}
+
+	mutex_lock(mmac_lock);
+	int i = pages;
+	int blk = mem_lastpage;
+	while(i != 0)
+	{
+		pa_free_frame(paging_get_page(blk--,1, kernel_directory));
+		i--;
+	}
+	mutex_unlock(mmac_lock);
+}
 
 void memory_init()
 {
@@ -71,6 +88,27 @@ void memory_init()
 	mutex_lock(mmac_lock);
 	klog(LOG_INFO,"MEM","Initialising and populating memory...\n");
 	mem_lastpage = pa_first_frame() * 0x1000;
-	printf("mem_lastpage = 0x%X (%d)\n",mem_lastpage,mem_lastpage);
+	printf("Marked 0x%X (%d) frames as dirty\n",mem_lastpage,mem_lastpage);
 	mutex_unlock(mmac_lock);
+	klog(LOG_INFO,"MEM","Done!\n");
+}
+
+void *sbrk(size_t amount)
+{
+	if(amount == 0)
+	{
+		return (void*)((unsigned int)mem_lastpage);
+	}
+	uint32_t actual_amount = (amount/ 0x1000) +1;
+	printf("sbrk: allocating %d pages to cover 0x%X bytes\n",actual_amount,amount);
+	void *tmp = memory_alloc_pages(actual_amount);
+	return tmp;
+}
+int brk(void *end_data_segment)
+{
+	return 0;
+}
+void memory_parse_grub()
+{
+
 }
