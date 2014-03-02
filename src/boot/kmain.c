@@ -17,14 +17,15 @@ void kmain()
 	#endif
 	
 
-	klog(LOG_DEBUG,"IO","Verifiying timer / interrupts (waiting 2000 ticks)\n");
+	klog(LOG_DEBUG,"IO","Verifiying timer / interrupts (waiting 10 ticks)\n");
 	int timer_hi_orig = timer_getHi();
-	while((timer_getHi() - timer_hi_orig) < 2000)
+	while((timer_getHi() - timer_hi_orig) < 10)
 	{
 	}
 	
 	klog(LOG_INFO,"KERN","Finished basic initialisation\n");
 	video_graphics_init();
+	memory_init();
 
 	while(1)
 	{

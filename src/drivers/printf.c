@@ -15,7 +15,7 @@
 /* largest number handled is 2^32-1, lowest radix handled is 8.
 2^32-1 in base 8 has 11 digits (add 5 for trailing NUL and for slop) */
 #define	PR_BUFLEN	16
-#define NULL 0
+//#define NULL 0
 
 #define TERM_WRITETOSERIAL 1
 

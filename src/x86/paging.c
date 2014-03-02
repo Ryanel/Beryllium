@@ -5,6 +5,7 @@
 #include <x86/placement_malloc.h>
 #include <string.h>
 #include <x86/irq.h>
+#include <x86/memory.h>
 extern uint32_t end; //End of kernel
 extern uint32_t placement_address;
 uint32_t eok_aligned; //End of kernel page aligned.
@@ -60,11 +61,12 @@ void paging_init()
 	uint32_t phys;
 	kernel_directory = (page_directory_t *)placement_kmalloc_ap(sizeof(page_directory_t),1,&phys);
 	memset(kernel_directory, 0, sizeof(page_directory_t));
-	for (uint32_t i = 0; i < placement_address + 0x2000; i += 0x1000) {
+	uint32_t i = 0;
+	for (i=0; i < placement_address + 0x2000; i += 0x1000) {
 		pa_alloc_frame(paging_get_page(i, 1, kernel_directory), 0, 0);
 	}
+	printf("Allocated 0x%X frames...\n",i);
 	kernel_directory->physicalAddr = (uint32_t)kernel_directory->tablesPhysical;
 	register_interrupt_handler(14,&paging_fault);
 	paging_switch_directory(kernel_directory);
-	
 }
