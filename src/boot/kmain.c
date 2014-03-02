@@ -4,6 +4,7 @@
 #include <log.h>
 #include <drivers/timer.h>
 #include <version.h>
+#include <stdlib.h>
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -26,7 +27,9 @@ void kmain()
 	klog(LOG_INFO,"KERN","Finished basic initialisation\n");
 	video_graphics_init();
 	memory_init();
-
+	printf("malloc:0x%X\n",malloc(10));
+	printf("malloc:0x%X\n",malloc(30));
+	printf("malloc:0x%X\n",malloc(30));
 	while(1)
 	{
 
