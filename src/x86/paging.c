@@ -4,6 +4,7 @@
 #include <x86/page_allocator.h>
 #include <x86/placement_malloc.h>
 #include <string.h>
+#include <x86/irq.h>
 extern uint32_t end; //End of kernel
 extern uint32_t placement_address;
 uint32_t eok_aligned; //End of kernel page aligned.

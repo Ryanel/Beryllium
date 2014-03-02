@@ -5,18 +5,21 @@ Page Allocator - Simple page allocator with bitsets.
 #include <types.h>
 #include <x86/placement_malloc.h>
 #include <string.h>
+#include <x86/page_allocator.h>
 #include <x86/paging.h>
 #include <log.h>
 #ifdef DEBUG
 #include <stdio.h>
 #endif
-uint32_t *frame; //Pointer to first frame, first index.
+uint32_t *frame; //Pointer to first frame, first index. The actual bitmap
 uint32_t frame_amount; //How many frames CAN there be?
 uint32_t mem_end = 0x2000000; //Where does memory end. Default's to 16mb of ram
 uint32_t mem_end_aligned; //Where does memory end, page aligned.
 
-#define INDEX_FROM_BIT(b) (b / 0x20)
-#define OFFSET_FROM_BIT(b) (b % 0x20)
+uint32_t pa_frame_amount()
+{
+	return frame_amount;
+}
 
 void pa_set_frame(uint32_t address)
 {
