@@ -35,5 +35,6 @@ uint32_t placement_kmalloc_ap(uint32_t sz, int align, uint32_t *phys)
 	}
 	uint32_t tmp = placement_address;
 	placement_address += sz;
+
 	return tmp;
 }

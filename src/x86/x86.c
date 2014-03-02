@@ -18,7 +18,6 @@ void init_x86()
 	isrs_setup();
 	irq_install();
 	pit_install();
-	asm("sti");
 	paging_init();
-	
+	asm("sti");
 }

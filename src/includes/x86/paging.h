@@ -2,8 +2,6 @@
 #define PAGING_H
 #include <types.h>
 #include <x86/isr.h>
-void paging_init();
-void paging_fault(struct regs *regs);
 
 typedef struct page
 {
@@ -28,4 +26,8 @@ typedef struct page_directory
 	uint32_t physicalAddr;
 } page_directory_t;
 
+void paging_init();
+void paging_fault(struct regs *regs);
+void paging_identity_map(uint32_t start_addr, uint32_t end_addr);
+page_t * paging_get_page(uint32_t address, int make, page_directory_t *dir);
 #endif

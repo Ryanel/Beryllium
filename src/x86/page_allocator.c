@@ -12,32 +12,32 @@ Page Allocator - Simple page allocator with bitsets.
 #endif
 uint32_t *frame; //Pointer to first frame, first index.
 uint32_t frame_amount; //How many frames CAN there be?
-uint32_t mem_end = 0x1000000; //Where does memory end. Default's to 16mb of ram
+uint32_t mem_end = 0x2000000; //Where does memory end. Default's to 16mb of ram
 uint32_t mem_end_aligned; //Where does memory end, page aligned.
 
-#define INDEX_FROM_BIT(a) (a/(8*4))
-#define OFFEST_FROM_BIT(a) (a%(8*4))
+#define INDEX_FROM_BIT(b) (b / 0x20)
+#define OFFSET_FROM_BIT(b) (b % 0x20)
 
 void pa_set_frame(uint32_t address)
 {
 	uint32_t frame_addr = address / 0x1000;
 	uint32_t index = INDEX_FROM_BIT(frame_addr);
-	uint32_t offset = OFFEST_FROM_BIT(frame_addr);
+	uint32_t offset = OFFSET_FROM_BIT(frame_addr);
 	frame[index] |= (0x1 << offset);
 }
 void pa_clear_frame(uint32_t address)
 {
 	uint32_t frame_addr = address / 0x1000;
 	uint32_t index = INDEX_FROM_BIT(frame_addr);
-	uint32_t offset = OFFEST_FROM_BIT(frame_addr);
+	uint32_t offset = OFFSET_FROM_BIT(frame_addr);
 	frame[index] &= ~(0x1 << offset);
 }
 uint32_t pa_test_frame(uint32_t address)
 {
 	uint32_t frame_addr = address / 0x1000;
 	uint32_t index = INDEX_FROM_BIT(frame_addr);
-	uint32_t offset = OFFEST_FROM_BIT(frame_addr);
-	return frame[index] & (0x1 << offset);
+	uint32_t offset = OFFSET_FROM_BIT(frame_addr);
+	return (frame[index] & (0x1 << offset));
 }
 
 uint32_t pa_first_frame()
@@ -49,10 +49,9 @@ uint32_t pa_first_frame()
 		{
 			for(j = 0; j < 32; j++)
 			{
-				uint32_t to_test = 0x1 << j;
-				if(!(frame[i]&to_test))
-				{
-					return i*4*8+j;
+				uint32_t testFrame = 0x1 << j;
+				if (!(frame[i] & testFrame)) {
+					return i * 0x20 + j;
 				}
 			}
 		}
@@ -60,7 +59,7 @@ uint32_t pa_first_frame()
 	return -1;
 }
 
-void pa_frame_alloc(page_t *page, int kernel, int rw)
+void pa_alloc_frame(page_t *page, int kernel, int rw)
 {
 	if(kernel > 1)
 	{
@@ -75,7 +74,8 @@ void pa_frame_alloc(page_t *page, int kernel, int rw)
 	uint32_t index = pa_first_frame();
 	if(index == (uint32_t)-1) //OxFFFFFFFF
 	{
-		printf("Page Allocator: no free frames!\n");
+		klog(LOG_SEVERE,"PANIC","Page Allocator: no free frames!\n");
+		klog(LOG_SEVERE,"PANIC","idex: 0x%X. passed frame: 0x%X.\n",index,page->frame);
 		asm("cli");
 		asm("hlt");
 		return;
@@ -87,7 +87,7 @@ void pa_frame_alloc(page_t *page, int kernel, int rw)
 	page->frame = index;
 }
 
-void pa_frame_free(page_t *page)
+void pa_free_frame(page_t *page)
 {
 	uint32_t ftf; //Frame to free
 	if(!(ftf=page->frame))
@@ -106,13 +106,15 @@ void init_page_allocator()
 	#ifdef DEBUG
 	printf("Page Allocator:\n");
 	int amm_alloc_mb = ((mem_end_aligned/1024)/1024);
-	printf("---> Allocating for 0x%X (~%d MB) of pages\n",mem_end_aligned,amm_alloc_mb);
+	printf("---> Can allocate for 0x%X (~%d MB) of ram\n",mem_end_aligned,amm_alloc_mb);
 	#endif
-	frame_amount = mem_end_aligned / 0x1000;
+
+	frame_amount = mem_end_aligned / 4;
 	frame = (uint32_t*)placement_kmalloc(INDEX_FROM_BIT(frame_amount));
 	memset(frame, 0, INDEX_FROM_BIT(frame_amount)); //Clear frame
+
 	#ifdef DEBUG
-	printf("---> Allocatable frames: 0x%X (%d), starting at 0x%X\n",frame_amount,frame_amount,frame);
+	printf("---> Allocatable frames: 0x%X (%d), bitmap starting at 0x%X\n",frame_amount,frame_amount,frame);
 	#endif
 }
 

@@ -73,6 +73,12 @@ int cyclic_tasks(int tick)
 					asm("hlt");
 					printf("Kernel was brought back up. Continuing...\n");
 					break;
+				case 'p':
+					printf("Causing a page fault!\n");
+					uint32_t *ptr = (uint32_t*)0xA0000000;
+					uint32_t do_page_fault = *ptr;
+					printf("%d\n",do_page_fault);
+
 				default:
 					printf("%c is not a valid command\n",serial_char);
 			}

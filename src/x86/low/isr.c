@@ -132,7 +132,7 @@ extern void fault_handler(struct regs *r)
     {
         if(r->int_no == 14)
         {
-            //paging_fault(r);
+            irq_handler(r);
         }
         klog(LOG_PANIC,"SYS","Encountered interrupt %d (%s)!\n",r->int_no,exception_messages[r->int_no]);
         halt_regs(r);
