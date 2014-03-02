@@ -7,7 +7,7 @@
 #include <x86/low_cpu.h>
 #include <x86/x86.h>
 #include <x86/isr.h>
-#include <x86/low_paging.h>
+#include <x86/paging.h>
 void pit_install();
 
 void init_x86()
@@ -18,6 +18,7 @@ void init_x86()
 	isrs_setup();
 	irq_install();
 	pit_install();
-	paging_init();
 	asm("sti");
+	paging_init();
+	
 }

@@ -1,5 +1,5 @@
 #include <types.h>
-#include <x86/low_paging.h>
+#include <x86/paging.h>
 #include <log.h>
 #include <x86/page_allocator.h>
 #include <x86/placement_malloc.h>
@@ -16,5 +16,7 @@ void paging_init()
 
 	klog(LOG_DEBUG,"Paging","Page directory at:0x%X\n",eok_aligned);
 
-	init_page_allocator();	
+	init_page_allocator();
+
+
 }

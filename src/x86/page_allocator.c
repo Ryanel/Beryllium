@@ -1,6 +1,12 @@
+/**
+Page Allocator - Simple page allocator with bitsets.
+**/
+
 #include <types.h>
 #include <x86/placement_malloc.h>
 #include <string.h>
+#include <x86/paging.h>
+#include <log.h>
 #ifdef DEBUG
 #include <stdio.h>
 #endif
@@ -34,6 +40,66 @@ uint32_t pa_test_frame(uint32_t address)
 	return frame[index] & (0x1 << offset);
 }
 
+uint32_t pa_first_frame()
+{
+	uint32_t i,j;
+	for (i = 0; i < INDEX_FROM_BIT(frame_amount); i++)
+	{
+		if(frame[i] != 0xFFFFFFFF)
+		{
+			for(j = 0; j < 32; j++)
+			{
+				uint32_t to_test = 0x1 << j;
+				if(!(frame[i]&to_test))
+				{
+					return i*4*8+j;
+				}
+			}
+		}
+	}
+	return -1;
+}
+
+void pa_frame_alloc(page_t *page, int kernel, int rw)
+{
+	if(kernel > 1)
+	{
+		klog(LOG_SEVERE,"PAGEA","Attempted to allocate page 0x%X with privilage level (%d;K=%d)!\n",&page,kernel,rw);
+		return;
+	}
+	if(page->frame != 0)
+	{
+		return;
+	}
+
+	uint32_t index = pa_first_frame();
+	if(index == (uint32_t)-1) //OxFFFFFFFF
+	{
+		printf("Page Allocator: no free frames!\n");
+		asm("cli");
+		asm("hlt");
+		return;
+	}
+	pa_set_frame(index*0x1000);
+	page->present = 1;
+	page->rw = (rw)?1:0;
+	page->user = (kernel)?0:1;
+	page->frame = index;
+}
+
+void pa_frame_free(page_t *page)
+{
+	uint32_t ftf; //Frame to free
+	if(!(ftf=page->frame))
+	{
+		return;
+	}
+	else
+	{
+		pa_clear_frame(ftf); //Free it!
+		page->frame = 0;
+	}
+}
 void init_page_allocator()
 {
 	mem_end_aligned = (mem_end & 0xFFFFF000);
@@ -49,3 +115,4 @@ void init_page_allocator()
 	printf("---> Allocatable frames: 0x%X (%d), starting at 0x%X\n",frame_amount,frame_amount,frame);
 	#endif
 }
+
