@@ -1,4 +1,4 @@
-#include <drivers/low_textmode.h>
+#include <x86/drivers/textmode.h>
 #include <types.h>
 #include <x86/ports.h>
 

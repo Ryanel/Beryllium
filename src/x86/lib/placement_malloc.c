@@ -1,4 +1,4 @@
-#include <x86/placement_malloc.h>
+#include <x86/lib/placement_malloc.h>
 #include <types.h>
 
 extern uint32_t end;

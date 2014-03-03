@@ -2,7 +2,9 @@
 #include <error.h>
 #include <video.h>
 #include <stdio.h>
-#include <x86/isr.h>
+#ifdef X86
+#include <x86/low/isr.h>
+#endif
 #define PANIC_MSG_BAR "   ==================================PANIC===================================   "
 void panic(const char* reason)
 {

@@ -1,7 +1,7 @@
 #ifndef PAGING_H
 #define PAGING_H
 #include <types.h>
-#include <x86/isr.h>
+#include <x86/low/isr.h>
 
 typedef struct page
 {

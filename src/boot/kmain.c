@@ -2,8 +2,8 @@
 #include <video.h>
 #include <terminal.h>
 #include <log.h>
-#include <drivers/timer.h>
-#include <version.h>
+#include <timer.h>
+#include <system.h>
 #include <stdlib.h>
 #ifdef X86
 void x86_switch_to_usermode();
@@ -17,7 +17,7 @@ void kmain()
 	klog(LOG_INFO,"KERN","CoreLibs initialising...\n");
 	#ifdef DEBUG
 	klog(LOG_WARN,"KERN","Running Debug Kernel! Some things might not work properly!\n");
-	#endif0
+	#endif
 	
 
 	klog(LOG_DEBUG,"IO","Verifiying timer / interrupts (waiting 10 ticks)\n");

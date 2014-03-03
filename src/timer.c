@@ -1,6 +1,6 @@
 #include <log.h>
 #include <types.h>
-#include <drivers/timer.h>
+#include <timer.h>
 #include <ktaskman.h>
 /** High resolution timer ticks. Set every single clock tick **/
 uint32_t timer_hi = 0;

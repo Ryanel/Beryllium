@@ -1,6 +1,6 @@
 #include <x86/ports.h>
-#include <drivers/bga.h>
-#include <framebuffer.h>
+#include <x86/drivers/bga.h>
+#include <drivers/framebuffer.h>
 #include <stdio.h>
 
 bool bga_isinit = false;

@@ -1,13 +1,17 @@
+#include <boot/kmain.h>
+#include <boot/multiboot.h>
+
+#include <terminal.h>
+#include <stdio.h>
+#include <log.h>
+
+#include <x86/x86.h>
+#include <x86/drivers/serial.h>
+
+
 /**
  Get the kernel up and running as fast as possible
 **/
-#include <stdio.h>
-#include <terminal.h>
-#include <x86/x86.h>
-#include <kmain.h>
-#include <drivers/serial.h>
-#include <boot/multiboot.h>
-#include <log.h>
 void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot)
 {
 	#ifdef IS_RELEASE

@@ -1,7 +1,6 @@
 #include <types.h>
 #include <log.h>
-#include <x86/low_cpu.h>
-#include <x86/gdt.h>
+#include <x86/low/gdt.h>
 ///////////////////////////////////////
 //GDT
 ///////////////////////////////////////

@@ -2,7 +2,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <video.h>
-#include <drivers/timer.h>
+#include <timer.h>
 int klog_mask = LOG_DEBUG;
 static int background = 0;
 void klog(int mode, const char *title, const char *fmt, ...)

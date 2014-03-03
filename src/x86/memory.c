@@ -4,12 +4,12 @@ Manages the memory
 Hooks into src/memory.c
 **/
 #include <x86/paging.h>
-#include <log.h>
 #include <x86/page_allocator.h>
-#include <x86/placement_malloc.h>
+#include <x86/lib/placement_malloc.h>
+#include <x86/memory.h>
 #include <types.h>
 #include <stdio.h>
-#include <x86/memory.h>
+#include <log.h>
 #include <mutex.h>
 
 ///Page Directory

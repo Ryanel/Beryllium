@@ -4,9 +4,8 @@
 #include <types.h>
 #include <terminal.h>
 #include <log.h>	
-#include <x86/low_cpu.h>
 #include <x86/x86.h>
-#include <x86/isr.h>
+#include <x86/low/isr.h>
 #include <x86/paging.h>
 #include <x86/memory.h>
 void pit_install();

@@ -8,10 +8,9 @@
 * */
 #include <x86/x86.h>
 #include <log.h>
-#include <x86/idt.h>
-#include <x86/irq.h>
-#include <x86/isr.h>
-#include <x86/low_cpu.h>
+#include <x86/low/idt.h>
+#include <x86/low/irq.h>
+#include <x86/low/isr.h>
 #include <types.h>
 #include <error.h>
 extern void isr0();

@@ -2,9 +2,9 @@
 #include <x86/paging.h>
 #include <log.h>
 #include <x86/page_allocator.h>
-#include <x86/placement_malloc.h>
+#include <x86/lib/placement_malloc.h>
 #include <string.h>
-#include <x86/irq.h>
+#include <x86/low/irq.h>
 #include <x86/memory.h>
 
 #undef DEBUG

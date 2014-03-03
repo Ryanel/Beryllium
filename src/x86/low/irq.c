@@ -1,11 +1,11 @@
 #include <types.h>
 #include <x86/x86.h>
 #include <x86/ports.h>
-#include <x86/isr.h>
+#include <x86/low/isr.h>
 #include <error.h>
-#include <x86/idt.h> 
+#include <x86/low/idt.h> 
 #include <log.h>
-#include <x86/irq.h>
+#include <x86/low/irq.h>
 
 /* This array is actually an array of function pointers. We use
 *  this to handle custom IRQ handlers for a given IRQ */

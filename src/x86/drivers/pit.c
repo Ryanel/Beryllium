@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <x86/x86.h>
-#include <x86/isr.h>
-#include <x86/idt.h>
-#include <x86/irq.h>
+#include <x86/low/isr.h>
+#include <x86/low/idt.h>
+#include <x86/low/irq.h>
 #include <x86/ports.h>
-#include <drivers/serial.h>
-#include <drivers/timer.h>
+#include <x86/drivers/serial.h>
+#include <timer.h>
 #include <interrupt.h>
 unsigned long timer_ticks = 0;
 unsigned long timer_ticks_old = 0;

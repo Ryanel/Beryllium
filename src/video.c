@@ -1,8 +1,8 @@
 #include <log.h>
 
 #ifdef X86
-#include <drivers/low_textmode.h>
-#include <drivers/bga.h>
+#include <x86/drivers/textmode.h>
+#include <x86/drivers/bga.h>
 #endif
 #ifdef ARM
 

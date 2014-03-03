@@ -2,7 +2,6 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 #include <types.h>
-#include <drivers/low_textmode.h>
 #define STATUS_BAR_ATTRIBUTE 0x1F
 void printc(unsigned char c);
 void print(const char *c);

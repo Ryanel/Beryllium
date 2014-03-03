@@ -1,6 +1,6 @@
 #include <string.h>
 #include <types.h>
-#include <x86/idt.h>
+#include <x86/low/idt.h>
 #include <terminal.h>
 #include <log.h>
 #include <x86/x86.h>

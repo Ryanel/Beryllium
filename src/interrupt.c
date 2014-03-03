@@ -1,7 +1,7 @@
 #include <log.h>
 #include <types.h>
 #include <interrupt.h>
-#include <drivers/timer.h>
+#include <timer.h>
 
 int interrupt_sys_working = 0;
 

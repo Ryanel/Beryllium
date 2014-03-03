@@ -2,7 +2,7 @@
 #define BGA_H
 
 #include <types.h>
-#include <framebuffer.h>
+#include <drivers/framebuffer.h>
 
 #define BGA_VBE_DISPI_IOPORT_INDEX 0x01CE
 #define BGA_VBE_DISPI_IOPORT_DATA 0x01CF

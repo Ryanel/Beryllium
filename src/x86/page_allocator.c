@@ -3,8 +3,8 @@ Page Allocator - Simple page allocator with bitsets.
 **/
 
 #include <types.h>
-#include <x86/placement_malloc.h>
 #include <string.h>
+#include <x86/lib/placement_malloc.h>
 #include <x86/page_allocator.h>
 #include <x86/paging.h>
 #include <log.h>

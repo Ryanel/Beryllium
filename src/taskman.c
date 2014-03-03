@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <drivers/timer.h>
-#include <drivers/low_textmode.h>
-#include <drivers/serial.h>
+#include <timer.h>
+#include <x86/drivers/textmode.h>
+#include <x86/drivers/serial.h>
 #include <terminal.h>
 #include <interrupt.h>
 #include <video.h>
