@@ -34,8 +34,10 @@ extern void irq12();
 extern void irq13();
 extern void irq14();
 extern void irq15();
-
-typedef void (*interrupt_handler_t)(registers_t *); //Interrupt Handler
+///Interrupt Handler
+typedef void (*interrupt_handler_t)(registers_t *); 
+///Creates a interrupt handler
 void register_interrupt_handler (uint8_t n, interrupt_handler_t h);
+///Decreates a interrupt handler
 void deregister_interrupt_handler (uint8_t n);
 #endif

@@ -1,5 +1,6 @@
 #ifndef X86_IDT_H
 #define X86_IDT_H
+///An entry in the idt
 struct idt_entry
 {
     unsigned short base_lo;
@@ -8,7 +9,7 @@ struct idt_entry
     unsigned char flags;       /* Set using the above table! */
     unsigned short base_hi;
 } __attribute__((packed));
-
+///Pointer to the idt
 struct idt_ptr
 {
     unsigned short limit;

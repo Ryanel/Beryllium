@@ -23,11 +23,16 @@
 #define BGA_VBE_DISPI_8BIT_DAC              0x20
 #define BGA_VBE_DISPI_LFB_ENABLED           0x40
 #define BGA_VBE_DISPI_NOCLEARMEM            0x80
-
+///Write a value to the bga
 void bga_writeregister(uint16_t index, uint16_t value);
+///Reads a value from the bga
 uint16_t bga_readregister(uint16_t index);
+///Sets video mode
 void bga_setmode(unsigned int width, unsigned int height, unsigned int bitdepth, int linearframebuffer, int clearvideomemory);
+///Can we use the BGA?
 int bga_isavalable();
+///Initialises the BGA
 int bga_init();
+///Gets the Framebuffer
 framebuffer_t bga_getFramebuffer();
 #endif

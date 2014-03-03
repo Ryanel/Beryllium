@@ -45,7 +45,7 @@ uint32_t timer_getHi()
 uint32_t timer_getDevice()
 {
 	return device;
-}
+}	
 
 const char* timer_getDeviceString(uint32_t device)
 {

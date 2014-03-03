@@ -1,6 +1,6 @@
 #ifndef X86_ISR_H
 #define X86_ISR_H
-
+///A representation of pushed registers for interrupts
 struct regs
 {
 	unsigned int gs, fs, es, ds;      /* pushed the segs last */

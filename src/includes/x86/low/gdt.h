@@ -1,6 +1,6 @@
 #ifndef X86_GDT_H
 #define X86_GDT_H
-
+///A gdt entry
 struct gdt_entry
 {
     unsigned short limit_low;

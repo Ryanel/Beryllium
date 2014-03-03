@@ -144,7 +144,8 @@ void *sbrk(size_t amount)
 	return tmp;
 }
 /**
-Deallocates memory(pages) from end_data_segment forward.
+Deallocates memory(pages) from end_data_segment forward.\
+\todo Implement brk
 **/
 int brk(void *end_data_segment)
 {
