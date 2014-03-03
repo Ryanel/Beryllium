@@ -6,7 +6,7 @@ void mutex_lock(mutex_t *mutex)
 	{
 		while(mutex->value)
 		{
-
+			asm("pause");
 		}
 	}
 	mutex->value = true;

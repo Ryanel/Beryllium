@@ -12,9 +12,9 @@ void x86_switch_to_usermode();
 void kmain()
 {
 	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.2 (git)");
-	klog(LOG_INFO,"KERN","Beryllium initialising...\n");
+	klog(LOG_INFO,"KERN","CoreLibs initialising...\n");
 	#ifdef DEBUG
-	klog(LOG_WARN,"KERN","This kernel is a debug kernel! Some things might not work properly!\n");
+	klog(LOG_WARN,"KERN","Running Debug Kernel! Some things might not work properly!\n");
 	#endif
 	
 
@@ -24,9 +24,9 @@ void kmain()
 	{
 	}
 	
-	klog(LOG_INFO,"KERN","Finished basic initialisation\n");
+	klog(LOG_INFO,"KERN","Finished initialising CoreLibs!\n");
 	video_graphics_init();
-	memory_init();
+	klog(LOG_INFO,"KERN","Reached end of kmain(); spinning...\n");
 	while(1)
 	{
 

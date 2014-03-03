@@ -26,6 +26,6 @@ void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot
 		return;
 	}
 	init_x86();
-	klog(LOG_INFO,"x86","Done\n");
+	klog(LOG_INFO,"x86","Done starting hardware!\n");
 	kmain();
 }

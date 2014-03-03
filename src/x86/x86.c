@@ -8,6 +8,7 @@
 #include <x86/x86.h>
 #include <x86/isr.h>
 #include <x86/paging.h>
+#include <x86/memory.h>
 void pit_install();
 
 void init_x86()
@@ -20,4 +21,5 @@ void init_x86()
 	pit_install();
 	paging_init();
 	asm("sti");
+	memory_init();
 }

@@ -29,3 +29,5 @@ libiconv*
 *.iso
 *.img
 *.bin
+
+doc/*

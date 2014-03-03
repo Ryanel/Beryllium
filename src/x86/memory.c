@@ -6,13 +6,32 @@
 #include <stdio.h>
 #include <x86/memory.h>
 #include <mutex.h>
-//Allocates multiple pages
+
+///Page Directory
 extern page_directory_t *kernel_directory;
-int mem_pagefree = 0xA0000000; //Default value, dynamic get in future!
+///How many frames are free? Set to a default 0x10000000 to allow allocation BEFORE it's set. Because I am lazy.
+int mem_pagefree = 0x10000000;
+/**
+The last page that was allocated. Used to speed up bitmap searches for free frames
+Set by memory_init(); Running memory_mult_alloc_pages is possible without this set, but it takes a couple SECONDS on the first allocation,
+as it must search every possible frame (about ~0x150000 frames). This is set to start the search at the last allocated frame (0x150000) so we
+can search from there up.
+**/
 int mem_lastpage = 0;
-
+///Kernel memory allocation mutex (boolean semaphore). This is NOT the lock on memory, only for the memory_alloc allocators.
 mutex_t *mmac_lock;
+/**
+The kernel reserved area is exactly 0x1000 bytes of memory. It is a sort of "shield" against the heap's conventional memory.
+This is filled completely with 0xFF, and in the event of an EMERGENCY it can be written to to store up to 4kb of debug information.
+This memory is not for conventional use; infact it is never used in the current implementation. It is just a shield.
+**/
+void* kernel_reserved_area;
+/**
+Allocates multple pages and returns a pointer to the first page.
 
+This function is not meant to be directly called, as this is not locked by the mutex mmac_lock.
+Please use memory_alloc_pages() instead.
+**/
 void* memory_mult_alloc_pages(int pages)
 {
 	int i, j;
@@ -88,9 +107,11 @@ void memory_init()
 	mutex_lock(mmac_lock);
 	klog(LOG_INFO,"MEM","Initialising and populating memory...\n");
 	mem_lastpage = pa_first_frame() * 0x1000;
-	printf("Marked 0x%X (%d) frames as dirty\n",mem_lastpage,mem_lastpage);
+	klog(LOG_DEBUG,"MEM","Marked 0x%X (%d) frames as dirty\n",mem_lastpage,mem_lastpage);
 	mutex_unlock(mmac_lock);
-	klog(LOG_INFO,"MEM","Done!\n");
+	klog(LOG_DEBUG,"MEM","Allocating Kernel Reserved Area...\n");
+	kernel_reserved_area = memory_alloc_pages(1);
+	klog(LOG_INFO,"MEM","Done allocating initial memory!\n");
 }
 
 void *sbrk(size_t amount)
@@ -99,7 +120,7 @@ void *sbrk(size_t amount)
 	{
 		return (void*)((unsigned int)mem_lastpage);
 	}
-	uint32_t actual_amount = (amount/ 0x1000) +1;
+	uint32_t actual_amount = (amount / 0x1000) +1;
 	printf("sbrk: allocating %d pages to cover 0x%X bytes\n",actual_amount,amount);
 	void *tmp = memory_alloc_pages(actual_amount);
 	return tmp;

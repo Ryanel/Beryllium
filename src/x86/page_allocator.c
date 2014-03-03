@@ -8,6 +8,8 @@ Page Allocator - Simple page allocator with bitsets.
 #include <x86/page_allocator.h>
 #include <x86/paging.h>
 #include <log.h>
+//Undefine Debug so there is no output
+#undef DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #endif

@@ -24,7 +24,7 @@ void klog(int mode, const char *title, const char *fmt, ...)
 				video_setattributetext(background,0xE);
 				break;
 			case LOG_INFO:
-				video_setattributetext(background,0x9);
+				video_setattributetext(background,0xF);
 				break;
 			case LOG_DEBUG:
 				video_setattributetext(background,0x8);///was 0x8;
