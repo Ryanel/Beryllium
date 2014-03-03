@@ -15,7 +15,7 @@ Page Allocator - Simple page allocator with bitsets.
 #endif
 uint32_t *frame; //Pointer to first frame, first index. The actual bitmap
 uint32_t frame_amount; //How many frames CAN there be?
-uint32_t mem_end = 0x2000000; //Where does memory end. Default's to 16mb of ram
+uint32_t mem_end = 0xF000000; //Where does memory end. Default's to all addressable ram
 uint32_t mem_end_aligned; //Where does memory end, page aligned.
 
 uint32_t pa_frame_amount()
@@ -107,6 +107,7 @@ void pa_free_frame(page_t *page)
 }
 void init_page_allocator()
 {
+	printf("Allocating pages...\n");
 	mem_end_aligned = (mem_end & 0xFFFFF000);
 	#ifdef DEBUG
 	printf("Page Allocator:\n");
