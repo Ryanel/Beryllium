@@ -37,7 +37,7 @@ void io_interrupt_handle(interrupt_message_t *data)
 	switch(data->type)
 	{
 		case IO_TYPE_TIMER:
-			timer_recieveTick(data->data);
+			timer_recieveTick((unsigned int)data->data);
 			io_interrupt_docyclic();
 			break;
 		case IO_TYPE_IO:
