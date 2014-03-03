@@ -1,3 +1,8 @@
+/**
+Manages the memory
+
+Hooks into src/memory.c
+**/
 #include <x86/paging.h>
 #include <log.h>
 #include <x86/page_allocator.h>
@@ -28,7 +33,6 @@ This memory is not for conventional use; infact it is never used in the current 
 void* kernel_reserved_area;
 /**
 Allocates multple pages and returns a pointer to the first page.
-
 This function is not meant to be directly called, as this is not locked by the mutex mmac_lock.
 Please use memory_alloc_pages() instead.
 **/
@@ -67,7 +71,12 @@ void* memory_mult_alloc_pages(int pages)
 
 	return (void*)((unsigned int)block);
 }
+/**
+Allocates multple pages and returns a pointer to the first page.
 
+This function IS meant to be directly called, as this is locked by the mutex mmac_lock.
+Please don't call memory_mult_alloc_pages() instead.
+**/
 void* memory_alloc_pages(int pages)
 {
 	void *ptr = NULL;
@@ -83,6 +92,9 @@ void* memory_alloc_pages(int pages)
 	mutex_unlock(mmac_lock);
 	return ptr;
 }
+/**
+De-allocates pages
+**/
 void memory_dealloc_pages(int pages)
 {
 	if(pages <= 0)
@@ -100,7 +112,11 @@ void memory_dealloc_pages(int pages)
 	}
 	mutex_unlock(mmac_lock);
 }
+/**
+Initializes Memory
 
+Specificallly, it locks memory, initialises mem_lastpage, and allocates the kernel_reserved_area.
+**/
 void memory_init()
 {
 	mutex_init(mmac_lock);
@@ -113,7 +129,9 @@ void memory_init()
 	kernel_reserved_area = memory_alloc_pages(1);
 	klog(LOG_INFO,"MEM","Done allocating initial memory!\n");
 }
-
+/**
+Allocates amount bytes, and returns a pointer to the beginning of the allocated amount.
+**/
 void *sbrk(size_t amount)
 {
 	if(amount == 0)
@@ -125,6 +143,9 @@ void *sbrk(size_t amount)
 	void *tmp = memory_alloc_pages(actual_amount);
 	return tmp;
 }
+/**
+Deallocates memory(pages) from end_data_segment forward.
+**/
 int brk(void *end_data_segment)
 {
 	return 0;

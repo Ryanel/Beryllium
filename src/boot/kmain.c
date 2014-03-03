@@ -8,14 +8,16 @@
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
-
+/**
+Kernel main function
+**/
 void kmain()
 {
 	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.2 (git)");
 	klog(LOG_INFO,"KERN","CoreLibs initialising...\n");
 	#ifdef DEBUG
 	klog(LOG_WARN,"KERN","Running Debug Kernel! Some things might not work properly!\n");
-	#endif
+	#endif0
 	
 
 	klog(LOG_DEBUG,"IO","Verifiying timer / interrupts (waiting 10 ticks)\n");
