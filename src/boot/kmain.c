@@ -13,7 +13,7 @@ Kernel main function
 **/
 void kmain()
 {
-	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.2 (git)");
+	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.3 (git)");
 	klog(LOG_INFO,"KERN","CoreLibs initialising...\n");
 	#ifdef DEBUG
 	klog(LOG_WARN,"KERN","Running Debug Kernel! Some things might not work properly!\n");

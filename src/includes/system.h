@@ -3,7 +3,7 @@
 ///The release name
 #define BERYLLIUM_RELEASE "Unstable Isotope"
 ///Version string
-#define BERYLLIUM_VERSION "0.0.0.2"
+#define BERYLLIUM_VERSION "0.0.0.3"
 ///Source. Can be "git" or "binary". It can also be an arbirary name of the maintainer
 #define BERYLLIUM_SOURCE "git"
 
