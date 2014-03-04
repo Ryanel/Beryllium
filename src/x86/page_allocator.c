@@ -107,7 +107,7 @@ void pa_free_frame(page_t *page)
 }
 void init_page_allocator()
 {
-	printf("Allocating pages...\n");
+	//printf("Allocating pages...\n");
 	mem_end_aligned = (mem_end & 0xFFFFF000);
 	#ifdef DEBUG
 	printf("Page Allocator:\n");

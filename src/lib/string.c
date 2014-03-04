@@ -73,3 +73,8 @@ void memmove(void *dest, const void *src, size_t n)
 		}
 	}
 }
+char * strcpy(char * dest, const char * src) {
+	int len = strlen(src);
+	memcpy(dest, src, len+1);
+	return dest;
+}

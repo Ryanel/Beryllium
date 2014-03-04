@@ -5,6 +5,7 @@
 #include <timer.h>
 #include <system.h>
 #include <stdlib.h>
+#include <vfs.h>
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -28,6 +29,8 @@ void kmain()
 	
 	klog(LOG_INFO,"KERN","Finished initialising CoreLibs!\n");
 	video_graphics_init();
+	klog(LOG_INFO,"VFS","Starting VFS...\n");
+	vfs_init();
 	klog(LOG_INFO,"KERN","Reached end of kmain(); spinning...\n");
 	while(1)
 	{

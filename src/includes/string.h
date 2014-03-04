@@ -4,6 +4,8 @@
 ///Compares two strings
 int strcmp (const char *str1,const char *str2);
 //unsigned int strlen(unsigned char *str);
+///Copies string src into dest
+char * strcpy(char * dest, const char * src);
 ///Copies src(n) to dest
 void *memcpy(void *dest,const void *src,size_t n);
 ///Sets dest to val n times
