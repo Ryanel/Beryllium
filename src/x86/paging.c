@@ -6,7 +6,6 @@
 #include <string.h>
 #include <x86/low/irq.h>
 #include <x86/memory.h>
-extern heap_t *kheap;
 #undef DEBUG
 #ifdef DEBUG
 #include <stdio.h>
@@ -68,9 +67,6 @@ void paging_init()
 	kernel_directory = (page_directory_t *)placement_kmalloc_ap(sizeof(page_directory_t),1,&phys);
 	memset(kernel_directory, 0, sizeof(page_directory_t));
 	uint32_t i = 0;
-	for (i = KHEAP_START; i < KHEAP_START+KHEAP_INITIAL_SIZE; i += 0x1000) //Map the heap
-		paging_get_page(i, 1, kernel_directory);
-	i=0;
 	for (i=0; i < placement_address; i += 0x1000) {
 		pa_alloc_frame(paging_get_page(i, 1, kernel_directory), 0, 0);
 	}
@@ -78,9 +74,6 @@ void paging_init()
 	printf("Allocated 0x%X frames...\n",i);
 	#endif
 	kernel_directory->physicalAddr = (uint32_t)kernel_directory->tablesPhysical;
-	for (i = KHEAP_START; i < KHEAP_START+KHEAP_INITIAL_SIZE; i += 0x1000)
-		pa_alloc_frame( paging_get_page(i, 1, kernel_directory), 0, 0);
-
 	register_interrupt_handler(14,&paging_fault);
 	paging_switch_directory(kernel_directory);
 }
