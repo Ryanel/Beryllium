@@ -29,6 +29,15 @@ void kmain()
 	klog(LOG_INFO,"KERN","Finished initialising CoreLibs!\n");
 	video_graphics_init();
 	klog(LOG_INFO,"KERN","Reached end of kmain(); spinning...\n");
+	printf("malloc test\n");
+	char *a = malloc(sizeof(char));
+	char *b = malloc(sizeof(char));
+	printf("a = 0x%X\n",a);
+	printf("b = 0x%X\n",b);
+	free(a);
+	free(b);
+	char *c = malloc(sizeof(char));
+	printf("c = 0x%X\n",c);
 	while(1)
 	{
 

@@ -28,7 +28,7 @@ mutex_t *mmac_lock;
 /// The kernel's heap
 heap_t *kheap; 
 /**
-The kernel reserved area is exactly 0x1000 bytes of memory. It is a sort of "shield" against the heap's conventional memory.
+The kernel reserved area is exactly 4kb of memory. It is a sort of "shield" against the heap's conventional memory.
 This is filled completely with 0xFF, and in the event of an EMERGENCY it can be written to to store up to 4kb of debug information.
 This memory is not for conventional use; infact it is never used in the current implementation. It is just a shield.
 **/
@@ -42,9 +42,9 @@ void* memory_mult_alloc_pages(int pages)
 {
 	int i, j;
 	int block = -1;
-  	for(i = 0; i < pa_frame_amount(); i++)
-  	{
-  		int pos = (i + mem_lastpage) % pa_frame_amount(); // Create a position based off of i.
+	for(i = 0; i < pa_frame_amount(); i++)
+	{
+		int pos = (i + mem_lastpage) % pa_frame_amount(); // Create a position based off of i.
 		if ( (pos + pages) > pa_frame_amount() )
 		{
 			i += pages - 2;
@@ -63,9 +63,9 @@ void* memory_mult_alloc_pages(int pages)
 		}
 		if ( block != -1 ) break;
 
-  	}
-  	if ( block == -1 ) return 0;
-  	for ( i = 0; i < pages; i++ )
+	}
+	if ( block == -1 ) return 0;
+	for ( i = 0; i < pages; i++ )
 		//pa_set_frame(INDEX_FROM_BIT(block + i));
 		pa_alloc_frame(paging_get_page(block + i,1, kernel_directory), 0, 0);
 
@@ -141,7 +141,11 @@ void *sbrk(size_t amount)
 	{
 		return (void*)((unsigned int)mem_lastpage);
 	}
-	uint32_t actual_amount = (amount / 0x1000) +1;
+	uint32_t actual_amount = (amount / 0x1000);
+	if(actual_amount == 0)
+	{
+		actual_amount++;
+	}
 	printf("sbrk: allocating %d pages to cover 0x%X bytes\n",actual_amount,amount);
 	void *tmp = memory_alloc_pages(actual_amount);
 	return tmp;
