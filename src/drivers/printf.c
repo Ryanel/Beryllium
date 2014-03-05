@@ -1,4 +1,3 @@
-#include <string.h> /* strlen() */
 #include <terminal.h> /* stdout, putchar(), fputs() (but not printf() :) */
 #include <stdarg.h>
 #include <types.h>
@@ -19,12 +18,12 @@
 
 #define TERM_WRITETOSERIAL 1
 
-unsigned int strlen(unsigned char *str)
+unsigned int strlen_unsigned(const unsigned char *str)
 {
 	unsigned const char *wrk=str;
-    int retval;
-    for(retval = 0; *wrk != '\0'; wrk++) retval++;
-    return retval;
+	int retval;
+	for(retval = 0; *wrk != '\0'; wrk++) retval++;
+	return retval;
 }
 
 typedef int (*fnptr_t)(unsigned c, void **helper);
@@ -203,7 +202,7 @@ OK, I found my mistake. The math here is _always_ unsigned */
 				flags &= ~PR_LZ;
 				where = va_arg(args, unsigned char *);
 EMIT:
-				actual_wd = strlen(where);
+				actual_wd = strlen_unsigned(where);
 				if(flags & PR_WS)
 					actual_wd++;
 /* if we pad left with ZEROES, do the sign now */

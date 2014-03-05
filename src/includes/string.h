@@ -3,7 +3,8 @@
 #include <types.h>
 ///Compares two strings
 int strcmp (const char *str1,const char *str2);
-//unsigned int strlen(unsigned char *str);
+///Length of a string
+int strlen(const char *str);
 ///Copies string src into dest
 char * strcpy(char * dest, const char * src);
 ///Copies src(n) to dest

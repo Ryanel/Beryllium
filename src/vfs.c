@@ -1,5 +1,6 @@
 #include <vfs.h>
 #include <string.h>
+#include <log.h>
 vfs_node_t *vfs_root = 0;
 vfs_node_t* vfs_getRootNode()
 {
@@ -16,15 +17,22 @@ void vfs_init()
 	vfs_root->inode = 0;
 	vfs_root->length = 0;
 	vfs_root->device = VFS_DEVICE_VFS; ///Internal device number
+	vfs_root->ptr = vfs_root;
 	vfs_printnode(vfs_root);
 
 }
 #ifdef DEBUG
 #include <stdio.h>
+int vfs_recurse = 0;
 void vfs_printnode(vfs_node_t *node)
 {
-	printf("Reading vfs node '%s'\n",node->name);
-	printf("Type: ");
+	if(vfs_recurse == 2)
+	{
+		printf("Exiting recursion...\n");
+		return;
+	}
+	klog(LOG_DEBUG,"VFS","Reading vfs node '%s'\n",node->name);
+	klog(LOG_DEBUG,"VFS","Type: ");
 	if(node->type & VFS_FILE)
 	{
 		printf("file ");
@@ -54,7 +62,7 @@ void vfs_printnode(vfs_node_t *node)
 		printf("mountpoint");
 	}
 	printf("\n");
-	printf("perm: ");
+	klog(LOG_DEBUG,"VFS","perm: ");
 	if(node->permissions & VFS_PERMISSION_READ)
 	{
 		printf("r");
@@ -68,10 +76,10 @@ void vfs_printnode(vfs_node_t *node)
 		printf("x");
 	}
 	printf("\n");
-	printf("uid:%d, gid:%d\n",node->uid,node->gid);
-	printf("inode:%d\n",node->inode);
-	printf("size:%d bytes\n",node->length);
-	printf("From device:");
+	klog(LOG_DEBUG,"VFS","uid:%d, gid:%d\n",node->uid,node->gid);
+	klog(LOG_DEBUG,"VFS","inode:%d\n",node->inode);
+	klog(LOG_DEBUG,"VFS","size:%d bytes\n",node->length);
+	klog(LOG_DEBUG,"VFS","From device:");
 	if(node->device & VFS_DEVICE_VFS)
 	{
 		printf("vfs");
@@ -83,7 +91,8 @@ void vfs_printnode(vfs_node_t *node)
 	printf("\n");
 	if(node->type & VFS_SYMLINK)
 	{
-		printf("Symlinked / Mounted file stats:\n");
+		klog(LOG_DEBUG,"VFS","Symlinked file stats:\n");
+		vfs_recurse++;
 		vfs_printnode(node->ptr);
 	}
 }

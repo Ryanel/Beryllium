@@ -11,7 +11,7 @@
  */
 
 #include <string.h>
-
+#include <x86/memory.h>
 #define PAGE_SIZE 0x1000
 // our node struct, which is conveniently 32 bytes!
 typedef struct Meta Meta;
@@ -80,7 +80,7 @@ void* malloc(size_t size) {
 
   // enlarge the heap as much as needed
   while ((size_t) sbrk(0) - alloc_end < size + sizeof(Meta)) {
-    if (sbrk(PAGE_SIZE) == (void*) -1) {
+    if ((void*)sbrk(PAGE_SIZE) == (void*) -1) {
       return NULL;
     }
   }

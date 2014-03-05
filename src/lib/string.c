@@ -78,3 +78,10 @@ char * strcpy(char * dest, const char * src) {
 	memcpy(dest, src, len+1);
 	return dest;
 }
+int strlen(const char *str)
+{
+	const char *wrk=str;
+	int retval;
+	for(retval = 0; *wrk != '\0'; wrk++) retval++;
+	return retval;
+}
