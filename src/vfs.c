@@ -1,36 +1,24 @@
 #include <vfs.h>
 #include <string.h>
 #include <log.h>
-vfs_node_t *vfs_root = 0;
-vfs_node_t* vfs_getRootNode()
-{
-	return vfs_root;
-}
-
+#include <lib/tree.h>
+#include <stdlib.h>
+#include <stdio.h>
+tree_t     *vfs_tree = NULL;
 void vfs_init()
 {
-	strcpy(vfs_root->name, "/");
-	vfs_root->type = VFS_DIRECTORY | VFS_MOUNTPOINT;
-	vfs_root->permissions = VFS_PERMISSION_READ | VFS_PERMISSION_WRITE ;
-	vfs_root->uid = 0;
-	vfs_root->gid = 0;
-	vfs_root->inode = 0;
-	vfs_root->length = 0;
-	vfs_root->device = VFS_DEVICE_VFS; ///Internal device number
-	vfs_root->ptr = vfs_root;
-	vfs_printnode(vfs_root);
+	vfs_tree = tree_create();
+
+	struct vfs_entry * root = malloc(sizeof(struct vfs_entry));
+	root->name = strdup("[/]");
+	root->file = NULL;
+	tree_set_root(vfs_tree, root);
 
 }
 #ifdef DEBUG
 #include <stdio.h>
-int vfs_recurse = 0;
 void vfs_printnode(vfs_node_t *node)
 {
-	if(vfs_recurse == 2)
-	{
-		printf("Exiting recursion...\n");
-		return;
-	}
 	klog(LOG_DEBUG,"VFS","Reading vfs node '%s'\n",node->name);
 	klog(LOG_DEBUG,"VFS","Type: ");
 	if(node->type & VFS_FILE)
@@ -89,11 +77,26 @@ void vfs_printnode(vfs_node_t *node)
 		printf("unkn");
 	}
 	printf("\n");
-	if(node->type & VFS_SYMLINK)
-	{
-		klog(LOG_DEBUG,"VFS","Symlinked file stats:\n");
-		vfs_recurse++;
-		vfs_printnode(node->ptr);
+}
+void vfs_print_tree_node(tree_node_t * node, size_t height)
+{
+	/* End recursion on a blank entry */
+	if (!node) return;
+	/* Indent output */
+	for (uint32_t i = 0; i < height; ++i) { printf(" "); }
+	/* Get the current process */
+	struct vfs_entry * fnode = (struct vfs_entry *)node->value;
+	/* Print the process name */
+	if (fnode->file) {
+		printf("%s -> 0x%x (%s)", fnode->name, fnode->file, fnode->file->name);
+	} else {
+		printf("%s -> (empty)", fnode->name);
+	}
+	/* Linefeed */
+	printf("\n");
+	foreach(child, node->children) {
+		/* Recursively print the children */
+		vfs_print_tree_node(child->value, height + 1);
 	}
 }
 #endif

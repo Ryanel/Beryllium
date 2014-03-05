@@ -13,4 +13,6 @@ void *memcpy(void *dest,const void *src,size_t n);
 void *memset(void *dest,int val,size_t n);
 ///Moves n src to dest
 void memmove(void *dest, const void *src, size_t n);
+
+char *strdup(const char *s1);
 #endif

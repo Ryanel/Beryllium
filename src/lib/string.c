@@ -85,3 +85,11 @@ int strlen(const char *str)
 	for(retval = 0; *wrk != '\0'; wrk++) retval++;
 	return retval;
 }
+char *strdup(const char *s1)
+{
+	char *ret = 0;
+	ret = malloc(sizeof(s1));
+	ret = s1;
+	return ret;
+
+}

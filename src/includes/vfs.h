@@ -1,6 +1,7 @@
 #ifndef VFS_H
 #define VFS_H
 #include <types.h>
+#include <lib/tree.h>
 #define VFS_FILE        (1 << 0)
 #define VFS_DIRECTORY   (1 << 1)
 #define VFS_CHARDEVICE  (1 << 2)
@@ -29,7 +30,16 @@ typedef struct vfs_node{
 	uint32_t device_type;
 	struct vfs_node *ptr; // Used by mountpoints and symlinks.
 } vfs_node_t;
+
+struct vfs_entry {
+	char * name;
+	vfs_node_t * file;
+};
+
 vfs_node_t* vfs_getRootNode();
 void vfs_printnode(vfs_node_t *node);
 void vfs_init();
+#ifdef DEBUG
+void vfs_print_tree_node(tree_node_t * node, size_t height);
+#endif
 #endif

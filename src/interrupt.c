@@ -33,7 +33,6 @@ void io_interrupt_docyclic()
 
 void io_interrupt_handle(interrupt_message_t *data)
 {
-	
 	switch(data->type)
 	{
 		case IO_TYPE_TIMER:
@@ -47,7 +46,8 @@ void io_interrupt_handle(interrupt_message_t *data)
 			asm("hlt");
 			break;
 		default:
-			klog(LOG_DEBUG,"IO:Unknown","type: %d; queue: %d; data: 0x%X; handled: %d\n",data->type,data->isQueueable,data->data,data->isHandled);
+			break;
+			//klog(LOG_DEBUG,"IO:Unknown","type: %d; queue: %d; data: 0x%X; handled: %d\n",data->type,data->isQueueable,data->data,data->isHandled);
 	}
 	data->isHandled = 1;
 
