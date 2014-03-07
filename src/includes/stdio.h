@@ -10,4 +10,8 @@ int printf(const char *fmt, ...);
 Prints formated text.
 **/
 int vprintf(const char *fmt, va_list args);
+/**
+Writes formatted data to string
+**/
+void sprintf(char *buf, const char *fmt, ...);
 #endif

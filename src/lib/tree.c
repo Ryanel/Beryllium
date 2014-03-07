@@ -1,8 +1,9 @@
 ///
-/// Credit klange
+/// Credit Levin Lange for implementation code.
 ///
 #include <lib/list.h>
 #include <lib/tree.h>
+#include <stdlib.h>
 tree_t * tree_create(void) {
 	/* Create a new tree */
 	tree_t * out = malloc(sizeof(tree_t));
@@ -142,13 +143,13 @@ void tree_remove(tree_t * tree, tree_node_t * node) {
 	list_merge(parent->children, node->children);
 	free(node);
 }
-
+/*
 void tree_break_off(tree_t * tree, tree_node_t * node) {
 	tree_node_t * parent = node->parent;
 	if (!parent) return;
 	list_delete(parent->children, list_find(parent->children, node));
 }
-
+*/
 tree_node_t * tree_node_find(tree_node_t * node, void * search, tree_comparator_t comparator) {
 	if (comparator(node->value,search)) {
 		return node;

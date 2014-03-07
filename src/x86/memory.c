@@ -42,10 +42,10 @@ void* memory_mult_alloc_pages(int pages)
 {
 	int i, j;
 	int block = -1;
-	for(i = 0; i < pa_frame_amount(); i++)
+	for(i = 0; (unsigned int)i < pa_frame_amount(); i++)
 	{
 		int pos = (i + mem_lastpage) % pa_frame_amount(); // Create a position based off of i.
-		if ( (pos + pages) > pa_frame_amount() )
+		if ( (unsigned int)(pos + pages) > pa_frame_amount() )
 		{
 			i += pages - 2;
 			continue;	

@@ -14,5 +14,9 @@ void *memset(void *dest,int val,size_t n);
 ///Moves n src to dest
 void memmove(void *dest, const void *src, size_t n);
 
-char *strdup(const char *s1);
+char *strdup(char *s1);
+char * strpbrk(const char * str, const char * accept);
+size_t lfind(const char * str, const char accept);
+size_t strspn(const char * str, const char * accept);
+char * strtok_r(char * str, const char * delim, char ** saveptr);
 #endif

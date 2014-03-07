@@ -6,6 +6,7 @@ Defines an ordered array - c compatible
 #include <x86/lib/placement_malloc.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 sint8_t standard_lessthan_predicate(type_t a, type_t b)
 {
    return (a<b)?1:0;
@@ -35,7 +36,7 @@ ordered_array_t place_ordered_array(void *addr, uint32_t max_size, lessthan_pred
 
 void destroy_ordered_array(ordered_array_t *array)
 {
-// kfree(array->array);
+  free(array->array);
 }
 
 void insert_ordered_array(type_t item, ordered_array_t *array)
