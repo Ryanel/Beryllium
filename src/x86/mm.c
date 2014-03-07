@@ -30,7 +30,6 @@ static Meta tail = {0, 0, &head, NULL};
 size_t alloc_end = 0;  // track amount of the heap we have used
 
 void* malloc(size_t size) {
-  printf("malloc: allocating 0x%X\n",size);
   // long word align
   if (size%sizeof(size_t) != 0) {
     size += sizeof(size_t) - (size%sizeof(size_t));
@@ -94,14 +93,12 @@ void* malloc(size_t size) {
   newBlock->free       = 0;
   newBlock->size       = size;
   alloc_end           += size + sizeof(Meta);
-  printf("malloc: returning 0x%X\n",((Meta*) newBlock) + 1);
   return ((Meta*) newBlock) + 1;
 
 }
 
 
 void free(void* ptr) {
-    printf("free: freeing 0x%X\n",ptr);
   if (ptr!=NULL) {
     Meta* block = ((Meta*) ptr) - 1;
     block->free = 1;

@@ -12,12 +12,13 @@ void vfs_init()
 	vfs_tree = tree_create();
 
 	vfs_root = malloc(sizeof(struct vfs_entry));
-	vfs_root->name = strdup("[root/]");
+	vfs_root->name = strdup("[root]");
 	vfs_root->file = NULL;
 	tree_set_root(vfs_tree, vfs_root);
 	vfs_root_node = malloc(sizeof(vfs_node_t));
 	strcpy(vfs_root_node->name,"root");
-	vfs_mount("/",vfs_root_node);
+	vfs_print_tree_node(vfs_tree->root,0);
+
 }
 
 uint32_t read_vfs(vfs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer) 
@@ -83,7 +84,7 @@ vfs_node_t *finddir_vfs(vfs_node_t *node, char *name)
 	}
 }
 
-int create_vfs(char *name, uint16_t permission)
+int create_file_vfs(char *name, uint16_t permission)
 {
 	vfs_node_t * parent;
 	char *cwd = "/";
@@ -101,20 +102,25 @@ int create_vfs(char *name, uint16_t permission)
 		f_path--;
 	}
 
-	klog(LOG_WARN,"VFS","creating file %s within %s (hope these strings are good)", f_path, parent_path);
+	klog(LOG_WARN,"VFS","creating file %s within %s (hope these strings are good)\n", f_path, parent_path);
 
 	parent = kopen(parent_path, 0);
 	free(parent_path);
 
 	if (!parent) {
+		printf("NO parent to file\n");
 		free(path);
 		return -1;
 	}
 
 	if (parent->create) {
+		
 		parent->create(parent, f_path, permission);
 	}
-
+	else
+	{
+		printf("No create function for parent!\n");
+	}
 	free(path);
 	free(parent);
 
@@ -320,19 +326,17 @@ void vfs_print_tree_node(tree_node_t * node, size_t height)
 }
 #endif
 int vfs_mount(char * path, vfs_node_t * local_root) {
-	printf("path = %s; root = 0x%X\n",path,local_root);
 	if (!vfs_tree) {
-		klog(LOG_SEVERE,"VFS", "VFS hasn't been initialized, you can't mount things yet!");
+		klog(LOG_SEVERE,"VFS", "VFS hasn't been initialized, you can't mount things yet!\n");
 		return 1;
 	}
 	if (!path || path[0] != '/') {
-		klog(LOG_ERROR,"VFS", "Path must be absolute for mountpoint.");
+		klog(LOG_ERROR,"VFS", "Path must be absolute for mountpoint.\n");
 		return 2;
 	}
 	int ret_val = 0;
 
 	char * p = strdup(path);
-	printf("p = %X\n",p);
 	char * i = p;
 
 	int path_len   = strlen(p);
@@ -346,7 +350,6 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 	}
 	/* Clean up */
 	p[path_len] = '\0';
-	printf("p = %X\n",p);
 	i = p + 1;
 
 	/* Root */
@@ -356,7 +359,7 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 		/* Special case, we're trying to set the root node */
 		struct vfs_entry * root = (struct vfs_entry *)root_node->value;
 		if (root->file) {
-			klog(LOG_WARN,"VFS", "Path %s already mounted, unmount before trying to mount something else.", path);
+			klog(LOG_WARN,"VFS", "Path %s already mounted, unmount before trying to mount something else.\n", path);
 			ret_val = 3;
 			goto _vfs_cleanup;
 		}
@@ -372,7 +375,7 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 				break;
 			}
 			int found = 0;
-			klog(LOG_INFO,"VFS", "Searching for %s", at);
+			klog(LOG_INFO,"VFS", "Searching for %s\n", at);
 			foreach(child, node->children) {
 				tree_node_t * tchild = (tree_node_t *)child->value;
 				struct vfs_entry * ent = (struct vfs_entry *)tchild->value;
@@ -383,7 +386,7 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 				}
 			}
 			if (!found) {
-				klog(LOG_INFO,"VFS" "Did not find %s, making it.", at);
+				klog(LOG_INFO,"VFS", "Did not find %s, making it.\n", at);
 				struct vfs_entry * ent = malloc(sizeof(struct vfs_entry));
 				ent->name = strdup(at);
 				ent->file = NULL;
@@ -393,7 +396,7 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 		}
 		struct vfs_entry * ent = (struct vfs_entry *)node->value;
 		if (ent->file) {
-			klog(LOG_WARN,"VFS", "Path %s already mounted, unmount before trying to mount something else.", path);
+			klog(LOG_WARN,"VFS", "Path %s already mounted, unmount before trying to mount something else.\n", path);
 			ret_val = 3;
 			goto _vfs_cleanup;
 		}
@@ -401,7 +404,6 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 	}
 
 _vfs_cleanup:
-	printf("p = 0x%X\n",p);
 	free(p);
 	return ret_val;
 }
@@ -426,7 +428,7 @@ vfs_node_t *get_mount_point(char * path, unsigned int path_depth, char **outpath
 			break;
 		}
 		int found = 0;
-		klog(LOG_INFO,"VFS","Searching for %s", at);
+		klog(LOG_INFO,"VFS","Searching for %s\n", at);
 		foreach(child, node->children) {
 			tree_node_t * tchild = (tree_node_t *)child->value;
 			struct vfs_entry * ent = (struct vfs_entry *)tchild->value;
@@ -464,7 +466,7 @@ vfs_node_t *kopen(char *filename, uint32_t flags) {
 		return NULL;
 	}
 
-	klog(LOG_INFO,"VFS", "kopen(%s)", filename);
+	klog(LOG_INFO,"VFS", "kopen(%s)\n", filename);
 
 	/* Reference the current working directory */
 	char *cwd = "/";
@@ -524,7 +526,7 @@ vfs_node_t *kopen(char *filename, uint32_t flags) {
 	vfs_node_t *node_next = NULL;
 	for (; depth < path_depth; ++depth) {
 		/* Search the active directory for the requested directory */
-		klog(LOG_INFO,"VFS","... Searching for %s", path_offset);
+		klog(LOG_INFO,"VFS","... Searching for %s\n", path_offset);
 		node_next = finddir_vfs(node_ptr, path_offset);
 		free(node_ptr);
 		node_ptr = node_next;

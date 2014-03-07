@@ -16,12 +16,16 @@ ARCH_DRIVER_FILES  := $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/drivers/*.
 KERNEL_FILES := $(patsubst %.c,%.o,$(wildcard src/*.c))
 
 ARCH_FILES := $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/*.c))
-SRC_FILES := ${BOOT_FILES} ${KERNEL_FILES} ${DRIVER_FILES} ${LIB_FILES} ${ARCH_FILES} ${ARCH_BOOT_FILES} ${ARCH_LOW_FILES} ${ARCH_LIB_FILES} ${ARCH_DRIVER_FILES}
+
+FS_FILES := $(patsubst %.c,%.o,$(wildcard src/fs/*.c))
+
+SRC_FILES := ${BOOT_FILES} ${KERNEL_FILES} ${DRIVER_FILES} ${LIB_FILES} ${ARCH_FILES} ${ARCH_BOOT_FILES} ${ARCH_LOW_FILES} ${ARCH_LIB_FILES} ${ARCH_DRIVER_FILES} ${FS_FILES}
+
 
 
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS :=-ffreestanding -Wall -g -Wextra
+C_OPTIONS :=-ffreestanding -g
 CPP_OPTIONS := 
 CLANG_OPTIONS := 
 ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi
@@ -53,7 +57,8 @@ arch-files: ${ARCH_FILES}
 drivers: ${DRIVER_FILES}
 arch-drivers: ${ARCH_DRIVER_FILES}
 
-kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers ${KERNEL_FILES}
+fs: ${FS_FILES}
+kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers fs ${KERNEL_FILES}
 	@echo "Linking Kernel"
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${SRC_FILES}
 
@@ -72,7 +77,7 @@ kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers ${K
 	@${CPP} -c ${CPP_OPTIONS}  ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
-	-rm -rf src/*.o src/lib/*.o src/drivers/*.o ${ARCH_DIRECTORY}/*.o ${ARCH_DIRECTORY}/boot/*.o ${ARCH_DIRECTORY}/drivers/*.o ${ARCH_DIRECTORY}/lib/*.o ${ARCH_DIRECTORY}/low/*.o
+	-rm -rf src/*.o src/lib/*.o src/drivers/*.o src/fs/*.o ${ARCH_DIRECTORY}/*.o ${ARCH_DIRECTORY}/boot/*.o ${ARCH_DIRECTORY}/drivers/*.o ${ARCH_DIRECTORY}/lib/*.o ${ARCH_DIRECTORY}/low/*.o
 	-rm -rf util/*.o util/*.bin
 	-rm -rf *.iso
 	-rm -rf kernel.elf kernel.img
