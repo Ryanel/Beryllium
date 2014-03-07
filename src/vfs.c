@@ -6,7 +6,7 @@
 #include <stdio.h>
 tree_t     *vfs_tree = NULL;
 struct vfs_entry * vfs_root = NULL;
-vfs_node_t *vfs_root_node;
+vfs_node_t *vfs_root_node = NULL;
 void vfs_init()
 {
 	vfs_tree = tree_create();
@@ -15,8 +15,6 @@ void vfs_init()
 	vfs_root->name = strdup("[root]");
 	vfs_root->file = NULL;
 	tree_set_root(vfs_tree, vfs_root);
-	vfs_root_node = malloc(sizeof(vfs_node_t));
-	strcpy(vfs_root_node->name,"root");
 	vfs_print_tree_node(vfs_tree->root,0);
 
 }

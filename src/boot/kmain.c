@@ -35,6 +35,9 @@ void kmain()
 	klog(LOG_INFO,"VFS","Mounting devices...\n");
 	vfs_mount("/dev/null", device_null_create());
 	vfs_print_tree_node(vfs_tree->root,0);
+	printf("Reading from /dev/null\n");
+	vfs_node_t *null = kopen("/dev/null", 0);
+	printf("null returns:%d\n",read_vfs(null,0,0,NULL));
 	klog(LOG_INFO,"KERN","Reached end of kmain(); spinning...\n");
 	while(1)
 	{
