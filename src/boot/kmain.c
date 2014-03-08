@@ -6,7 +6,7 @@
 #include <system.h>
 #include <stdlib.h>
 #include <vfs.h>
-#include <fs/null_device.h>
+#include <fs/device_man.h>
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -34,9 +34,9 @@ void kmain()
 	klog(LOG_INFO,"VFS","Starting VFS...\n");
 	vfs_init();
 	klog(LOG_INFO,"VFS","Mounting devices...\n");
-	vfs_mount("/dev/null", device_null_create());
-
+	init_devices();
 	klog(LOG_INFO,"KERN","Reached end of kmain(); spinning...\n");
+	vfs_print_tree_node(vfs_tree->root,0);
 	while(1)
 	{
 

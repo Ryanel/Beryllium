@@ -23,7 +23,7 @@ void close_null(vfs_node_t * node) {
 	return;
 }
 
-vfs_node_t *device_null_create()
+vfs_node_t *null_device_create()
 {
 	vfs_node_t * fnode = malloc(sizeof(vfs_node_t));
 	memset(fnode, 0x00, sizeof(vfs_node_t));

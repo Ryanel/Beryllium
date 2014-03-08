@@ -104,14 +104,14 @@ int create_file_vfs(char *name, uint16_t permission)
 	klog(LOG_WARN,"VFS","creating file %s within %s (hope these strings are good)\n", f_path, parent_path);
 
 	parent = kopen(parent_path, 0);
+	
 	free(parent_path);
-
 	if (!parent) {
-		printf("NO parent to file\n");
-		free(path);
+		printf("No parent to file\n");
+		//free(path);
 		return -1;
 	}
-
+	
 	if (parent->create) {
 		
 		parent->create(parent, f_path, permission);
