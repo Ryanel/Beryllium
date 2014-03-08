@@ -40,6 +40,7 @@ uint32_t write_vfs(vfs_node_t *node, uint32_t offset, uint32_t size, uint8_t *bu
 }
 void open_vfs(vfs_node_t *node, unsigned int flags) 
 {
+	printf("open_vfs: node: 0x%X\n",node);
 	if (node->open) {
 		node->open(node, flags);
 	}
@@ -59,7 +60,7 @@ void close_vfs(vfs_node_t *node)
 
 struct dirent *readdir_vfs (vfs_node_t *node, uint32_t index)
 {
-	if ((node->flags & VFS_DIRECTORY) && node->readdir)
+	if ((node->type & VFS_DIRECTORY) && node->readdir)
 	{
 		struct dirent *ret = node->readdir(node, index);
 		return ret;
@@ -72,7 +73,7 @@ struct dirent *readdir_vfs (vfs_node_t *node, uint32_t index)
 
 vfs_node_t *finddir_vfs(vfs_node_t *node, char *name)
 {
-	if ((node->flags & VFS_DIRECTORY) && node->finddir)
+	if ((node->type & VFS_DIRECTORY) && node->finddir)
 	{
 		vfs_node_t *ret = node->finddir(node, name);
 		return ret;
@@ -243,7 +244,7 @@ char *canonicalize_path(char *cwd, char *input) {
 #include <stdio.h>
 void vfs_print_node(vfs_node_t *node)
 {
-	klog(LOG_DEBUG,"VFS","Reading vfs node '%s'\n",node->name);
+	klog(LOG_DEBUG,"VFS","Reading vfs node '%s' at 0x%X\n",node->name,node);
 	klog(LOG_DEBUG,"VFS","Type: ");
 	if(node->type & VFS_FILE)
 	{
@@ -294,12 +295,15 @@ void vfs_print_node(vfs_node_t *node)
 	klog(LOG_DEBUG,"VFS","From device:");
 	if(node->device & VFS_DEVICE_VFS)
 	{
-		printf("vfs");
+		printf("vfs\n");
 	}
 	else
 	{
-		printf("unkn");
+		printf("unkn\n");
 	}
+	printf("Address of read:0x%X\n",node->read);
+	printf("Address of open:0x%X\n",node->open);
+	read_vfs(node,0,0,0);
 	printf("\n");
 }
 void vfs_print_tree_node(tree_node_t * node, size_t height)
@@ -400,6 +404,7 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 			goto _vfs_cleanup;
 		}
 		ent->file = local_root;
+		vfs_print_node(local_root);
 	}
 
 _vfs_cleanup:
@@ -461,7 +466,7 @@ vfs_node_t *get_mount_point(char * path, unsigned int path_depth, char **outpath
 
 vfs_node_t *kopen(char *filename, uint32_t flags) {
 	/* Simple sanity checks that we actually have a file system */
-	if (!vfs_root_node || !filename) {
+	if (!vfs_tree->root || !filename) {
 		return NULL;
 	}
 

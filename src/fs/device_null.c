@@ -31,7 +31,8 @@ vfs_node_t *device_null_create()
 	strcpy(fnode->name, "null");
 	fnode->uid = 0;
 	fnode->gid = 0;
-	fnode->flags   = VFS_CHARDEVICE;
+	fnode->permissions = VFS_PERMISSION_READ;
+	fnode->flags   = VFS_FILE | VFS_CHARDEVICE;
 	fnode->read    = read_null;
 	fnode->write   = write_null;
 	fnode->open    = open_null;
