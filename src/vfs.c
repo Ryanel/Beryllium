@@ -13,7 +13,7 @@ void vfs_init()
 
 	vfs_root = malloc(sizeof(struct vfs_entry));
 	vfs_root->name = strdup("[root]");
-	vfs_root->file = NULL;
+	vfs_root->file =  NULL;
 	tree_set_root(vfs_tree, vfs_root);
 	vfs_print_tree_node(vfs_tree->root,0);
 
@@ -22,6 +22,7 @@ void vfs_init()
 uint32_t read_vfs(vfs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer) 
 {
 	if (node->read) {
+		printf("read_vfs: node->read = 0x%X\n",node->read);
 		uint32_t ret = node->read(node, offset, size, buffer);
 		return ret;
 	} else {
@@ -319,7 +320,7 @@ void vfs_print_tree_node(tree_node_t * node, size_t height)
 	printf("\n");
 	foreach(child, node->children) {
 		/* Recursively print the children */
-		vfs_print_tree_node(child->value, height + 1);
+		vfs_print_tree_node(child->value, height + 4);
 	}
 }
 #endif

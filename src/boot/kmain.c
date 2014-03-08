@@ -37,7 +37,7 @@ void kmain()
 	vfs_print_tree_node(vfs_tree->root,0);
 	printf("Reading from /dev/null\n");
 	vfs_node_t *null = kopen("/dev/null", 0);
-	printf("null returns:%d\n",read_vfs(null,0,0,NULL));
+	printf("null returns:%d\n",read_vfs(null,0,0,0));
 	klog(LOG_INFO,"KERN","Reached end of kmain(); spinning...\n");
 	while(1)
 	{
