@@ -463,6 +463,7 @@ vfs_node_t *get_mount_point(char * path, unsigned int path_depth, char **outpath
 vfs_node_t *kopen(char *filename, uint32_t flags) {
 	/* Simple sanity checks that we actually have a file system */
 	if (!vfs_tree->root || !filename) {
+		printf("vfs_tree->root or filename = NULL!\n");
 		return NULL;
 	}
 
