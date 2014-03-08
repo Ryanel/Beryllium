@@ -15,7 +15,6 @@ void vfs_init()
 	vfs_root->name = strdup("[root]");
 	vfs_root->file =  NULL;
 	tree_set_root(vfs_tree, vfs_root);
-	vfs_print_tree_node(vfs_tree->root,0);
 
 }
 
@@ -301,9 +300,6 @@ void vfs_print_node(vfs_node_t *node)
 	{
 		printf("unkn\n");
 	}
-	printf("Address of read:0x%X\n",node->read);
-	printf("Address of open:0x%X\n",node->open);
-	read_vfs(node,0,0,0);
 	printf("\n");
 }
 void vfs_print_tree_node(tree_node_t * node, size_t height)
@@ -378,7 +374,7 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 				break;
 			}
 			int found = 0;
-			klog(LOG_INFO,"VFS", "Searching for %s\n", at);
+			//klog(LOG_INFO,"VFS", "Searching for %s\n", at);
 			foreach(child, node->children) {
 				tree_node_t * tchild = (tree_node_t *)child->value;
 				struct vfs_entry * ent = (struct vfs_entry *)tchild->value;
@@ -389,7 +385,7 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 				}
 			}
 			if (!found) {
-				klog(LOG_INFO,"VFS", "Did not find %s, making it.\n", at);
+				//klog(LOG_INFO,"VFS", "Did not find %s, making it.\n", at);
 				struct vfs_entry * ent = malloc(sizeof(struct vfs_entry));
 				ent->name = strdup(at);
 				ent->file = NULL;
@@ -404,7 +400,7 @@ int vfs_mount(char * path, vfs_node_t * local_root) {
 			goto _vfs_cleanup;
 		}
 		ent->file = local_root;
-		vfs_print_node(local_root);
+		//vfs_print_node(local_root);
 	}
 
 _vfs_cleanup:
