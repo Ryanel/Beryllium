@@ -1,6 +1,6 @@
 #include <vfs.h>
 #include <log.h>
-#include <stdint.h>
+#include <stdlib.h>
 #include <types.h>
 #include <string.h>
 vfs_node_t *initrd_root;
