@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <vfs.h>
 #include <fs/device_man.h>
+#include <vterm.h>
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -31,12 +32,14 @@ void kmain()
 	klog(LOG_INFO,"KERN","Finished initialising CoreLibs!\n");
 	video_graphics_init();
 
-	klog(LOG_INFO,"VFS","Starting VFS...\n");
+	klog(LOG_DEBUG,"VFS","Starting VFS...\n");
 	vfs_init();
-	klog(LOG_INFO,"VFS","Mounting devices...\n");
 	init_devices();
-	klog(LOG_INFO,"KERN","Reached end of kmain(); spinning...\n");
-	vfs_print_tree_node(vfs_tree->root,0);
+
+	klog(LOG_INFO,"KERN","Spinning...\n");
+
+	term_t* term = term_create(80, 24, 0);
+	term_writes(term,0,0,"Hello Virtual Terminal World!");
 	while(1)
 	{
 
