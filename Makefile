@@ -42,7 +42,7 @@ GENISO := xorriso -as mkisofs
 	
 .PHONY: iso clean
 
-all:clean kernel iso
+all:kernel iso
 
 arch-boot: ${ARCH_BOOT_FILES}
 boot: ${BOOT_FILES}
