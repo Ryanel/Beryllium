@@ -10,6 +10,7 @@
 #include <vterm.h>
 #include <scheduler.h>
 #include <thread.h>
+#include <driver.h>
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -43,6 +44,5 @@ void kmain()
 	klog(LOG_DEBUG,"VFS","Starting VFS...\n");
 	vfs_init();
 	init_devices();
-
 	for(;;); //Halt!
 }

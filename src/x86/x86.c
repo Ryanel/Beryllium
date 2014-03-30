@@ -13,12 +13,20 @@ void pit_install();
 void init_x86()
 {
 	asm("cli");
+
 	gdt_setup();
+
 	idt_setup();
+
 	isrs_setup();
+
 	irq_install();
-	pit_install();
+
+	pit_init();
+
 	paging_init();
+
 	asm("sti");
+
 	memory_init();
 }
