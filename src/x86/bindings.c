@@ -19,7 +19,6 @@ void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot
 	#ifdef IS_RELEASE
 	klog_setmask(LOG_INFO);
 	#endif
-
 	terminal_init();
 
 	#ifdef ENABLE_SERIAL

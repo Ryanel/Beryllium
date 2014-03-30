@@ -2,6 +2,7 @@
 #define VIDEO_H
 
 #include <types.h>
+void video_init();
 ///Inits graphics
 int video_graphics_init();
 ///Prints a char
