@@ -12,22 +12,7 @@ int video_device = 0; //Textmode x86
 
 int video_graphics_init() //returns 0 if failed, 1 if sucessfull
 {
-	#ifdef X86
-	if(!bga_isavalable())
-	{
-		klog(LOG_WARN,"VIDEO","BGA unsupported, setting terminal as output\n");
-		return 0;
-	}
-	#ifdef ENABLE_VIDEO
-	else
-	{
-		klog(LOG_INFO,"VIDEO","BGA avalable, setting BGA framebuffer as output\n");
-		bga_init();
-		return 0;
-	}
-	#endif
-	return 1;
-	#endif
+	//bga_init();
 	return 0;
 }
 

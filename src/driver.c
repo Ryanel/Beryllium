@@ -6,43 +6,37 @@
 
 driver_t * driver_list[0xFF];
 int next_driver = 0;
-char* driver_decodeclass(int class)
-{
-	switch(class)
-	{
-		case 0x01: return "Mass Storage Controller";
-		case 0x02: return "Network Controller";
-		case 0x03: return "Display Controller";
-		case 0x04: return "Multimedia Controller";
-		case 0x05: return "Memory Controller";
-		case 0x06: return "Bridge Device";
-		case 0x07: return "Simple Communication Controller";
-		case 0x08: return "Base System Peripheral";
-		case 0x09: return "Input Devices";
-		case 0x0A: return "Docking Stations";
-		case 0x0B: return "Processors";
-		case 0x0C: return "Serial Bus Controller";
-		case 0x0D: return "Wireless Controller";
-		case 0x0E: return "Intelligent I/O Controller";
-		case 0x0F: return "Satellite Communication Controller";
-		case 0x10: return "Encryption/Decryption Controller";
-		case 0x11: return "Data Acquisition and Signal Processing Controller";
-		default:    return "Unknown";
-	}
-}
+
 void driver_printinfo(driver_t *driver)
 {
-	printf("%s: ",driver->name);
-	if(driver->loaded)
+	printf("|| %-50s|",driver->name);
+	char *status = "";
+	if(driver->status == DRIVER_STATUS_ONLINE)
 	{
-		printf("Is loaded\n");
+		status = "online";
 	}
-	else
+	else if(driver->status == DRIVER_STATUS_OFFLINE)
 	{
-		printf("Is unloaded\n");
+		status = "offline";
 	}
-	printf("Class: %s ",driver_decodeclass(driver->class));
-	printf("\n");
+	else if(driver->status == DRIVER_STATUS_ABORTED)
+	{
+		status = "aborted";
+	}
+
+	printf("%8s|0x%03X|0x%03X ||\n",status,driver->class,driver->type);
+}
+
+void driver_list_drivers()
+{
+	printf("// %-50s|%8s|Class|Type  \\\\\n","Driver Name","Status");
+	for(int i = 0; i != 0xFF; i++)
+	{
+		if(driver_list[i])
+		{
+			driver_printinfo(driver_list[i]);
+		}
+	}
 }
 
 int init = 1;
@@ -55,6 +49,7 @@ void driver_register(driver_t * driver)
 		{
 			driver_list[i] = NULL;
 		}
+		init = 0;
 	}
 	driver->driver_id = next_driver;
 	driver_list[next_driver] = driver;
@@ -86,14 +81,15 @@ int driver_start(driver_t * driver)
 		int ret = driver->start();
 		if(ret)
 		{
+			driver->status = DRIVER_STATUS_ABORTED;
 			return ret;
 		}
-		driver->loaded = 1;
+		driver->status = DRIVER_STATUS_ONLINE;
 		return ret;
 	}
 	else
 	{
-		klog(LOG_ERROR,"DRV","Driver %s does not support starting!\n",driver->name);
+		klog(LOG_ERROR,"DRV","Driver '%s' does not support starting!\n",driver->name);
 		return 0xFFFFFFFF;
 	}
 }

@@ -4,10 +4,13 @@
 #include <lib/tree.h>
 #include <stdlib.h>
 #include <stdio.h>
-tree_t     *vfs_tree = NULL;
-struct vfs_entry * vfs_root = NULL;
-vfs_node_t *vfs_root_node = NULL;
-void vfs_init()
+#include <driver.h>
+driver_t			 vfs_driver;
+tree_t     			*vfs_tree 		= NULL;
+struct vfs_entry 	*vfs_root 		= NULL;
+vfs_node_t 			*vfs_root_node 	= NULL;
+
+int vfs_start()
 {
 	vfs_tree = tree_create();
 
@@ -15,7 +18,16 @@ void vfs_init()
 	vfs_root->name = strdup("[root]");
 	vfs_root->file =  NULL;
 	tree_set_root(vfs_tree, vfs_root);
-
+	return 0;
+}
+void vfs_init()
+{
+	vfs_driver.class = 0x1;
+	vfs_driver.type = 0x80;
+	strcpy(vfs_driver.name,"Virutal File System");
+	vfs_driver.start = &vfs_start;
+	driver_register( &vfs_driver );
+	driver_start(&vfs_driver);
 }
 
 uint32_t read_vfs(vfs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer) 

@@ -8,11 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 
-unsigned long        timer_ticks     = 0;
-unsigned long        timer_ticks_old = 0;
-
-interrupt_message_t  interrupt_payload;
-driver_t			 pit_driver;
+driver_t			 keyboard_driver;
 
 void pit_phase(int hz)
 {

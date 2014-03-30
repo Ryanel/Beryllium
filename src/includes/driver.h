@@ -5,13 +5,15 @@ typedef struct {
 	int type;
 	void* data;
 } driver_msg_t;
-
+#define DRIVER_STATUS_OFFLINE 0
+#define DRIVER_STATUS_ONLINE  1
+#define DRIVER_STATUS_ABORTED 2
 typedef struct {
 	char name[64];		          ///Name of driver
 	int driver_id;		          ///Auto assigned
 	unsigned char class;          ///Type of Driver
 	unsigned char type;           ///Type of Driver
-	int loaded;			///Is the driver loaded
+	int status;			///Is the driver loaded
 	void* memory_region;///Pointer to the memory region owned by this driver
 	int (*start)();
 	int (*stop)();

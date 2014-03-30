@@ -2,8 +2,10 @@
 #include <x86/drivers/bga.h>
 #include <drivers/framebuffer.h>
 #include <stdio.h>
+#include <driver.h>
 
-bool bga_isinit = false;
+bool 		bga_isinit = false;
+driver_t	bga_driver;
 
 framebuffer_t bga_getFramebuffer()
 {
@@ -42,7 +44,7 @@ int bga_isavalable()
 	return 1;
 }
 
-int bga_init()
+int bga_start()
 {
 	if(!bga_isavalable())
 	{
@@ -51,6 +53,16 @@ int bga_init()
 	bga_setmode(800,600,32,1,0);
 	bga_isinit = true;
 	return 0;
+}
+
+int bga_init()
+{
+	bga_driver.class = 0x4;
+	bga_driver.type = 0x0;
+	strcpy(bga_driver.name,"Bochs Graphics Adaptor");
+	bga_driver.start = &bga_start;
+	driver_register( &bga_driver );
+	driver_start(&bga_driver);
 }
 
 void bga_setmode(unsigned int width, unsigned int height, unsigned int bitdepth, int linearframebuffer, int clearvideomemory)
