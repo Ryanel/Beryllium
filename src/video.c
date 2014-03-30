@@ -1,5 +1,5 @@
 #include <log.h>
-
+#include <mutex.h>
 #ifdef X86
 #include <x86/drivers/textmode.h>
 #include <x86/drivers/bga.h>
@@ -10,18 +10,20 @@
 
 int video_device = 0; //Textmode x86
 
+mutex_t *graphics_mutex;
+
 int video_graphics_init() //returns 0 if failed, 1 if sucessfull
 {
 	#ifdef X86
 	if(!bga_isavalable())
 	{
-		klog(LOG_WARN,"VIDEO","BGA unsupported, setting terminal as output\n");
+		klog(LOG_WARN,"VID","BGA unsupported, setting terminal as output\n");
 		return 0;
 	}
 	#ifdef ENABLE_VIDEO
 	else
 	{
-		klog(LOG_INFO,"VIDEO","BGA avalable, setting BGA framebuffer as output\n");
+		klog(LOG_INFO,"VID","BGA avalable, setting BGA framebuffer as output\n");
 		bga_init();
 		return 0;
 	}
@@ -38,46 +40,42 @@ int video_graphics_capable()
 
 void video_printchar(int x,int y, unsigned char c)
 {
-	#ifdef X86
+	mutex_lock(graphics_mutex);
 	textmode_write(x,y,c);
-	#endif
-	#ifdef ARM
-
-	#endif
+	mutex_unlock(graphics_mutex);
 }
 
 void video_printcoloredchar(int x,int y, unsigned char c, unsigned char attribute)
 {
-	#ifdef X86
+	mutex_lock(graphics_mutex);
 	textmode_write_color(x,y,c, attribute);
-	#endif
-	#ifdef ARM
-
-	#endif
+	mutex_unlock(graphics_mutex);
 }
 void video_scroll(int from,int to)
 {
-	#ifdef X86
+	mutex_lock(graphics_mutex);
 	textmode_scroll(from,to);
-	#endif
+	mutex_unlock(graphics_mutex);
 }
 
 void video_setcursor(int x,int y)
 {
-	#ifdef X86
+	mutex_lock(graphics_mutex);
 	textmode_setcursor(x,y);
-	#endif
+	mutex_unlock(graphics_mutex);
 }
 
 void video_setattributetext(unsigned char back, unsigned char fore)
 {
-	#ifdef X86
+	mutex_lock(graphics_mutex);
 	textmode_setcolor(back,fore);
-	#endif
+	mutex_unlock(graphics_mutex);
+	
 }
 void video_resetattributetext()
 {
-	#ifdef X86
+	mutex_lock(graphics_mutex);
 	textmode_resetcolor();
-	#endif
+	mutex_unlock(graphics_mutex);
+	
 }
