@@ -8,8 +8,8 @@
 #include <x86/low/isr.h>
 #include <x86/paging.h>
 #include <x86/memory.h>
-void pit_install();
-
+void pit_init();
+void kb_init();
 void init_x86()
 {
 	asm("cli");
@@ -23,6 +23,8 @@ void init_x86()
 	irq_install();
 
 	pit_init();
+	
+	kb_init();
 
 	paging_init();
 

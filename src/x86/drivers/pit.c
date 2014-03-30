@@ -3,7 +3,6 @@
 #include <x86/low/irq.h>
 #include <x86/ports.h>
 #include <timer.h>
-#include <interrupt.h>
 #include <driver.h>
 #include <string.h>
 #include <stdio.h>
@@ -11,7 +10,6 @@
 unsigned long        timer_ticks     = 0;
 unsigned long        timer_ticks_old = 0;
 
-interrupt_message_t  interrupt_payload;
 driver_t			 pit_driver;
 
 void pit_phase(int hz)
@@ -26,16 +24,11 @@ void timer_handler(struct regs *r)
 {
 	if(r->int_no) {} // Used to disable unused argument warning
 	timer_ticks++;
-	interrupt_payload.isHandled = 0;
-	io_interrupt_recieve(&interrupt_payload);
+	timer_recieveTick(0);
 }
 
 int pit_start()
 {
-	interrupt_payload.type 			= IO_TYPE_TIMER;
-	interrupt_payload.isQueueable	= 0;
-	interrupt_payload.isHandled 	= 0;
-	interrupt_payload.data			= 0x0;
 	register_interrupt_handler(IRQ0,&timer_handler);
 	pit_phase(1000);
 	return 0;
