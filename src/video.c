@@ -14,22 +14,7 @@ mutex_t *graphics_mutex;
 
 int video_graphics_init() //returns 0 if failed, 1 if sucessfull
 {
-	#ifdef X86
-	if(!bga_isavalable())
-	{
-		klog(LOG_WARN,"VID","BGA unsupported, setting terminal as output\n");
-		return 0;
-	}
-	#ifdef ENABLE_VIDEO
-	else
-	{
-		klog(LOG_INFO,"VID","BGA avalable, setting BGA framebuffer as output\n");
-		bga_init();
-		return 0;
-	}
-	#endif
-	return 1;
-	#endif
+	//bga_init();
 	return 0;
 }
 

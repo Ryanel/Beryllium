@@ -31,3 +31,4 @@ libiconv*
 *.bin
 
 doc/*
+*.log

@@ -1,16 +1,16 @@
-#include <stdio.h>
-#include <x86/x86.h>
 #include <x86/low/isr.h>
 #include <x86/low/idt.h>
 #include <x86/low/irq.h>
 #include <x86/ports.h>
-#include <x86/drivers/serial.h>
 #include <timer.h>
-#include <interrupt.h>
-unsigned long timer_ticks = 0;
-unsigned long timer_ticks_old = 0;
+#include <driver.h>
+#include <string.h>
+#include <stdio.h>
 
-interrupt_message_t *data = 0;
+unsigned long        timer_ticks     = 0;
+unsigned long        timer_ticks_old = 0;
+
+driver_t			 pit_driver;
 
 void pit_phase(int hz)
 {
@@ -24,34 +24,39 @@ void timer_handler(struct regs *r)
 {
 	if(r->int_no) {} // Used to disable unused argument warning
 	timer_ticks++;
-	data->isHandled = 0;
-	io_interrupt_recieve(data);
+	timer_recieveTick(0);
 }
 
-void pit_install()
+int pit_start()
 {
-	data->type 			= IO_TYPE_TIMER;
-	data->isQueueable	= 0;
-	data->isHandled 	= 0;
-	data->data			= 0x0;
 	register_interrupt_handler(IRQ0,&timer_handler);
 	pit_phase(1000);
+	return 0;
 }
 
-int pit_has_ticked()
+int pit_stop()
 {
-	int retval=timer_ticks-timer_ticks_old;
-	timer_ticks_old=timer_ticks;
-	return retval;
+	return 0xFFFFFFFF;
 }
 
-void pit_wait(unsigned int ticks)
+int pit_recieve(driver_msg_t * data)
 {
-	unsigned int eticks;
-
-	eticks = timer_ticks + ticks;
-	while(timer_ticks < eticks)
+	printf("pit: recieved message...\n");
+	if(data->type == 0) //Change clockrate
 	{
-		
+		int rate = (int)data->data;
+		pit_phase(rate);
+		printf("pit: changed clockerate to %dhz\n",rate);
 	}
+}
+void pit_init()
+{
+	pit_driver.class = 0x8;
+	pit_driver.type = 0x01;
+	strcpy(pit_driver.name,"Programmable Interrupt Timer");
+	pit_driver.start = &pit_start;
+	pit_driver.stop = &pit_stop;
+	pit_driver.recieve = &pit_recieve;
+	driver_register( &pit_driver );
+	driver_start(&pit_driver);
 }

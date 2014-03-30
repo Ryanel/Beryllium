@@ -1,5 +1,6 @@
 #ifndef STDLIB_H
 #define STDLIB_H
+#include <types.h>
 ///Allocates memory
 void     *malloc(size_t);				//< The standard function.
 ///(Re)Allocates memory
