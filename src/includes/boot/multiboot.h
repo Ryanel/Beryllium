@@ -1,3 +1,5 @@
+#ifndef MULTIBOOT_H
+#define MULTIBOOT_H
 #include <types.h>
 
 #define MULTIBOOT_FLAG_MEM     0x001
@@ -43,3 +45,12 @@ struct multiboot
 }  __attribute__((packed));
 
 typedef struct multiboot_header multiboot_t;
+typedef struct multiboot_memory_map {
+   unsigned int size;
+   unsigned long long int base_addr;
+// You can also use: unsigned long long int base_addr; if supported.
+   unsigned long long int length;
+// You can also use: unsigned long long int length; if supported.
+   unsigned int type;
+} multiboot_memory_map_t;
+#endif

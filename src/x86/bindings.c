@@ -39,6 +39,12 @@ void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot
 		placement_address = initrd_end;
 	}
 	init_x86();
+	klog(LOG_DEBUG,"MEM","Loading memory map...\n");
+	multiboot_memory_map_t* mmap = mboot->mmap_addr;
+	char* string;
+	while(mmap < mboot->mmap_addr + mboot->mmap_length) {
+		mmap = (multiboot_memory_map_t*) ( (unsigned int)mmap + mmap->size + sizeof(unsigned int) );
+	}
 	klog(LOG_INFO,"x86","Done starting hardware!\n");
 	kmain();
 }
