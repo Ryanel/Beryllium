@@ -11,18 +11,18 @@ void device_print_tree(tree_node_t * node, size_t height)
 	/* End recursion on a blank entry */
 	if (!node) return;
 	/* Indent output */
-	for (uint32_t i = 0; i < height; ++i) { printf(" "); }
+	for (uint32_t i = 0; i < height; ++i) { printf("-"); }
 	/* Get the current process */
 	device_t * dnode = (device_t *)node->value;
 	/* Print the process name */
 	if (dnode->name) {
-		printf("%s",dnode->name);
+		printf(">%s",dnode->name);
 	}
 	/* Linefeed */
 	printf("\n");
 	foreach(child, node->children) {
 		/* Recursively print the children */
-		device_print_tree(child->value, height + 4);
+		device_print_tree(child->value, height + 3);
 	}
 }
 
@@ -37,7 +37,7 @@ int deviceman_start()
 	device_tree = tree_create();
 
 	dev_root              = malloc(sizeof(device_t));
-	dev_root->name        = "root";
+	dev_root->name        = "[device_root]";
 	dev_root->type        = 0;
 	dev_root->flags       = 0;
 	dev_root->permissions = 0;
