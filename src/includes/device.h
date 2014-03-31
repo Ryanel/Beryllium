@@ -13,6 +13,7 @@ typedef struct {
 } kernel_device_config_t;
 
 typedef struct {
+	char *name;
 	uint32_t type;
 	uint32_t flags;
 	uint32_t permissions;
