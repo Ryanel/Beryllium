@@ -3,7 +3,7 @@
 #include <drivers/framebuffer.h>
 #include <stdio.h>
 #include <driver.h>
-
+#include <device.h>
 bool 		bga_isinit = false;
 driver_t	bga_driver;
 

@@ -43,8 +43,11 @@ typedef struct {
 	//TODO
 	//int (*recieve)(driver_msg_t*);
 } device_t;
+
 void device_manager_insert_kernel();
 int device_manager_start();
 uint32_t device_start(device_t * dev);
 uint32_t device_stop(device_t * dev);
+void device_manager_insert(device_t * device,device_t * parent);
+device_t * device_search(char *name);
 #endif

@@ -9,7 +9,7 @@ void mutex_lock(mutex_t *mutex)
 			asm("pause");
 		}
 	}
-	mutex = 1;
+	*mutex = 1;
 }
 
 void mutex_unlock(mutex_t *mutex)

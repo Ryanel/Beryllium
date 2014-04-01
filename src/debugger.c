@@ -2,6 +2,8 @@
 #include <video.h>
 #include <terminal.h>
 #include <kstat.h>
+#include <stdio.h>
+void terminal_clear();
 extern const char *statusBarTitle;
 const char *oldtitle;
 void enter_debugger()

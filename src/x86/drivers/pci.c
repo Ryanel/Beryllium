@@ -2,6 +2,7 @@
 #include <x86/ports.h>
 #include <stdio.h>
 #include <driver.h>
+#include <device.h>
 driver_t			 pci_driver;
 
 int pci_start()
