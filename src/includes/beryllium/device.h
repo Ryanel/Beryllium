@@ -1,6 +1,6 @@
 #ifndef DEVICE_H
 #define DEVICE_H
-#include <driver.h>
+#include <beryllium/driver.h>
 #include <mutex.h>
 #define DEVICE_INTERFACE_KERNEL   0x0
 #define DEVICE_INTERFACE_PCI      0x1

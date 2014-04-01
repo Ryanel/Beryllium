@@ -1,8 +1,8 @@
 #include <x86/drivers/serial.h>
 #include <x86/ports.h>
 #include <stdio.h>
-#include <driver.h>
-#include <device.h>
+#include <beryllium/driver.h>
+#include <beryllium/device.h>
 driver_t			 serial_driver;
 device_t             serial_device;
 int serial_start()

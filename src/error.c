@@ -1,6 +1,6 @@
 #include <log.h>
 #include <error.h>
-#include <video.h>
+#include <beryllium/video.h>
 #include <stdio.h>
 #ifdef X86
 #include <x86/low/isr.h>

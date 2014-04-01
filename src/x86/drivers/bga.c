@@ -1,9 +1,9 @@
 #include <x86/ports.h>
 #include <x86/drivers/bga.h>
-#include <drivers/framebuffer.h>
+#include <beryllium/drivers/framebuffer.h>
 #include <stdio.h>
-#include <driver.h>
-#include <device.h>
+#include <beryllium/driver.h>
+#include <beryllium/device.h>
 bool 		bga_isinit = false;
 driver_t	bga_driver;
 

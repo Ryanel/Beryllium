@@ -1,4 +1,4 @@
-#include <vterm.h>
+#include <beryllium/vterm.h>
 #include <stdlib.h>
 
 term_t* term_create(int width, int height, int isPhysical)

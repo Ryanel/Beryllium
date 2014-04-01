@@ -1,6 +1,6 @@
 #include <log.h>
 #include <lib/tree.h>
-#include <device.h>
+#include <beryllium/device.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

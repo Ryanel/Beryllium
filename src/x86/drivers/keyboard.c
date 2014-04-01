@@ -2,11 +2,11 @@
 #include <x86/low/idt.h>
 #include <x86/low/irq.h>
 #include <x86/ports.h>
-#include <timer.h>
-#include <driver.h>
+#include <beryllium/timer.h>
+#include <beryllium/driver.h>
 #include <string.h>
 #include <stdio.h>
-#include <device.h>
+#include <beryllium/device.h>
 #define KB_TRAP_CTL    0x01
 #define KB_TRAP_LSHIFT 0x02
 #define KB_TRAP_RSHIFT 0x03

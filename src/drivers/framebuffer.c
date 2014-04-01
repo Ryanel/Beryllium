@@ -1,4 +1,4 @@
-#include <drivers/framebuffer.h>
+#include <beryllium/drivers/framebuffer.h>
 void fb_putpixel(framebuffer_t fb, int x,int y, int color) {
 	unsigned where = x*fb.pixwidth + y*fb.pitch;
 	fb.memory_start[where] = color & 255;              // BLUE

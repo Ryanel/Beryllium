@@ -1,6 +1,6 @@
 #include <terminal.h>
 #include <types.h>
-#include <video.h>
+#include <beryllium/video.h>
 #ifdef X86
 #include <x86/ports.h>
 #endif

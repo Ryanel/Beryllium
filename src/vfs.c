@@ -1,11 +1,11 @@
-#include <vfs.h>
+#include <beryllium/vfs.h>
 #include <string.h>
 #include <log.h>
 #include <lib/tree.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <driver.h>
-#include <device.h>
+#include <beryllium/driver.h>
+#include <beryllium/device.h>
 driver_t			 vfs_driver;
 device_t            *vfs_device;
 tree_t     			*vfs_tree 		= NULL;

@@ -1,7 +1,7 @@
 #include <log.h>
 #include <types.h>
-#include <timer.h>
-#include <ktaskman.h>
+#include <beryllium/timer.h>
+#include <beryllium/ktaskman.h>
 /** High resolution timer ticks. Set every single clock tick **/
 uint32_t timer_hi = 0;
 /** Low resolution timer ticks/ Set every single overflow of timer_hi **/

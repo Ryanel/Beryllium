@@ -2,11 +2,11 @@
 #include <x86/low/idt.h>
 #include <x86/low/irq.h>
 #include <x86/ports.h>
-#include <timer.h>
-#include <driver.h>
+#include <beryllium/timer.h>
+#include <beryllium/driver.h>
 #include <string.h>
 #include <stdio.h>
-#include <device.h>
+#include <beryllium/device.h>
 unsigned long        timer_ticks     = 0;
 unsigned long        timer_ticks_old = 0;
 
