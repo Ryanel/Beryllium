@@ -146,7 +146,7 @@ void *sbrk(size_t amount)
 	{
 		actual_amount++;
 	}
-	printf("sbrk: allocating %d pages to cover 0x%X bytes\n",actual_amount,amount);
+	//printf("sbrk: allocating %d pages to cover 0x%X bytes\n",actual_amount,amount);
 	void *tmp = memory_alloc_pages(actual_amount);
 	return tmp;
 }

@@ -31,7 +31,7 @@ void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot
 		return;
 	}
 	//Set kernel properties from multiboot info.
-	klog(LOG_INFO,"BOOT","%d modules loaded with kernel\n",mboot->mods_count);
+	klog(LOG_INFO,"MBT","%d modules loaded with kernel\n",mboot->mods_count);
 	if(mboot->mods_count != 0)
 	{
 		initrd_location = *((uint32_t*)mboot->mods_addr);

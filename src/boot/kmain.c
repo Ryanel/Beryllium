@@ -25,7 +25,7 @@ int fn()
 
 void kmain()
 {
-	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.3 (git)");
+	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.4 (git)");
 	klog(LOG_INFO,"KRN","CoreLibs initialising...\n");
 	#ifdef DEBUG
 	klog(LOG_WARN,"KRN","Running Debug Kernel! Some things might not work properly!\n");
