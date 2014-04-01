@@ -54,11 +54,10 @@ void serial_print(const char *c)
 }
 void serial_init() {
 	serial_driver.start = &serial_start;
-	driver_start(&serial_driver);
 	serial_device.name       = "serial";
 	serial_device.type       = DEVICE_TYPE_HARDWARE;
 	serial_device.flags      = 0;
 	serial_device.interface  = DEVICE_INTERFACE_IO;
 	serial_device.driver     = &serial_driver;
-	serial_device.status     = DEVICE_STATUS_ONLINE;
+	device_start(&serial_device);
 }

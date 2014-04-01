@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <driver.h>
+#include <device.h>
 driver_t			 vfs_driver;
+device_t            *vfs_device;
 tree_t     			*vfs_tree 		= NULL;
 struct vfs_entry 	*vfs_root 		= NULL;
 vfs_node_t 			*vfs_root_node 	= NULL;
@@ -23,7 +25,14 @@ int vfs_start()
 void vfs_init()
 {
 	vfs_driver.start = &vfs_start;
-	driver_start(&vfs_driver);
+	vfs_device = malloc(sizeof(device_t));
+	vfs_device->name       = "vfs";
+	vfs_device->type       = DEVICE_TYPE_INTERGRATED;
+	vfs_device->flags      = 0;
+	vfs_device->interface  = DEVICE_INTERFACE_KERNEL;
+	vfs_device->driver     = &vfs_driver;
+	device_start(vfs_device);
+	device_manager_insert(vfs_device, device_search("kernel_ns"));
 }
 
 uint32_t read_vfs(vfs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer) 

@@ -2,21 +2,21 @@
 #include <types.h>
 void mutex_lock(mutex_t *mutex)
 {
-	if (mutex->value)
+	if (mutex)
 	{
-		while(mutex->value)
+		while(mutex)
 		{
 			asm("pause");
 		}
 	}
-	mutex->value = true;
+	mutex = 1;
 }
 
 void mutex_unlock(mutex_t *mutex)
 {
-	if (mutex->value)
+	if (mutex)
 	{
-		mutex->value = false;
+		mutex = 0;
 	}
 	else
 	{
@@ -26,5 +26,5 @@ void mutex_unlock(mutex_t *mutex)
 
 void mutex_init(mutex_t *mutex)
 {
-	mutex->value = false;
+	mutex = 0;
 }

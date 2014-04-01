@@ -126,7 +126,7 @@ void kb_handler(struct regs *r)
 		}
 		else
 		{
-
+			printf("%c",kbdus[scancode]);
 		}
 	}
 }
@@ -146,11 +146,10 @@ void kb_init()
 {
 	keyboard_driver.start = &kb_start;
 	keyboard_driver.stop = &kb_stop;
-	driver_start(&keyboard_driver);
-	keyboard_device.name       = "ps/2_keyboard";
+	keyboard_device.name       = "ps2_keyboard";
 	keyboard_device.type       = DEVICE_TYPE_HARDWARE;
 	keyboard_device.flags      = 0;
 	keyboard_device.interface  = DEVICE_INTERFACE_IO;
 	keyboard_device.driver     = &keyboard_driver;
-	keyboard_device.status     = DEVICE_STATUS_ONLINE;
+	device_start(&keyboard_device);
 }

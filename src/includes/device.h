@@ -13,7 +13,7 @@
 #define DEVICE_TYPE_HARDWARE      0x2
 #define DEVICE_TYPE_INTERGRATED   0x3
 
-#define DEVICE_STATUS_UNSUPPORTED 0x0
+#define DEVICE_STATUS_UNSET       0x0
 #define DEVICE_STATUS_HALTED      0x1
 #define DEVICE_STATUS_ZOMBIE      0x2
 #define DEVICE_STATUS_ONLINE      0x3
@@ -32,7 +32,7 @@ typedef struct {
 	uint32_t permissions;
 	uint32_t interface;
 	uint32_t status;
-	mutex_t call_mutex;
+	mutex_t * mutex;
 	///Driver
 	driver_t * driver;
 	///PCI Configurationm
@@ -45,4 +45,6 @@ typedef struct {
 } device_t;
 void device_manager_insert_kernel();
 int device_manager_start();
+uint32_t device_start(device_t * dev);
+uint32_t device_stop(device_t * dev);
 #endif

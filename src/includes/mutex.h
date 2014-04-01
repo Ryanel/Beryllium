@@ -4,10 +4,7 @@
 /**
 A binary semaphore
 **/
-typedef struct {
-	/// The value of the semaphore - true or false.
-	bool value;
-} mutex_t;
+typedef uint8_t mutex_t;
 /**
 Locks the mutex
 If it cannot lock it, it spins until it is freed.

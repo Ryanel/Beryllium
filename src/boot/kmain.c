@@ -31,6 +31,7 @@ void kmain()
 	klog(LOG_WARN,"KRN","Running Debug Kernel! Some things might not work properly!\n");
 	#endif
 	
+	device_manager_start();
 
 	klog(LOG_DEBUG,"I/O","Verifiying timer / interrupts (waiting 10 ticks)\n");
 	int timer_hi_orig = timer_getHi();
@@ -41,9 +42,8 @@ void kmain()
 	klog(LOG_INFO,"KRN","Finished initialising CoreLibs!\n");
 	video_graphics_init();
 
-	klog(LOG_DEBUG,"VFS","Starting VFS...\n");
 	vfs_init();
-	init_devices();
-	device_manager_start();
+	init_vfs_devices();
+	
 	for(;;); //Halt!
 }

@@ -43,11 +43,10 @@ void pit_init()
 {
 	pit_driver.start = &pit_start;
 	pit_driver.stop = &pit_stop;
-	driver_start(&pit_driver);
 	pit_device.name       = "pit";
 	pit_device.type       = DEVICE_TYPE_HARDWARE;
 	pit_device.flags      = 0;
 	pit_device.interface  = DEVICE_INTERFACE_IO;
 	pit_device.driver     = &pit_driver;
-	pit_device.status     = DEVICE_STATUS_ONLINE;
+	device_start(&pit_device);
 }

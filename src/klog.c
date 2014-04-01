@@ -27,10 +27,10 @@ void klog(int mode, const char *title, const char *fmt, ...)
 				video_setattributetext(background,0xF);
 				break;
 			case LOG_DEBUG:
-				video_setattributetext(background,0x8);///was 0x8;
+				video_setattributetext(background,0x7);///was 0x8;
 				break;
 			default:
-				video_setattributetext(background,0x7);
+				video_setattributetext(background,0x8);
 		}
 		#ifdef KLOG_TITLE_TIME
 		printf("[%08d]:",timer_getHi());
