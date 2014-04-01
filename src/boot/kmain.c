@@ -44,6 +44,6 @@ void kmain()
 	klog(LOG_DEBUG,"VFS","Starting VFS...\n");
 	vfs_init();
 	init_devices();
-	deviceman_start();
+	device_manager_start();
 	for(;;); //Halt!
 }

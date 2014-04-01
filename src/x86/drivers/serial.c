@@ -2,8 +2,9 @@
 #include <x86/ports.h>
 #include <stdio.h>
 #include <driver.h>
+#include <device.h>
 driver_t			 serial_driver;
-
+device_t             serial_device;
 int serial_start()
 {
 	outb(COM1 + 1, 0x00);    // Disable all interrupts
@@ -52,10 +53,12 @@ void serial_print(const char *c)
 	}
 }
 void serial_init() {
-	serial_driver.class = 0x7;
-	serial_driver.type = 0x0;
-	strcpy(serial_driver.name,"Serial Console");
 	serial_driver.start = &serial_start;
-	driver_register( &serial_driver );
 	driver_start(&serial_driver);
+	serial_device.name       = "serial";
+	serial_device.type       = DEVICE_TYPE_HARDWARE;
+	serial_device.flags      = 0;
+	serial_device.interface  = DEVICE_INTERFACE_IO;
+	serial_device.driver     = &serial_driver;
+	serial_device.status     = DEVICE_STATUS_ONLINE;
 }

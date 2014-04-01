@@ -22,11 +22,7 @@ int vfs_start()
 }
 void vfs_init()
 {
-	vfs_driver.class = 0x1;
-	vfs_driver.type = 0x80;
-	strcpy(vfs_driver.name,"Virutal File System");
 	vfs_driver.start = &vfs_start;
-	driver_register( &vfs_driver );
 	driver_start(&vfs_driver);
 }
 

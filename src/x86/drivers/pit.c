@@ -6,12 +6,12 @@
 #include <driver.h>
 #include <string.h>
 #include <stdio.h>
-
+#include <device.h>
 unsigned long        timer_ticks     = 0;
 unsigned long        timer_ticks_old = 0;
 
 driver_t			 pit_driver;
-
+device_t             pit_device;
 void pit_phase(int hz)
 {
 	int divisor = 1193180 / hz;       /* Calculate our divisor */
@@ -39,24 +39,15 @@ int pit_stop()
 	return 0xFFFFFFFF;
 }
 
-int pit_recieve(driver_msg_t * data)
-{
-	printf("pit: recieved message...\n");
-	if(data->type == 0) //Change clockrate
-	{
-		int rate = (int)data->data;
-		pit_phase(rate);
-		printf("pit: changed clockerate to %dhz\n",rate);
-	}
-}
 void pit_init()
 {
-	pit_driver.class = 0x8;
-	pit_driver.type = 0x01;
-	strcpy(pit_driver.name,"Programmable Interrupt Timer");
 	pit_driver.start = &pit_start;
 	pit_driver.stop = &pit_stop;
-	pit_driver.recieve = &pit_recieve;
-	driver_register( &pit_driver );
 	driver_start(&pit_driver);
+	pit_device.name       = "pit";
+	pit_device.type       = DEVICE_TYPE_HARDWARE;
+	pit_device.flags      = 0;
+	pit_device.interface  = DEVICE_INTERFACE_IO;
+	pit_device.driver     = &pit_driver;
+	pit_device.status     = DEVICE_STATUS_ONLINE;
 }

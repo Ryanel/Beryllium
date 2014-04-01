@@ -57,12 +57,9 @@ int bga_start()
 
 int bga_init()
 {
-	bga_driver.class = 0x4;
-	bga_driver.type = 0x0;
-	strcpy(bga_driver.name,"Bochs Graphics Adaptor");
 	bga_driver.start = &bga_start;
-	driver_register( &bga_driver );
 	driver_start(&bga_driver);
+	return 0;
 }
 
 void bga_setmode(unsigned int width, unsigned int height, unsigned int bitdepth, int linearframebuffer, int clearvideomemory)

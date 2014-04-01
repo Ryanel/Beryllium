@@ -3,19 +3,9 @@
 /**
 Compairs two strings.
 **/
-int strcmp (const char *str1,const char *str2)
-{
-	while (*str1 != 0 && *str2 != 0)
-	{
-		if (*str1 != *str2)
-		{
-			return str1 - str2;
-		}
-
-		str1++; str2++;
-	}
-
-	return 0;
+int strcmp(const char* s1, const char* s2) {
+    for (; (*s1 == *s2) && (*s1 != '\0'); s1++, s2++);
+    return (*s1 == *s2) ? 0 : *s1 - *s2;
 }
 
 void *memcpy(void *dest,const void *src,size_t n) {
