@@ -1,6 +1,6 @@
 #ifndef SCHED_H
 #define SCHED_H
-#include <thread.h>
+#include <beryllium/thread.h>
 #include <types.h>
 void scheduler_init(thread_t *initial_thread);
 void scheduler_add(thread_t *thread);

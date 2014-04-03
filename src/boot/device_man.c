@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <vfs.h>
+#include <beryllium/vfs.h>
 vfs_node_t *sysfs_device_create();
 vfs_node_t *null_device_create();
 vfs_node_t *zero_device_create();

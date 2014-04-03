@@ -9,7 +9,7 @@ typedef volatile struct
 	uint32_t id;
 } thread_t;
 
-#include <scheduler.h>
+#include <beryllium/scheduler.h>
 
 thread_t *threading_init();
 thread_t *thread_create (int (*fn)(void*), void *arg, uint32_t *stack);

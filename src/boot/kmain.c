@@ -1,16 +1,16 @@
 #include <stdio.h>
-#include <video.h>
+#include <beryllium/video.h>
 #include <terminal.h>
 #include <log.h>
-#include <timer.h>
+#include <beryllium/timer.h>
 #include <system.h>
 #include <stdlib.h>
-#include <vfs.h>
-#include <fs/device_man.h>
-#include <vterm.h>
-#include <scheduler.h>
-#include <thread.h>
-#include <driver.h>
+#include <beryllium/vfs.h>
+#include <beryllium/fs/device_man.h>
+#include <beryllium/vterm.h>
+#include <beryllium/thread.h>
+#include <beryllium/driver.h>
+extern tree_t   * device_tree;
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -45,5 +45,6 @@ void kmain()
 	vfs_init();
 	init_vfs_devices();
 	
+	device_tree_enumerate(device_tree->root, 0);
 	for(;;); //Halt!
 }
