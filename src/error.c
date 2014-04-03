@@ -4,8 +4,24 @@
 #include <stdio.h>
 #ifdef X86
 #include <x86/low/isr.h>
+#include <elf.h>
 #endif
 #define PANIC_MSG_BAR "   ==================================PANIC===================================   "
+
+extern elf_t kernel_elf;
+
+void print_stack_trace ()
+{
+	uint32_t *ebp, *eip;
+	asm volatile ("mov %%ebp, %0" : "=r" (ebp));
+	while (ebp)
+	{
+		eip = ebp+1;
+		printf ("| [0x%x]: %s\n", *eip, elf_lookup_symbol (*eip, &kernel_elf));
+		ebp = (uint32_t*) *ebp;
+	}
+}
+
 void panic(const char* reason)
 {
 	//terminal_set_statusbar(PANIC_MSG_BAR);
@@ -20,12 +36,14 @@ void panic(const char* reason)
 void halt()
 {
 	klog(LOG_INFO,"KERN","Halting!\n");
-
+	printf("Stacktrace:\n");
+	print_stack_trace();
 	#ifdef X86
 	asm("cli");
 	asm("hlt");
 	#endif
 }
+
 void halt_regs(registers_t* regs)
 {
 	klog(LOG_INFO,"KERN","Halting!\n");
@@ -38,6 +56,6 @@ void halt_regs(registers_t* regs)
 	printf("| usp 0x%X; eip 0x%X; esi 0x%X; edi 0x%X\n",regs->useresp,regs->ebp,regs->esi,regs->edi);
 	printf("| cs 0x%X; ds 0x%X; es 0x%X; fs 0x%X\n",regs->cs,regs->ds,regs->es,regs->fs);
 	printf("| gs  0x%X\n",regs->gs);
-	asm("hlt");
+	halt();
 	#endif
 }

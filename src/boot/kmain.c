@@ -10,19 +10,15 @@
 #include <beryllium/vterm.h>
 #include <beryllium/thread.h>
 #include <beryllium/driver.h>
+#include <elf.h>
 extern tree_t   * device_tree;
+elf_t kernel_elf;
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
 /**
 Kernel main function
 **/
-
-int fn()
-{
-
-}
-
 void kmain()
 {
 	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.4 (git)");

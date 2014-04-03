@@ -7,10 +7,12 @@
 
 #include <x86/x86.h>
 #include <x86/drivers/serial.h>
+#include <elf.h>
 
 uint32_t initrd_location;
 uint32_t initrd_end;
 extern uint32_t placement_address;
+extern elf_t kernel_elf;
 /**
  Get the kernel up and running as fast as possible
 **/
@@ -38,6 +40,8 @@ void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot
 		initrd_end = *(uint32_t*)(mboot->mods_addr+4);
 		placement_address = initrd_end;
 	}
+	klog(LOG_INFO,"ELF","Loading kernel symbol table...\n");
+	kernel_elf = elf_from_multiboot(mboot);
 	init_x86();
 	klog(LOG_DEBUG,"MEM","Loading memory map...\n");
 	multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)mboot->mmap_addr;
