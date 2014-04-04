@@ -13,6 +13,7 @@
 #include <elf.h>
 extern tree_t   * device_tree;
 elf_t kernel_elf;
+extern int kernel_main_wd;
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -38,9 +39,10 @@ void kmain()
 	init_vfs_devices();
 	device_tree_enumerate(device_tree->root, 0);
 	klog(LOG_WARN,"KRN","Kernel init rescue shell launched -- no init found!\n");
-	while (true)
+	while(true)
 	{
-		
+		kernel_main_wd++; //TODO: Make watchdog wrappers
 	}
+
 	panic("No init process to start (kernel init stub not compiled)!\n");
 }

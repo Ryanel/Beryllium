@@ -40,8 +40,13 @@ void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot
 		initrd_end = *(uint32_t*)(mboot->mods_addr+4);
 		placement_address = initrd_end;
 	}
-	klog(LOG_INFO,"ELF","Loading kernel symbol table...\n");
-	kernel_elf = elf_from_multiboot(mboot);
+	#ifdef KERNEL_SYMBOLS
+	if(mboot->num > 0)
+	{
+		klog(LOG_INFO,"ELF","Loading %d kernel symbols from symbol table...\n",mboot->num);
+		kernel_elf = elf_from_multiboot(mboot);
+	}
+	#endif
 	init_x86();
 	klog(LOG_DEBUG,"MEM","Loading memory map...\n");
 	multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)mboot->mmap_addr;
