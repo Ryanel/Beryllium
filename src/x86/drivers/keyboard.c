@@ -190,7 +190,6 @@ unsigned char kb_read()
 	asm("cli");
 	mutex_lock(kbio_mutex);
 	unsigned char to_send = buffer[0];
-	printf("kb not empty sending %c (buffer_i @ 0x%X)\n",to_send,buffer_i);
 	buffer[0] = 0;
 	int i = 0;
 	while(i<0xFF)

@@ -39,10 +39,12 @@ void kmain()
 	vfs_init();
 	init_vfs_devices();
 	device_tree_enumerate(device_tree->root, 0);
-	klog(LOG_WARN,"KRN","Kernel init rescue shell launched -- no init found!\n");
+	klog(LOG_WARN,"KRN","Kernel init rescue shell launching -- no init found!\n");
+	kshell_init();
 	int i = 0;
 	while(true)
 	{
+		kshell_parse_char(kb_read());
 		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
 	}
 
