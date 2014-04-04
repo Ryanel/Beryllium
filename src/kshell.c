@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <string.h>
+#include <system.h>
+#include <error.h>
+#include <beryllium/vfs.h>
 unsigned char command[0xFF];
 int command_i = 0;
 
-const char *prompt = "shell@beryllium / $ ";
+const char *prompt = "shell@beryllium / # ";
 
 void kshell_init()
 {
@@ -12,15 +15,38 @@ void kshell_init()
 	printf(prompt);
 }
 
-void kshell_parse_command(unsigned char *s)
+extern tree_t   * device_tree;
+
+void kshell_parse_command(char *s)
 {
 	if 		(strcmp(s,"about") == 0)
 	{
-		printf("Beryllium\n");
+		printf("Beryllium %s (v.%s)-%s\n",BERYLLIUM_RELEASE,BERYLLIUM_VERSION,BERYLLIUM_SOURCE);
 	}
 	else if (strcmp(s,"sysinfo") == 0)
 	{
-		printf("System is running\n");
+		printf("Beryllium - in kshell. No user\n");
+	}
+	else if (strcmp(s,"crash") == 0)
+	{
+		halt();
+	}
+	else if (strcmp(s,"ls") == 0)
+	{
+		vfs_print_tree_node(vfs_tree->root, 0);
+	}
+	else if (strcmp(s,"lsmod") == 0)
+	{
+		device_tree_enumerate(device_tree->root, 0);
+	}
+	else if (strcmp(s,"help") == 0)
+	{
+		printf("help\t| Does not help you\n");
+		printf("crash\t| Causes the kernel to crash\n");
+		printf("about\t| Shows information about the kernel\n");
+		printf("ls\t| Shows the directory tree\n");
+		printf("lsmod\t| Shows the kernel mod tree\n");
+		printf("sysinfo\t| Debug kernel information\n");
 	}
 	else if (strcmp(s,"") == 0)
 	{
@@ -45,6 +71,10 @@ void kshell_parse_char(unsigned char input)
 			command_i = 0;
 			return;
 		case 0x0:
+			return;
+		case '\b':
+			printf("\b \b");
+			command[command_i--] = 0;
 			return;
 		default:
 			if(command_i!=0xFF)

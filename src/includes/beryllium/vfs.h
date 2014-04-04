@@ -77,7 +77,5 @@ vfs_node_t *kopen(char *filename, uint32_t flags);
 int vfs_mount(char * path, vfs_node_t * local_root);
 vfs_node_t *get_mount_point(char * path, unsigned int path_depth, char **outpath, unsigned int * outdepth);
 int create_file_vfs(char *name, uint16_t permission);
-#ifdef DEBUG
 void vfs_print_tree_node(tree_node_t * node, size_t height);
-#endif
 #endif

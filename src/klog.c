@@ -33,14 +33,14 @@ void klog(int mode, const char *title, const char *fmt, ...)
 				video_setattributetext(background,0x8);
 		}
 		#ifdef KLOG_TITLE_TIME
-		printf("[%08d]:",timer_getHi());
+		serial_printf("[%08d]:",timer_getHi());
 		#else
-		printf("[%s]:",title);
+		serial_printf("[%s]:",title);
 		#endif
 		va_list args;
 		int rv;
 		va_start(args, fmt);
-		rv = vprintf(fmt, args);
+		rv = vprintf_serial(fmt, args);
 		va_end(args);
 		video_resetattributetext();
 	}

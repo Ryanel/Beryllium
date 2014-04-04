@@ -12,9 +12,7 @@
 #include <beryllium/driver.h>
 #include <beryllium/watchdog.h>
 #include <elf.h>
-extern tree_t   * device_tree;
 elf_t kernel_elf;
-extern int kernel_main_wd;
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -38,7 +36,7 @@ void kmain()
 	video_graphics_init();
 	vfs_init();
 	init_vfs_devices();
-	device_tree_enumerate(device_tree->root, 0);
+	
 	klog(LOG_WARN,"KRN","Kernel init rescue shell launching -- no init found!\n");
 	kshell_init();
 	int i = 0;
