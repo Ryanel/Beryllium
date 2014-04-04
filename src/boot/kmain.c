@@ -26,21 +26,21 @@ void kmain()
 	#ifdef DEBUG
 	klog(LOG_WARN,"KRN","Running Debug Kernel! Some things might not work properly!\n");
 	#endif
-	
 	device_manager_start();
-
 	klog(LOG_DEBUG,"I/O","Verifiying timer / interrupts (waiting 10 ticks)\n");
 	int timer_hi_orig = timer_getHi();
 	while((timer_getHi() - timer_hi_orig) < 10)
 	{
 	}
-	
 	klog(LOG_INFO,"KRN","Finished initialising CoreLibs!\n");
 	video_graphics_init();
-
 	vfs_init();
 	init_vfs_devices();
-	
 	device_tree_enumerate(device_tree->root, 0);
-	for(;;); //Halt!
+	klog(LOG_WARN,"KRN","Kernel init rescue shell launched -- no init found!\n");
+	while (true)
+	{
+		
+	}
+	panic("No init process to start (kernel init stub not compiled)!\n");
 }
