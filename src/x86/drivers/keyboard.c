@@ -134,7 +134,7 @@ void kb_handler(struct regs *r)
 		{
 			if(buffer_i == 0xFF)
 			{
-				serial_print("Kernel keyboard driver overloaded! Dropping character\n");
+				serial_printf("Kernel keyboard driver overloaded! Dropping character %c\n",kbdus[scancode]);
 				return;
 			}
 			if(kb_shift || kb_caps)

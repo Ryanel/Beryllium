@@ -20,7 +20,7 @@ void wd_evaluate()
 	{
 		wd_total_hangups++;
 		wd_kmain_hangups++;
-		//if(wd_kmain_hangups > 10) //Sets a limit for annoying messages
+		if(wd_kmain_hangups > 10) //Sets a limit for annoying messages
 		{
 			serial_printf("Watchdog:[kmain] (%04d/%04d) [kernel](%04d/%04d)\n",wd_kmain_hangups,WD_HU_LIMIT_KMAIN,wd_total_hangups,WD_HU_LIMIT);
 		}
