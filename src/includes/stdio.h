@@ -6,6 +6,7 @@
 Prints formated text. Can print to any video device implemented in video.c
 **/
 int printf(const char *fmt, ...);
+int serial_printf(const char *fmt, ...);
 /**
 Prints formated text.
 **/

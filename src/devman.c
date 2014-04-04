@@ -166,7 +166,7 @@ void device_manager_insert_kernel()
 uint32_t device_stop(device_t * dev)
 {
 	if(dev == NULL) return 0xFFFFFFFF;
-	
+	klog(LOG_DEBUG,"DEV","Shutting down device %s... \n",dev->name);
 	if(dev->status!=DEVICE_STATUS_ONLINE) //Device is already online, so do nothing to it
 	{
 		return dev->status;

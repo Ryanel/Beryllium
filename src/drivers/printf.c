@@ -302,12 +302,27 @@ int vprintf_help(unsigned c, void **ptr)
 	#endif
 	return 0 ;
 }
+
+int vprintf_serial_help(unsigned c, void **ptr)
+{
+	#ifdef ENABLE_SERIAL
+		serial_write(c);
+	#endif
+	return 0 ;
+}
+
 /*****************************************************************************
 *****************************************************************************/
 int vprintf(const char *fmt, va_list args)
 {
 	return do_printf(fmt, args, vprintf_help, NULL);
 }
+
+int vprintf_serial(const char *fmt, va_list args)
+{
+	return do_printf(fmt, args, vprintf_serial_help, NULL);
+}
+
 /*****************************************************************************
 *****************************************************************************/
 int printf(const char *fmt, ...)
@@ -317,6 +332,16 @@ int printf(const char *fmt, ...)
 
 	va_start(args, fmt);
 	rv = vprintf(fmt, args);
+	va_end(args);
+	return rv;
+}
+int serial_printf(const char *fmt, ...)
+{
+	va_list args;
+	int rv;
+
+	va_start(args, fmt);
+	rv = vprintf_serial(fmt, args);
 	va_end(args);
 	return rv;
 }

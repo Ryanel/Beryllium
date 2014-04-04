@@ -10,6 +10,7 @@
 #include <beryllium/vterm.h>
 #include <beryllium/thread.h>
 #include <beryllium/driver.h>
+#include <beryllium/watchdog.h>
 #include <elf.h>
 extern tree_t   * device_tree;
 elf_t kernel_elf;
@@ -39,9 +40,10 @@ void kmain()
 	init_vfs_devices();
 	device_tree_enumerate(device_tree->root, 0);
 	klog(LOG_WARN,"KRN","Kernel init rescue shell launched -- no init found!\n");
+	int i = 0;
 	while(true)
 	{
-		kernel_main_wd++; //TODO: Make watchdog wrappers
+		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
 	}
 
 	panic("No init process to start (kernel init stub not compiled)!\n");
