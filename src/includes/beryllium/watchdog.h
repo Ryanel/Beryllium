@@ -8,5 +8,9 @@
 
 void wd_notify(int source);
 void wd_evaluate();
+int wd_get_kmain_hangups();
+int wd_get_hangups();
+void wd_disable();
+void wd_enable();
 
 #endif

@@ -6,8 +6,22 @@ int wd_kmain_o 			= 0;
 int wd_kmain_hangups 	= 0;
 int wd_total_hangups 	= 0;
 
+int wd_enabled = 1;
+
+void wd_disable()
+{
+	wd_enabled = 0;
+}
+void wd_enable()
+{
+	wd_enabled = 1;
+}
 void wd_notify(int source)
 {
+	if(!wd_enabled)
+	{
+		return;
+	}
 	if(source == WD_NOTIFY_KMAIN)
 	{
 		wd_kmain++;
@@ -36,4 +50,13 @@ void wd_evaluate()
 		panic("Kernel was terminated by watchdog!\n");
 	}
 	wd_kmain_o = wd_kmain;
+}
+
+int wd_get_kmain_hangups()
+{
+	return wd_kmain_hangups;
+}
+int wd_get_hangups()
+{
+	return wd_total_hangups;
 }

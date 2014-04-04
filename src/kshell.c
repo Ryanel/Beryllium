@@ -3,6 +3,7 @@
 #include <system.h>
 #include <error.h>
 #include <beryllium/vfs.h>
+#include <beryllium/watchdog.h>
 unsigned char command[0xFF];
 int command_i = 0;
 
@@ -47,6 +48,16 @@ void kshell_parse_command(char *s)
 		printf("ls\t| Shows the directory tree\n");
 		printf("lsmod\t| Shows the kernel mod tree\n");
 		printf("sysinfo\t| Debug kernel information\n");
+		printf("wd\t| Watchdog information\n");
+		printf("wdcrash\t| Crash the watchdog\n");
+	}
+	else if (strcmp(s,"wd") == 0)
+	{
+		printf("Watchdog: %d kernel hangups, %d total hangups\n",wd_get_kmain_hangups(),wd_get_hangups());
+	}
+	else if (strcmp(s,"wdcrash") == 0)
+	{
+		wd_disable();
 	}
 	else if (strcmp(s,"") == 0)
 	{
@@ -57,7 +68,8 @@ void kshell_parse_command(char *s)
 	}
 	printf(prompt);
 }
-
+int wd_kmain_hangups();
+int wd_hangups();
 void kshell_parse_char(unsigned char input)
 {
 	switch(input)
