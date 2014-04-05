@@ -5,6 +5,11 @@
 #include <beryllium/timer.h>
 int klog_mask = LOG_DEBUG;
 static int background = 0;
+#ifdef LOG_SERIAL
+	#define KPRINTF serial_printf
+#else
+	#define KPRINTF printf
+#endif
 void klog(int mode, const char *title, const char *fmt, ...)
 {
 	if( mode <= klog_mask)
@@ -33,14 +38,18 @@ void klog(int mode, const char *title, const char *fmt, ...)
 				video_setattributetext(background,0x8);
 		}
 		#ifdef KLOG_TITLE_TIME
-		serial_printf("[%08d]:",timer_getHi());
+		KPRINTF("[%08d]:",timer_getHi());
 		#else
-		serial_printf("[%s]:",title);
+		KPRINTF("[%s]:",title);
 		#endif
 		va_list args;
 		int rv;
 		va_start(args, fmt);
+		#ifdef LOG_SERIAL
 		rv = vprintf_serial(fmt, args);
+		#else
+		rv = vprintf(fmt,args);
+		#endif
 		va_end(args);
 		video_resetattributetext();
 	}

@@ -21,7 +21,7 @@ FS_FILES := $(patsubst %.c,%.o,$(wildcard src/fs/*.c))
 
 SRC_FILES := ${BOOT_FILES} ${KERNEL_FILES} ${DRIVER_FILES} ${LIB_FILES} ${ARCH_FILES} ${ARCH_BOOT_FILES} ${ARCH_LOW_FILES} ${ARCH_LIB_FILES} ${ARCH_DRIVER_FILES} ${FS_FILES}
 
-
+GET_HASH := ${git rev-parse --short HEAD}
 
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
@@ -70,7 +70,7 @@ kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers fs 
 
 %.o: %.c
 	@echo "Making: " $@
-	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
+	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -DGITHASH=${GIT_HASH} -I${INCLUDE_DIR} -o $@ $<
 
 %.o: %.cpp
 	@echo "Making: " $@

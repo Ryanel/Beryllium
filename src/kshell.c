@@ -3,11 +3,12 @@
 #include <system.h>
 #include <error.h>
 #include <beryllium/vfs.h>
+
 unsigned char command[0xFF];
 int command_i = 0;
 
 const char *prompt = "shell@beryllium / # ";
-
+GITHASH
 void kshell_init()
 {
 	memset(command,0x0,0xFF); //clear commmand
@@ -21,7 +22,7 @@ void kshell_parse_command(char *s)
 {
 	if 		(strcmp(s,"about") == 0)
 	{
-		printf("Beryllium %s (v.%s)-%s\n",BERYLLIUM_RELEASE,BERYLLIUM_VERSION,BERYLLIUM_SOURCE);
+		printf("Beryllium %s (v.%s)-%s(%s)\n",BERYLLIUM_RELEASE,BERYLLIUM_VERSION,BERYLLIUM_SOURCE,"000000");
 	}
 	else if (strcmp(s,"sysinfo") == 0)
 	{
