@@ -107,48 +107,53 @@ int kb_shift = 0;
 int kb_caps = 0;
 int kb_alt   = 0;
 int kb_ctl   = 0;
-
+int kb_extended = 0;
 void kb_handler(struct regs *r)
 {
 	unsigned char scancode;
 	scancode = inb(0x60);
+	
+    if(kb_extended)
+    {
+        kb_extended = 0;
+        return;
+    }
+    if(scancode == 0xE0) //Extended keys
+    {
+        kb_extended = 1;
+        return;
+    }
 
-	if (scancode & 0x80)
-	{
-		if(scancode == 0xAA) //LSHIFT
-		{
-			kb_shift = 0;
-		}
-	}
-	else
-	{
-		if(kbdus[scancode] == KB_TRAP_CTL)
+    if (scancode & 0x80)
+    {
+	    if(kbdus[scancode] == KB_TRAP_CTL)
 		{
 			kb_ctl = 1;
+			return;
 		}
 		else if(kbdus[scancode] == KB_TRAP_LSHIFT)
 		{
 			kb_shift = 1;
+			return;
 		}
-		else
-		{
-			if(buffer_i == 0xFF)
-			{
-				serial_printf("Kernel keyboard driver overloaded! Dropping character %c\n",kbdus[scancode]);
-				return;
-			}
-			if(kb_shift || kb_caps)
-			{
-				buffer[buffer_i] = kbdus_caps[scancode];
+		return;
+    }
 
-			}
-			else
-			{
-				buffer[buffer_i] = kbdus[scancode];
-			}
-			buffer_i++;
-		}
+	if(buffer_i == 0xFF)
+	{
+		serial_printf("Kernel keyboard driver overloaded! Dropping character %c\n",kbdus[scancode]);
+		return;
 	}
+
+	if(kb_shift || kb_caps)
+	{
+		buffer[buffer_i] = kbdus_caps[scancode];
+	}
+	else
+	{
+		buffer[buffer_i] = kbdus[scancode];
+	}
+	buffer_i++;
 }
 
 int kb_start()
@@ -185,7 +190,7 @@ unsigned char kb_read()
 	if(buffer[0] == 0)
 	{
 		mutex_unlock(kbio_mutex);
-		return 0xFF; //If there are no keys pressed, return an error code
+		return 0; //If there are no keys pressed, return an error code
 	}
 	asm("cli");
 	mutex_lock(kbio_mutex);

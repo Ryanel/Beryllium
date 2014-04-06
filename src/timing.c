@@ -39,6 +39,29 @@ int timing_register_timer(char *name,int tick,void (*handler)(timer_t *), int re
 
 }
 
+void timing_deregister_timer(void (*handler)(timer_t *))
+{
+    for(int index = 0;index<0xFF;index++)
+    {
+
+        if(handlers[index].handler == 0)
+        {
+            continue;
+        }
+        else
+        {
+            if(handlers[index].handler == handler)
+            {
+                handlers[index].handler = 0;
+                handlers[index].repeat_rate = 0;
+                handlers[index].fire_tick = 0;
+                break;
+            }
+            continue;
+        }
+    }
+}
+
 void list_timers()
 {
     int index = 0;
