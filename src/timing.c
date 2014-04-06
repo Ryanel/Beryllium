@@ -10,7 +10,7 @@ timer_t handlers[0xFF];//We assume that we will never need more than 0xFF, but w
 
 int timing_register_timer(char *name,int tick,void (*handler)(timer_t *), int reschedule)
 {
-	klog(LOG_DEBUG,"TMR","Scheduling %s at tick 0x%X, and rescheduling every %d ticks\n",name,tick,reschedule);
+	klog(LOG_DEBUG,"TMR","Scheduling %s in %dms, and rescheduling every %dms\n",name,tick,reschedule);
 	int index = 0;
 	for(index = 0;index<0xFF;index++)
 	{
@@ -65,11 +65,11 @@ void timing_deregister_timer(void (*handler)(timer_t *))
 
 void list_timers()
 {
+	printf(" ID |%-11sNAME|NEXT    ms|REP ms\n","",0,0);
 	int index = 0;
 	int current_time = timer_getHi();
 	for(index = 0;index<0xFF;index++)
 	{
-
 		if(handlers[index].fire_tick == 0)
 		{
 			continue;
@@ -77,7 +77,7 @@ void list_timers()
 		else
 		{
 			int rep_in = handlers[index].fire_tick - current_time;
-			printf("[%02x]:%-15s calling at %-8d, repeating %-8d (in %d ticks)\n",index,handlers[index].name,handlers[index].fire_tick,handlers[index].repeat_rate,rep_in);
+			printf("[%02x]:%-15s|%8dms|%-04dms\n",index,handlers[index].name,rep_in,handlers[index].repeat_rate);
 		}
 	}
 }
@@ -105,7 +105,7 @@ void timing_reaper()
 int timing_init()
 {
 	memset(&handlers,0,sizeof(timer_t) * 0xFF);
-	timing_register_timer("timer_reaper",0xF,timing_reaper, 1000);
+	timing_register_timer("timer_reaper",1,timing_reaper, 100);
 	return 0;
 }
 int t_i = 0;
