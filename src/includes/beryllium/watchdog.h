@@ -7,10 +7,9 @@
 #define WD_HU_LIMIT_KMAIN     200
 
 void wd_notify(int source);
-void wd_evaluate();
 int wd_get_kmain_hangups();
 int wd_get_hangups();
 void wd_disable();
 void wd_enable();
-
+void wd_init();
 #endif

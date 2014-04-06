@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <beryllium/watchdog.h>
 #include <error.h>
+#include <beryllium/timing.h>
 int wd_kmain 			= 0;
 int wd_kmain_o 			= 0;
 int wd_kmain_hangups 	= 0;
@@ -28,7 +29,7 @@ void wd_notify(int source)
 	}
 }
 
-void wd_evaluate()
+void wd_evaluate(timer_t *value)
 {
 	if(wd_kmain == wd_kmain_o)
 	{
@@ -59,4 +60,8 @@ int wd_get_kmain_hangups()
 int wd_get_hangups()
 {
 	return wd_total_hangups;
+}
+void wd_init()
+{
+	timing_register_timer("kernel_wd",1000,wd_evaluate, 10);
 }

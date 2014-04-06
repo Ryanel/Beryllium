@@ -2,9 +2,10 @@
 #include <string.h>
 #include <system.h>
 #include <error.h>
+#include <log.h>
 #include <beryllium/vfs.h>
 #include <beryllium/watchdog.h>
-
+#include <beryllium/timing.h>
 unsigned char command[0xFF];
 int command_i = 0;
 const char *prompt = "shell@beryllium / # ";
@@ -16,6 +17,11 @@ void kshell_init()
 }
 
 extern tree_t   * device_tree;
+
+void tdemo_fn(timer_t *data)
+{
+	klog(LOG_DEBUG,"TMR","Demo %d called!\n",data->no);
+}
 
 void kshell_parse_command(char *s)
 {
@@ -49,6 +55,7 @@ void kshell_parse_command(char *s)
 		printf("sysinfo\t| Debug kernel information\n");
 		printf("wd\t| Watchdog information\n");
 		printf("wdcrash\t| Crash the watchdog\n");
+		printf("timers\t| Shows all current timers\n");
 	}
 	else if (strcmp(s,"wd") == 0)
 	{
@@ -57,6 +64,10 @@ void kshell_parse_command(char *s)
 	else if (strcmp(s,"wdcrash") == 0)
 	{
 		wd_disable();
+	}
+	else if (strcmp(s,"timers") == 0)
+	{
+		list_timers();
 	}
 	else if (strcmp(s,"") == 0)
 	{
@@ -67,8 +78,6 @@ void kshell_parse_command(char *s)
 	}
 	printf(prompt);
 }
-int wd_kmain_hangups();
-int wd_hangups();
 void kshell_parse_char(unsigned char input)
 {
 	switch(input)

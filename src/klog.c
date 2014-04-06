@@ -34,13 +34,30 @@ void klog(int mode, const char *title, const char *fmt, ...)
 			case LOG_DEBUG:
 				video_setattributetext(background,0x7);///was 0x8;
 				break;
+			case LOG_OK:
+				video_setattributetext(background,0xA);///was 0x8;
+				break;
+			case LOG_FAIL:
+				video_setattributetext(background,0x4);///was 0x8;
+				break;
 			default:
 				video_setattributetext(background,0x8);
 		}
 		#ifdef KLOG_TITLE_TIME
 		KPRINTF("[%08d]:",timer_getHi());
 		#else
-		KPRINTF("[%s]:",title);
+		if(mode == LOG_OK)
+		{
+			KPRINTF("[OKAY]");
+		}
+		else if (mode == LOG_FAIL)
+		{
+			KPRINTF("[FAIL]");
+		}
+		else
+		{
+			KPRINTF("[%s]:",title);
+		}
 		#endif
 		va_list args;
 		int rv;

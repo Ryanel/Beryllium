@@ -11,6 +11,7 @@
 #include <beryllium/thread.h>
 #include <beryllium/driver.h>
 #include <beryllium/watchdog.h>
+#include <beryllium/timing.h>
 #include <elf.h>
 elf_t kernel_elf;
 #ifdef X86
@@ -21,23 +22,25 @@ Kernel main function
 **/
 void kmain()
 {
+	//Print status messages
 	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.4 (git)");
 	klog(LOG_INFO,"KRN","CoreLibs initialising...\n");
 	#ifdef DEBUG
 	klog(LOG_WARN,"KRN","Running Debug Kernel! Some things might not work properly!\n");
 	#endif
+	//Start Services
+	timing_init();
 	device_manager_start();
-	klog(LOG_DEBUG,"I/O","Verifiying timer / interrupts (waiting 10 ticks)\n");
-	int timer_hi_orig = timer_getHi();
-	while((timer_getHi() - timer_hi_orig) < 10)
-	{
-	}
-	klog(LOG_INFO,"KRN","Finished initialising CoreLibs!\n");
 	video_graphics_init();
 	vfs_init();
 	init_vfs_devices();
-	
-	klog(LOG_WARN,"KRN","Kernel init rescue shell launching -- no init found!\n");
+	wd_init();
+
+	klog(LOG_INFO,"KRN","Kernel took %d ticks to become fully operational!\n",timer_getHi());
+
+	//Launch a shell
+
+	klog(LOG_FAIL,"KRN","Kernel init rescue shell launching -- no init found!\n");
 	kshell_init();
 	int i = 0;
 	while(true)
