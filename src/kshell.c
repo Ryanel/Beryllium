@@ -88,7 +88,11 @@ void kshell_parse_char(unsigned char input)
 		case 0x0:
 			return;
 		case '\b':
-			printf("\b \b");
+			if(command[0]==0)
+            {
+                return; //Dont erase from the buffer if we dont have anything!
+            }
+            printf("\b \b");
 			command[command_i--] = 0;
 			return;
 		default:
