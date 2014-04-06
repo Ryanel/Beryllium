@@ -11,6 +11,7 @@
 #include <beryllium/thread.h>
 #include <beryllium/driver.h>
 #include <beryllium/watchdog.h>
+#include <beryllium/kmonitor.h>
 #include <beryllium/timing.h>
 #include <elf.h>
 elf_t kernel_elf;
@@ -30,13 +31,14 @@ void kmain()
 	#endif
 	//Start Services
 	timing_init();
-	device_manager_start();
+	kmonitor_init();
+    device_manager_start();
 	video_graphics_init();
 	vfs_init();
 	init_vfs_devices();
 	wd_init();
 
-	klog(LOG_INFO,"KRN","Kernel took %d ticks to become fully operational!\n",timer_getHi());
+	klog(LOG_INFO,"KRN","Kernel took %dms to become fully operational!\n",timer_getHi());
 
 	//Launch a shell
 

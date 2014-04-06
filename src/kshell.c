@@ -18,11 +18,6 @@ void kshell_init()
 
 extern tree_t   * device_tree;
 
-void tdemo_fn(timer_t *data)
-{
-	klog(LOG_DEBUG,"TMR","Demo %d called!\n",data->no);
-}
-
 void kshell_parse_command(char *s)
 {
 	if 		(strcmp(s,"about") == 0)
