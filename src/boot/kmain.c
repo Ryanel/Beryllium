@@ -37,7 +37,6 @@ void kmain()
 	vfs_init();
 	init_vfs_devices();
 	wd_init();
-
 	klog(LOG_INFO,"KRN","Kernel took %dms to become fully operational!\n",timer_getHi());
 
 	//Launch a shell

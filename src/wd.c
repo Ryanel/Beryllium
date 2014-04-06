@@ -47,7 +47,7 @@ void wd_evaluate(timer_t *value)
 	}
 	else if (wd_kmain_hangups > WD_HU_LIMIT_KMAIN)
 	{
-		printf("[kmain] hung up too much! It hung up %d times for %d seconds!\n",wd_kmain_hangups,(wd_kmain_hangups) / 60);
+		printf("kmain hung up too much! It hung up %d times\n",wd_kmain_hangups);
 		panic("Kernel was terminated by watchdog!\n");
 	}
 	wd_kmain_o = wd_kmain;
@@ -63,5 +63,5 @@ int wd_get_hangups()
 }
 void wd_init()
 {
-	timing_register_timer("kernel_wd",1000,wd_evaluate, 10);
+	timing_register_timer("kernel_wd",10,wd_evaluate, 10);
 }
