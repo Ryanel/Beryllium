@@ -6,10 +6,10 @@ void mutex_lock(mutex_t *mutex)
 	{
 		while(mutex)
 		{
-			asm("pause");
+			asm volatile("pause");
 		}
 	}
-	*mutex = 1;
+	mutex = (mutex_t*)1;
 }
 
 void mutex_unlock(mutex_t *mutex)

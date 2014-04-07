@@ -204,7 +204,7 @@ uint32_t device_start(device_t * dev)
 	{
 		return 0xFFFFFFFE;
 	}
-	mutex_lock(dev->mutex);
+	//mutex_lock(dev->mutex);
 	int ret = dev->driver->start();
 	if(ret == 0)
 	{
@@ -215,6 +215,6 @@ uint32_t device_start(device_t * dev)
 		klog(LOG_ERROR,"DEV","Could not bring up device %s (returned 0x%X)!\n",dev->name,ret);
 		dev->status = DEVICE_STATUS_ABORTED;
 	}
-	mutex_unlock(dev->mutex);
+	//mutex_unlock(dev->mutex);
 	return dev->status; 
 }

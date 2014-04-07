@@ -4,7 +4,7 @@
 /**
 A binary semaphore
 **/
-typedef uint8_t mutex_t;
+typedef volatile uint8_t mutex_t;
 /**
 Locks the mutex
 If it cannot lock it, it spins until it is freed.
