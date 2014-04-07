@@ -12,5 +12,6 @@ void arm_integrator_cp_early()
 	asm("ldrh   %0, [pc, #6]" :"=r"(pc) : : "memory");
 	klog(LOG_INFO,"ARM","Program counter at ~0x%X\n");
 	memory_init();
+	kmain();
 	for(;;);
 }

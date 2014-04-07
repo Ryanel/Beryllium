@@ -156,11 +156,11 @@ void device_manager_insert_kernel()
 	kernel_ns->flags      = 0;
 	kernel_ns->interface  = DEVICE_INTERFACE_KERNEL;
 	device_manager_insert(kernel_ns, device_search("device_root"));
-
+	#ifdef X86
 	device_manager_insert(&pit_device, device_search("kernel_ns"));
 	device_manager_insert(&serial_device, device_search("kernel_ns"));
 	device_manager_insert(&keyboard_device, device_search("kernel_ns"));
-
+	#endif
 	has_inserted_staticially = 1;
 }
 uint32_t device_stop(device_t * dev)

@@ -27,6 +27,7 @@ void kmain()
 	#ifdef X86
 	//Print status messages
 	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.4 (git)");
+	#endif
 	klog(LOG_INFO,"KRN","CoreLibs initialising...\n");
 	#ifdef DEBUG
 	klog(LOG_WARN,"KRN","Running Debug Kernel! Some things might not work properly!\n");
@@ -44,7 +45,7 @@ void kmain()
 	//Launch a shell
 
 	klog(LOG_FAIL,"KRN","Kernel init rescue shell launching -- no init found!\n");
-	
+	#ifdef X86
 	kshell_init();
 	int i = 0;
 	while(true)
