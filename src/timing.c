@@ -68,6 +68,7 @@ void list_timers()
 	printf(" ID |%-11sNAME|NEXT    ms|REP ms\n","",0,0);
 	int index = 0;
 	int current_time = timer_getHi();
+	char *unit = "ms";
 	for(index = 0;index<0xFF;index++)
 	{
 		if(handlers[index].fire_tick == 0)
@@ -77,7 +78,16 @@ void list_timers()
 		else
 		{
 			int rep_in = handlers[index].fire_tick - current_time;
-			printf("[%02x]:%-15s|%8dms|%-04dms\n",index,handlers[index].name,rep_in,handlers[index].repeat_rate);
+			if(rep_in > 1000)
+			{
+				unit = "s";
+				rep_in = rep_in / 1000;
+			}
+			else
+			{
+				unit = "ms";
+			}
+			printf("[%02x]:%-15s|%8d%2s|%-04dms\n",index,handlers[index].name,rep_in,unit,handlers[index].repeat_rate);
 		}
 	}
 }
