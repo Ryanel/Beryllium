@@ -6,7 +6,11 @@ void mutex_lock(mutex_t *mutex)
 	{
 		while(mutex)
 		{
+			#if X86
 			asm volatile("pause");
+			#else
+
+			#endif
 		}
 	}
 	mutex = (mutex_t*)1;

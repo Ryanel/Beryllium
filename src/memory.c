@@ -11,7 +11,7 @@
  */
 
 #include <string.h>
-#include <x86/memory.h>
+#include <beryllium/memory.h>
 #define PAGE_SIZE 0x1000
 // our node struct, which is conveniently 32 bytes!
 typedef struct Meta Meta;
