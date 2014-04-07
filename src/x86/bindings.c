@@ -18,6 +18,7 @@ extern elf_t kernel_elf;
 **/
 void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot)
 {
+
 	#ifdef IS_RELEASE
 	klog_setmask(LOG_INFO);
 	#else
@@ -28,7 +29,9 @@ void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot
 	#ifdef ENABLE_SERIAL
 	serial_init();
 	#endif
+	
 	klog(LOG_INFO,"x86","Loading x86 components...\n");
+	
 	if(magic!=0x2BADB002)
 	{
 		printf("Multiboot Magic number : 0x%X! It should equal 0x2BADB002. Halting...\n",magic);
@@ -49,13 +52,16 @@ void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot
 		kernel_elf = elf_from_multiboot(mboot);
 	}
 	#endif
+
 	init_x86();
+
 	klog(LOG_DEBUG,"MEM","Loading memory map...\n");
 	multiboot_memory_map_t* mmap = (multiboot_memory_map_t*)mboot->mmap_addr;
-	char* string;
 	while((uint32_t)mmap < mboot->mmap_addr + mboot->mmap_length) {
 		mmap = (multiboot_memory_map_t*) ( (unsigned int)mmap + mmap->size + sizeof(unsigned int) );
 	}
+
 	klog(LOG_INFO,"x86","Done starting hardware!\n");
+
 	kmain();
 }
