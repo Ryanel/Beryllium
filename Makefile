@@ -29,12 +29,10 @@ C_OPTIONS := -ffreestanding -std=gnu99 -g -O3
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function -Wno-unused-parameter
 
-CPP_OPTIONS := 
-CLANG_OPTIONS := 
 ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi
 
-LD := ./toolkit/binutils/bin/i586-elf-ld
-LFLAGS := -m elf_i386
+LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
+LFLAGS := 
 LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
 INCLUDE_DIR := "./src/includes"
 
@@ -112,3 +110,10 @@ util-iboot-iso: util-iboot
 	@echo "Creating iboot ISO..."
 	@cp kernel.elf iso/kernel.elf
 	@${GENISO} -R -J -c boot/bootcat -b boot/iboot.bin -no-emul-boot -boot-info-table -boot-load-size 4 iso -o iboot.iso
+
+x86:
+	make
+arm:
+	make integrator-cp
+integrator-cp:
+	make ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD=arm-none-eabi-ld
