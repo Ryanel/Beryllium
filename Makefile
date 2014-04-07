@@ -1,6 +1,6 @@
 ARCH := x86
 ARCH_DIRECTORY := src/${ARCH}
-COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
+COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
 
 BOOT_FILES := $(patsubst %.c,%.o,$(wildcard src/boot/*.c))
 ARCH_BOOT_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.s)) $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.c))
@@ -44,7 +44,7 @@ GENISO := xorriso -as mkisofs
 	
 .PHONY: iso clean
 
-all:kernel iso
+all:kernel
 
 arch-boot: ${ARCH_BOOT_FILES}
 boot: ${BOOT_FILES}
@@ -113,10 +113,10 @@ util-iboot-iso: util-iboot
 	@${GENISO} -R -J -c boot/bootcat -b boot/iboot.bin -no-emul-boot -boot-info-table -boot-load-size 4 iso -o iboot.iso
 
 x86:
-	make
+	@make
 arm:
-	make integrator-cp
+	@make integrator-cp
 integrator-cp:
-	make ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc"
+	@make ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc"
 run-arm:
-	qemu-system-arm -serial stdio -kernel kernel.elf
+	@qemu-system-arm -serial stdio -kernel kernel.elf

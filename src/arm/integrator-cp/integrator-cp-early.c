@@ -1,8 +1,9 @@
 #include <arm/intergrator-cp/drivers/serial.h>
 #include <stdio.h>
-#include <system.h>
+#include <log.h>
 void arm_integrator_cp_early()
 {
-	printf("Beryllium %s - version %s (from %s)\n",BERYLLIUM_RELEASE,BERYLLIUM_VERSION,BERYLLIUM_SOURCE);
+	serial_print_header();
+	klog(LOG_INFO,"LOG","Logging up on arm (via. UART0)\n");
 	for(;;);
 }

@@ -60,12 +60,11 @@ void klog(int mode, const char *title, const char *fmt, ...)
 		}
 		#endif
 		va_list args;
-		int rv;
 		va_start(args, fmt);
 		#ifdef LOG_SERIAL
-		rv = vprintf_serial(fmt, args);
+		vprintf_serial(fmt, args);
 		#else
-		rv = vprintf(fmt,args);
+		vprintf(fmt,args);
 		#endif
 		va_end(args);
 		video_resetattributetext();

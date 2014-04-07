@@ -6,5 +6,5 @@
 
 void serial_write(char c);
 void serial_writes(char * s);
-
+void serial_print_header();
 #endif
