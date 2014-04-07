@@ -117,6 +117,6 @@ x86:
 arm:
 	@make integrator-cp
 integrator-cp:
-	@make ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc"
+	@make ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc -DARM"
 run-arm:
 	@qemu-system-arm -serial stdio -kernel kernel.elf

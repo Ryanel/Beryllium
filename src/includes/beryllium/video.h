@@ -19,4 +19,5 @@ void video_setattributetext(unsigned char back, unsigned char fore);
 void video_resetattributetext();
 ///Can we use graphics?
 int video_graphics_capable();
+void video_draw_pixel(int x, int y, uint8_t r,uint8_t g,uint8_t b);
 #endif
