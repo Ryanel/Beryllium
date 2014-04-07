@@ -16,6 +16,7 @@
 #include <error.h>
 #include <elf.h>
 elf_t kernel_elf;
+extern tree_t   * device_tree;
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -54,5 +55,17 @@ void kmain()
 		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
 	}
 	#endif
-	panic("No init process to start (kernel init stub not compiled)!\n");
+	klog(LOG_FAIL,"KRN","No init process to start (kernel init stub not compiled)!\n");
+	klog(LOG_INFO,"KRN","Logging kernel structures to serial before halting...\n");
+	printf("VFS\n");
+	vfs_print_tree_node(vfs_tree->root, 0);
+	printf("Device Tree\n");
+	device_tree_enumerate(device_tree->root, 0);
+	printf("Timers\n");
+	list_timers();
+	printf("\n");
+	while(true)
+	{
+		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
+	}
 }
