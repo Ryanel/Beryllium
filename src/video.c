@@ -30,7 +30,7 @@ void video_printchar(int x,int y, unsigned char c)
 	#ifdef X86
 	textmode_write(x,y,c);
 	#else
-	gterminal_draw_char(x, y, c);
+	//gterminal_draw_char(x, y, c);
 	#endif
 }
 

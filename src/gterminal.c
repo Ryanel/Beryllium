@@ -9,8 +9,8 @@ int term_y = 0;
 
 void gterminal_draw_char(int x, int y, char c)
 {
-    int x_offset = x * FONT_WIDTH;
-    int y_offset = y * FONT_HEIGHT;
+    //int x_offset = x * FONT_WIDTH;
+    //int y_offset = y * FONT_HEIGHT;
     //klog(LOG_DEBUG,"GTM","Attempting to write '%c' to the screen at (%d, %d)!\n",c,x_offset,y_offset);
     for(int yi = 0; yi<FONT_HEIGHT; yi++)
     {
