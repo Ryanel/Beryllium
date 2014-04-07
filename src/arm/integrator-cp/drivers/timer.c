@@ -8,7 +8,7 @@ void icp_timer_setup()
 	picmmio[PIC_IRQ_ENABLESET] = (1<<5) | (1<<6) | (1<<7);
 
 	t0mmio = (uint32_t*)0x13000000;
-	t0mmio[REG_LOAD] = 0x10;
+	t0mmio[REG_LOAD] = 0x1000;
 	t0mmio[REG_BGLOAD] = 40000;			
 	t0mmio[REG_CTRL] = CTRL_ENABLE | CTRL_MODE_PERIODIC | CTRL_SIZE_32 | CTRL_DIV_NONE | CTRL_INT_ENABLE;
 	t0mmio[REG_INTCLR] = ~0;

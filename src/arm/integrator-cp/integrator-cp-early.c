@@ -17,10 +17,17 @@ void arm_integrator_cp_early()
 	klog(LOG_INFO,"ARM","Program counter at ~0x%X\n");
 	arm4_xrqsetup();
 	icp_timer_setup();
+	uint32_t i = 0;
 	klog(LOG_INFO,"ARM","Waiting for timer to fire... ");
 	while(timer_getHi() == 0)
 	{
-
+		i++;
+		if(i > 0xFFFFFF)
+		{
+			printf("it didn't.\n");
+			klog(LOG_INFO,"ARM","Halting!\n");
+			return;
+		}
 	}
 	printf("Fired\n");
 	memory_init();

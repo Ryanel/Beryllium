@@ -33,16 +33,25 @@ void __attribute__((naked)) k_exphandler_swi_entry() { KEXP_TOPSWI; arm4_xrq_han
 
 void arm4_xrq_handler(uint32_t lr, uint32_t type)
 {
-	//klog(LOG_INFO,"ARM","Recieved interrupt\n");
-	uint32_t			*t0mmio;
-	uint32_t			swi;
-	//Clear the interrupt flag
-	t0mmio = (uint32_t*)0x13000000;
-	t0mmio[REG_INTCLR] = 1;
+	uint32_t *picmmio;
+	
+	// Is this a IRQ?
+	if (type == ARM4_XRQ_IRQ)
+	{
+		picmmio = (uint32_t*)0x14000000;
+		if (picmmio[PIC_IRQ_STATUS] & 0x20)
+		{
+			uint32_t *t0mmio;
+			t0mmio = (uint32_t*)0x13000000;
+			t0mmio[REG_INTCLR] = 1;			/* according to the docs u can write any value */
+			timer_recieveTick(0x2);
+		}
+		return;
+	}
 	// Is this a software interrupt?
 	if (type == ARM4_XRQ_SWINT)
 	{
-
+		uint32_t swi;
 		//Yes
 		swi = ((uint32_t*)((uintptr_t)lr - 4))[0] & 0xffff;
 		if (swi == 4)
@@ -63,7 +72,6 @@ void arm4_xrq_handler(uint32_t lr, uint32_t type)
 		for(;;);
 	}
 	//Okay were assuming this is a timer interrupt.
-	timer_recieveTick(0x2);
 }
 
 void arm4_xrqinstall(uint32_t ndx, void *addr)
