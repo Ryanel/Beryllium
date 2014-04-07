@@ -3,8 +3,7 @@
 #ifdef X86
 #include <x86/drivers/textmode.h>
 #include <x86/drivers/bga.h>
-#endif
-#ifdef ARM
+#else
 #include <arm/intergrator-cp/drivers/qemu-PL110.h>
 #endif
 

@@ -30,5 +30,11 @@ void mutex_unlock(mutex_t *mutex)
 
 void mutex_init(mutex_t *mutex)
 {
-	mutex = 0;
+	if(mutex != 0)
+	{
+		if(mutex != NULL)
+		{
+			mutex = 0;
+		}
+	}
 }

@@ -1,5 +1,10 @@
-ARCH := x86
+#=================================================================================================
+#Beryllium Build System
+#=================================================================================================
+ARCH :=x86
 ARCH_DIRECTORY := src/${ARCH}
+
+
 COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
 
 BOOT_FILES := $(patsubst %.c,%.o,$(wildcard src/boot/*.c))
@@ -20,8 +25,6 @@ ARCH_FILES := $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/*.c))
 FS_FILES := $(patsubst %.c,%.o,$(wildcard src/fs/*.c))
 
 SRC_FILES := ${BOOT_FILES} ${KERNEL_FILES} ${DRIVER_FILES} ${LIB_FILES} ${ARCH_FILES} ${ARCH_BOOT_FILES} ${ARCH_LOW_FILES} ${ARCH_LIB_FILES} ${ARCH_DRIVER_FILES} ${FS_FILES}
-
-GET_HASH := ${git rev-parse --short HEAD}
 
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
@@ -44,7 +47,7 @@ GENISO := xorriso -as mkisofs
 	
 .PHONY: iso clean
 
-all:kernel
+all:kernel iso
 
 arch-boot: ${ARCH_BOOT_FILES}
 boot: ${BOOT_FILES}
@@ -113,10 +116,10 @@ util-iboot-iso: util-iboot
 	@${GENISO} -R -J -c boot/bootcat -b boot/iboot.bin -no-emul-boot -boot-info-table -boot-load-size 4 iso -o iboot.iso
 
 x86:
-	@make
+	@make all iso
 arm:
 	@make integrator-cp
 integrator-cp:
-	@make ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc -DARM"
+	@make kernel ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc -DARM"
 run-arm:
-	@qemu-system-arm -serial stdio -kernel kernel.elf
+	@qemu-system-arm -m 8 -serial stdio -kernel kernel.elf
