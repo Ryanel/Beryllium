@@ -18,8 +18,8 @@
 driver_t			 keyboard_driver;
 device_t             keyboard_device;
 
-unsigned char buffer[0xFF];
-unsigned int buffer_i = 0;
+volatile unsigned char buffer[0xFF];
+volatile unsigned int buffer_i = 0;
 
 mutex_t *kbio_mutex = 0;
 

@@ -25,7 +25,7 @@ GET_HASH := ${git rev-parse --short HEAD}
 
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS := -ffreestanding -std=gnu99 -g -O0
+C_OPTIONS := -ffreestanding -std=gnu99 -g -O3
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function -Wno-unused-parameter
 

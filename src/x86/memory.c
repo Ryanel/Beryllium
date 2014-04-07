@@ -26,7 +26,7 @@ int mem_lastpage = 0;
 ///Kernel memory allocation mutex (boolean semaphore). This is NOT the lock on memory, only for the memory_alloc allocators.
 mutex_t *mmac_lock;
 /// The kernel's heap
-heap_t *kheap; 
+//heap_t *kheap; 
 /**
 The kernel reserved area is exactly 4kb of memory. It is a sort of "shield" against the heap's conventional memory.
 This is filled completely with 0xFF, and in the event of an EMERGENCY it can be written to to store up to 4kb of debug information.
