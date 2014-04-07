@@ -5,7 +5,7 @@
 #include <x86/lib/placement_malloc.h>
 #include <string.h>
 #include <x86/low/irq.h>
-#include <x86/memory.h>
+#include <beryllium/memory.h>
 #undef DEBUG
 #ifdef DEBUG
 #include <stdio.h>

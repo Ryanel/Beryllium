@@ -7,7 +7,7 @@
 #include <x86/x86.h>
 #include <x86/low/isr.h>
 #include <x86/paging.h>
-#include <x86/memory.h>
+#include <beryllium/memory.h>
 void pit_init();
 void kb_init();
 void init_x86()
