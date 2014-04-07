@@ -16,7 +16,7 @@ extern elf_t kernel_elf;
 /**
  Get the kernel up and running as fast as possible
 **/
-void kernel_x86_binding_init(volatile int magic,volatile struct multiboot *mboot)
+void kernel_x86_binding_init(int magic,struct multiboot *mboot)
 {
 
 	#ifdef IS_RELEASE

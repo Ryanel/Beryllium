@@ -1,6 +1,6 @@
 ARCH := x86
 ARCH_DIRECTORY := src/${ARCH}
-COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL#-D KLOG_TITLE_TIME
+COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
 
 BOOT_FILES := $(patsubst %.c,%.o,$(wildcard src/boot/*.c))
 ARCH_BOOT_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.s)) $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.c))
