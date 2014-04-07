@@ -23,6 +23,7 @@ Kernel main function
 **/
 void kmain()
 {
+	#ifdef X86
 	//Print status messages
 	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.4 (git)");
 	klog(LOG_INFO,"KRN","CoreLibs initialising...\n");
@@ -42,6 +43,7 @@ void kmain()
 	//Launch a shell
 
 	klog(LOG_FAIL,"KRN","Kernel init rescue shell launching -- no init found!\n");
+	
 	kshell_init();
 	int i = 0;
 	while(true)
@@ -49,6 +51,6 @@ void kmain()
 		kshell_parse_char(kb_read());
 		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
 	}
-
+	#endif
 	panic("No init process to start (kernel init stub not compiled)!\n");
 }

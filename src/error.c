@@ -8,6 +8,7 @@
 #endif
 #define PANIC_MSG_BAR "   ==================================PANIC===================================   "
 
+#ifdef X86
 extern elf_t kernel_elf;
 
 void print_stack_trace ()
@@ -21,7 +22,7 @@ void print_stack_trace ()
 		ebp = (uint32_t*) *ebp;
 	}
 }
-
+#endif
 void panic(const char* reason)
 {
 	//terminal_set_statusbar(PANIC_MSG_BAR);
@@ -36,14 +37,18 @@ void panic(const char* reason)
 void halt()
 {
 	klog(LOG_INFO,"KERN","Halting!\n");
+	#ifdef X86
 	printf("Stacktrace:\n");
 	print_stack_trace();
-	#ifdef X86
 	asm("cli");
 	asm("hlt");
 	#endif
+	while(true)
+	{
+		
+	}
 }
-
+#ifdef X86
 void halt_regs(registers_t* regs)
 {
 	klog(LOG_INFO,"KERN","Halting!\n");
@@ -59,3 +64,4 @@ void halt_regs(registers_t* regs)
 	halt();
 	#endif
 }
+#endif

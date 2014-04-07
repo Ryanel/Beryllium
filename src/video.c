@@ -17,33 +17,48 @@ int video_graphics_init() //returns 0 if failed, 1 if sucessfull
 
 int video_graphics_capable()
 {
+	#ifdef X86
 	return !bga_isavalable();
+	#endif
+	return 0;
 }
 
 void video_printchar(int x,int y, unsigned char c)
 {
+	#ifdef X86
 	textmode_write(x,y,c);
+	#endif
 }
 
 void video_printcoloredchar(int x,int y, unsigned char c, unsigned char attribute)
 {
+	#ifdef X86
 	textmode_write_color(x,y,c, attribute);
+	#endif
 }
 void video_scroll(int from,int to)
 {
+	#ifdef X86
 	textmode_scroll(from,to);
+	#endif
 }
 
 void video_setcursor(int x,int y)
 {
+	#ifdef X86
 	textmode_setcursor(x,y);
+	#endif
 }
 
 void video_setattributetext(unsigned char back, unsigned char fore)
 {
+	#ifdef X86
 	textmode_setcolor(back,fore);
+	#endif
 }
 void video_resetattributetext()
 {
+	#ifdef X86
 	textmode_resetcolor();
+	#endif
 }
