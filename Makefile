@@ -28,10 +28,12 @@ CPP:=clang++
 C_OPTIONS := -ffreestanding -std=gnu99
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function -Wno-unused-parameter
+
 CPP_OPTIONS := 
 CLANG_OPTIONS := 
 ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi
 
+LD := ./toolkit/binutils/bin/i586-elf-ld
 LFLAGS := -m elf_i386
 LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
 INCLUDE_DIR := "./src/includes"
