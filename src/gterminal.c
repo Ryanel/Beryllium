@@ -16,20 +16,21 @@ void gterminal_draw_char(int x, int y, char c)
     {
         for(int xi = 0; xi<FONT_WIDTH; xi++)
         {
-            video_draw_pixel(xi + x_offset, yi + y_offset, 0xFF,0xFF,0xFF);
+            //video_draw_pixel(xi + x_offset, yi + y_offset, 0x10,0x10,0x10);
         }
     }
 }
 
 
-void gterminal_draw_string(int x, int y, char* input) {
+void gterminal_draw_string(int x, int y, char* input) 
+{
 
 }
  
 void gterminal_printc(unsigned char c)
 {
-    //video_draw_pixel(1, 1, 0xFF,0xFF,0xFF);
-    gterminal_draw_char(term_x,term_y,c);
+    video_draw_pixel(100, 100, 0xFF,0xFF,0xFF);
+    //gterminal_draw_char(term_x,term_y,c);
 }
 
 void gterminal_print(const char * c)
