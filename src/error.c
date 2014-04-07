@@ -23,6 +23,7 @@ void print_stack_trace ()
 	}
 }
 #endif
+
 void panic(const char* reason)
 {
 	//terminal_set_statusbar(PANIC_MSG_BAR);

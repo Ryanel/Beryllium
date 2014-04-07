@@ -13,6 +13,7 @@
 #include <beryllium/watchdog.h>
 #include <beryllium/kmonitor.h>
 #include <beryllium/timing.h>
+#include <error.h>
 #include <elf.h>
 elf_t kernel_elf;
 #ifdef X86
