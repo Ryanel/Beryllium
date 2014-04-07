@@ -6,7 +6,8 @@
 #include <beryllium/vfs.h>
 #include <beryllium/watchdog.h>
 #include <beryllium/timing.h>
-unsigned char command[0xFF];
+#include <beryllium/device.h>
+char command[0xFF];
 int command_i = 0;
 const char *prompt = "shell@beryllium / # ";
 void kshell_init()

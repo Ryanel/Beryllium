@@ -11,6 +11,7 @@ int serial_printf(const char *fmt, ...);
 Prints formated text.
 **/
 int vprintf(const char *fmt, va_list args);
+int vprintf_serial(const char *fmt, va_list args);
 /**
 Writes formatted data to string
 **/
