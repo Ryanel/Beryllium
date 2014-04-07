@@ -25,7 +25,9 @@ GET_HASH := ${git rev-parse --short HEAD}
 
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS :=-ffreestanding
+C_OPTIONS := -ffreestanding -std=gnu99
+C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
+C_OPTIONS += -Wno-unused-function -Wno-unused-parameter
 CPP_OPTIONS := 
 CLANG_OPTIONS := 
 ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi
