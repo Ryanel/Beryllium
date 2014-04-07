@@ -59,11 +59,10 @@ void kmain()
 	klog(LOG_INFO,"KRN","Logging kernel structures to serial before halting...\n");
 	printf("VFS\n");
 	vfs_print_tree_node(vfs_tree->root, 0);
-	printf("Device Tree\n");
+	printf("\nDevice Tree\n");
 	device_tree_enumerate(device_tree->root, 0);
-	printf("Timers\n");
+	printf("\nTimers\n");
 	list_timers();
-	printf("\n");
 	while(true)
 	{
 		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
