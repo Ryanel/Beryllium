@@ -1,6 +1,11 @@
-ARCH := x86
+#=================================================================================================
+#Beryllium Build System
+#=================================================================================================
+ARCH :=x86
 ARCH_DIRECTORY := src/${ARCH}
-COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
+
+
+COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
 
 BOOT_FILES := $(patsubst %.c,%.o,$(wildcard src/boot/*.c))
 ARCH_BOOT_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.s)) $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.c))
@@ -21,20 +26,16 @@ FS_FILES := $(patsubst %.c,%.o,$(wildcard src/fs/*.c))
 
 SRC_FILES := ${BOOT_FILES} ${KERNEL_FILES} ${DRIVER_FILES} ${LIB_FILES} ${ARCH_FILES} ${ARCH_BOOT_FILES} ${ARCH_LOW_FILES} ${ARCH_LIB_FILES} ${ARCH_DRIVER_FILES} ${FS_FILES}
 
-GET_HASH := ${git rev-parse --short HEAD}
-
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS := -ffreestanding -std=gnu99 -g -O3
+C_OPTIONS := -ffreestanding -std=gnu99 -nostdlib -nostartfiles -fno-builtin -nostartfiles
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
-C_OPTIONS += -Wno-unused-function -Wno-unused-parameter
+C_OPTIONS += -Wno-unused-function -Wno-unused-parameter 
 
-CPP_OPTIONS := 
-CLANG_OPTIONS := 
 ARMTK:=./toolkit/arm-2008q3/bin/arm-none-eabi
 
-LD := ./toolkit/binutils/bin/i586-elf-ld
-LFLAGS := -m elf_i386
+LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
+LFLAGS :=
 LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
 INCLUDE_DIR := "./src/includes"
 
@@ -64,6 +65,7 @@ arch-drivers: ${ARCH_DRIVER_FILES}
 fs: ${FS_FILES}
 kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers fs ${KERNEL_FILES}
 	@echo "Linking Kernel"
+	@echo ${LFLAGS}
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${SRC_FILES}
 
 #Generic
@@ -81,7 +83,7 @@ kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers fs 
 	@${CPP} -c ${CPP_OPTIONS}  ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
-	-rm -rf src/*.o src/lib/*.o src/drivers/*.o src/fs/*.o ${ARCH_DIRECTORY}/*.o ${ARCH_DIRECTORY}/boot/*.o ${ARCH_DIRECTORY}/drivers/*.o ${ARCH_DIRECTORY}/lib/*.o ${ARCH_DIRECTORY}/low/*.o
+	-rm -rf src/*.o src/boot/*.o src/lib/*.o src/drivers/*.o src/fs/*.o ${ARCH_DIRECTORY}/*.o ${ARCH_DIRECTORY}/boot/*.o ${ARCH_DIRECTORY}/drivers/*.o ${ARCH_DIRECTORY}/lib/*.o ${ARCH_DIRECTORY}/low/*.o
 	-rm -rf util/*.o util/*.bin
 	-rm -rf *.iso
 	-rm -rf kernel.elf kernel.img
@@ -118,3 +120,11 @@ gen-symbols:
 
 add-symbols:
 	cp kernel.map iso/boot/symbols.mod
+x86:
+	@make all iso
+arm:
+	@make integrator-cp
+integrator-cp:
+	@make kernel ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc -DARM"
+run-arm:
+	@qemu-system-arm -m 8 -serial stdio -kernel kernel.elf

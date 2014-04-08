@@ -6,7 +6,11 @@ void mutex_lock(mutex_t *mutex)
 	{
 		while(mutex)
 		{
+			#if X86
 			asm volatile("pause");
+			#else
+
+			#endif
 		}
 	}
 	mutex = (mutex_t*)1;
@@ -26,5 +30,11 @@ void mutex_unlock(mutex_t *mutex)
 
 void mutex_init(mutex_t *mutex)
 {
-	mutex = 0;
+	if(mutex != 0)
+	{
+		if(mutex != NULL)
+		{
+			mutex = 0;
+		}
+	}
 }

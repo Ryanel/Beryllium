@@ -13,8 +13,10 @@
 #include <beryllium/watchdog.h>
 #include <beryllium/kmonitor.h>
 #include <beryllium/timing.h>
+#include <error.h>
 #include <elf.h>
 elf_t kernel_elf;
+extern tree_t   * device_tree;
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
@@ -23,8 +25,10 @@ Kernel main function
 **/
 void kmain()
 {
+	#ifdef X86
 	//Print status messages
 	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.4 (git)");
+	#endif
 	klog(LOG_INFO,"KRN","CoreLibs initialising...\n");
 	#ifdef DEBUG
 	klog(LOG_WARN,"KRN","Running Debug Kernel! Some things might not work properly!\n");
@@ -42,6 +46,7 @@ void kmain()
 	//Launch a shell
 
 	klog(LOG_FAIL,"KRN","Kernel init rescue shell launching -- no init found!\n");
+	#ifdef X86
 	kshell_init();
 	int i = 0;
 	while(true)
@@ -49,6 +54,17 @@ void kmain()
 		kshell_parse_char(kb_read());
 		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
 	}
-
-	panic("No init process to start (kernel init stub not compiled)!\n");
+	#endif
+	klog(LOG_FAIL,"KRN","No init process to start (kernel init stub not compiled)!\n");
+	klog(LOG_INFO,"KRN","Logging kernel structures to serial before halting...\n");
+	printf("VFS\n");
+	vfs_print_tree_node(vfs_tree->root, 0);
+	printf("\nDevice Tree\n");
+	device_tree_enumerate(device_tree->root, 0);
+	printf("\nTimers\n");
+	list_timers();
+	while(true)
+	{
+		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
+	}
 }

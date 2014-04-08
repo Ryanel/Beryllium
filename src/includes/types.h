@@ -1,5 +1,14 @@
 #ifndef TYPE_H
 #define TYPE_H
+
+#ifdef B64
+typedef unsigned long long  uintptr_t;
+#else
+typedef unsigned int		uintptr_t;
+#endif
+
+typedef   signed long long  sint64_t;
+typedef unsigned long long  uint64_t;
 typedef unsigned int   uint32_t;
 typedef          int   sint32_t;
 typedef unsigned short uint16_t;

@@ -8,9 +8,17 @@
 #include <x86/x86.h>
 #include <x86/drivers/serial.h>
 #include <elf.h>
+<<<<<<< HEAD
 
 uint32_t module_start[256];
 uint32_t module_end[256];
+=======
+#ifdef ENABLE_SERIAL
+void serial_print_header();
+#endif
+uint32_t initrd_location;
+uint32_t initrd_end;
+>>>>>>> arm
 extern uint32_t placement_address;
 extern elf_t kernel_elf;
 /**
@@ -28,6 +36,7 @@ void kernel_x86_binding_init(int magic,struct multiboot *mboot)
 
 	#ifdef ENABLE_SERIAL
 	serial_init();
+	serial_print_header();
 	#endif
 	
 	klog(LOG_INFO,"x86","Loading x86 components...\n");

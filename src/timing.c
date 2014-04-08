@@ -115,7 +115,7 @@ void timing_reaper()
 int timing_init()
 {
 	memset(&handlers,0,sizeof(timer_t) * 0xFF);
-	timing_register_timer("timer_reaper",1,timing_reaper, 100);
+	timing_register_timer("timer_reaper",100,timing_reaper, 100);
 	return 0;
 }
 int t_i = 0;

@@ -1,3 +1,4 @@
+#ifdef X86
 #include <stdio.h>
 #include <string.h>
 #include <system.h>
@@ -106,3 +107,4 @@ void kshell_parse_char(unsigned char input)
 	}
 
 }
+#endif

@@ -17,6 +17,10 @@ void timer_switchDevice(uint32_t device_id)
 			device = 0;
 			device_resoulution = 1;
 			break;
+		case 0x2:
+			device = 2;
+			device_resoulution = 1;
+			break;
 		default:
 			timer_switchDevice(0);
 			break;
@@ -55,6 +59,8 @@ const char* timer_getDeviceString(uint32_t device)
 			return "Programmable interrupt timer";
 		case 0x1:
 			return "Real time clock";
+		case 0x2:
+			return "ARM Integrated";
 		default:
 			return "Unknown";
 	}
