@@ -66,6 +66,9 @@ void kshell_parse_command(char *s)
 	{
 		list_timers();
 	}
+	else if (strcmp(s,"printsymbol") > 1)
+	{
+	}
 	else if (strcmp(s,"") == 0)
 	{
 	}

@@ -4,8 +4,7 @@ Manages the memory
 
 Hooks into src/memory.c
 **/
-#include <x86/lib/placement_malloc.h>
-#include <x86/memory.h>
+#include <beryllium/memory.h>
 #include <types.h>
 #include <stdio.h>
 #include <log.h>
