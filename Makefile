@@ -112,3 +112,9 @@ util-iboot-iso: util-iboot
 	@echo "Creating iboot ISO..."
 	@cp kernel.elf iso/kernel.elf
 	@${GENISO} -R -J -c boot/bootcat -b boot/iboot.bin -no-emul-boot -boot-info-table -boot-load-size 4 iso -o iboot.iso
+
+gen-symbols:
+	nm kernel.elf > kernel.map
+
+add-symbols:
+	cp kernel.map iso/boot/symbols.mod

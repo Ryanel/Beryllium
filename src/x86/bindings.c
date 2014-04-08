@@ -9,8 +9,8 @@
 #include <x86/drivers/serial.h>
 #include <elf.h>
 
-uint32_t initrd_location;
-uint32_t initrd_end;
+uint32_t module_start[256];
+uint32_t module_end[256];
 extern uint32_t placement_address;
 extern elf_t kernel_elf;
 /**
@@ -41,9 +41,11 @@ void kernel_x86_binding_init(int magic,struct multiboot *mboot)
 	klog(LOG_INFO,"MBT","%d modules loaded with kernel\n",mboot->mods_count);
 	if(mboot->mods_count != 0)
 	{
-		initrd_location = *((uint32_t*)mboot->mods_addr);
-		initrd_end = *(uint32_t*)(mboot->mods_addr+4);
-		placement_address = initrd_end;
+		module_start[0] = *((uint32_t*)mboot->mods_addr);
+		module_end[0] = *(uint32_t*)(mboot->mods_addr+4);
+		placement_address = module_end[0];
+		klog(LOG_INFO,"MBT","Placement address is now 0x%X\n",placement_address);
+		printf("%s\n",module_start[0]);
 	}
 	#ifdef KERNEL_SYMBOLS
 	if(mboot->num > 0)

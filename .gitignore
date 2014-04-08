@@ -21,6 +21,8 @@ toolkit/binutils-2.22/
 toolkit/*.tar.gz
 toolkit/*.tar.bz2
 toolkit/cross/*
+toolkit/bin/*
+doc/*
 kernel.elf
 toolkit/arm-2008q3/
 libiconv*
@@ -29,6 +31,5 @@ libiconv*
 *.iso
 *.img
 *.bin
-
-doc/*
-*.log
+*.mod
+*.map
