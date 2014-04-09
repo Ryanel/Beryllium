@@ -38,7 +38,6 @@ GENISO := xorriso -as mkisofs
 all: build-dir kernel gen-symbols add-symbols iso
 
 build-dir:
-	@-rm -r ${BUILD_DIRECTORY}
 	@-mkdir ${BUILD_DIRECTORY}
 
 arch-boot: ${ARCH_BOOT_FILES}
@@ -77,8 +76,6 @@ kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers fs 
 clean: prep-dist
 	-rm -rf src/*.o src/boot/*.o src/lib/*.o src/drivers/*.o src/fs/*.o ${ARCH_DIRECTORY}/*.o ${ARCH_DIRECTORY}/boot/*.o ${ARCH_DIRECTORY}/drivers/*.o ${ARCH_DIRECTORY}/lib/*.o ${ARCH_DIRECTORY}/low/*.o
 	-rm -rf util/*.o util/*.bin
-	-rm -rf *.iso
-	-rm -rf kernel.elf kernel.img
 
 prep-dist:
 	-rm -rf *~ boot/*~ src/*~
@@ -101,6 +98,6 @@ x86:
 arm:
 	@make integrator-cp
 integrator-cp:
-	@make kernel ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc -DARM"
+	@make build-dir kernel gen-symbols add-symbols ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc -DARM"
 run-arm:
-	@qemu-system-arm -m 8 -serial stdio -kernel kernel.elf
+	@qemu-system-arm -m 8 -serial stdio -kernel ${BUILD_DIRECTORY}/kernel.elf
