@@ -4,6 +4,8 @@
 ARCH :=x86
 ARCH_DIRECTORY := src/${ARCH}
 
+BUILD_DIRECTORY := build
+
 COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
 #Files
 BOOT_FILES := $(patsubst %.c,%.o,$(wildcard src/boot/*.c))
@@ -33,7 +35,11 @@ GENISO := xorriso -as mkisofs
 #Rules
 .PHONY: iso clean
 
-all:kernel gen-symbols add-symbols iso
+all: build-dir kernel gen-symbols add-symbols iso
+
+build-dir:
+	@-rm -r ${BUILD_DIRECTORY}
+	@-mkdir ${BUILD_DIRECTORY}
 
 arch-boot: ${ARCH_BOOT_FILES}
 boot: ${BOOT_FILES}
@@ -52,7 +58,7 @@ fs: ${FS_FILES}
 kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers fs ${KERNEL_FILES}
 	@echo "Linking Kernel"
 	@echo ${LFLAGS}
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o kernel.elf ${SRC_FILES}
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o ${BUILD_DIRECTORY}/kernel.elf ${SRC_FILES}
 
 #Generic
 
@@ -79,33 +85,17 @@ prep-dist:
 
 run:
 	@echo "Remember! Use make run to test the kernel! Implement it into a OS if you wish to test other fuctions!"
-	qemu-system-i386 -serial stdio -cdrom cdrom.iso
+	qemu-system-i386 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso
 
 iso:
 	@echo "Creating ISO..."
-	@cp kernel.elf iso/kernel.elf
-	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o cdrom.iso iso
-
-util: util-iboot-iso
-	@echo "Built Utilities"
-
-util/iboot.bin:
-	@nasm util/iboot-iso.s -f bin -o util/iboot.bin
-
-util-iboot: util/iboot.bin
-	@cp util/iboot.bin iso/boot/iboot.bin
-	@echo "Integrated Bootloader Built"
-
-util-iboot-iso: util-iboot
-	@echo "Creating iboot ISO..."
-	@cp kernel.elf iso/kernel.elf
-	@${GENISO} -R -J -c boot/bootcat -b boot/iboot.bin -no-emul-boot -boot-info-table -boot-load-size 4 iso -o iboot.iso
+	@cp ${BUILD_DIRECTORY}/kernel.elf iso/kernel.elf
+	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o ${BUILD_DIRECTORY}/cdrom.iso iso
 
 gen-symbols:
-	nm kernel.elf > kernel.map
-
-add-symbols:
-	cp kernel.map iso/boot/symbols.mod
+	nm ${BUILD_DIRECTORY}/kernel.elf > ${BUILD_DIRECTORY}/kernel.map
+add-symbols: gen-symbols
+	cp ${BUILD_DIRECTORY}/kernel.map iso/boot/symbols.mod
 x86:
 	@make all iso
 arm:
