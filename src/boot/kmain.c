@@ -25,7 +25,8 @@ Kernel main function
 **/
 void kmain()
 {
-	#ifdef X86
+    //__stack_chk_guard_setup();
+    #ifdef X86
 	//Print status messages
 	terminal_set_statusbar("Beryllium Unstable Isotope v. 0.0.0.4 (git)");
 	#endif
