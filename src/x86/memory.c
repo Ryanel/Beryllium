@@ -34,7 +34,7 @@ This memory is not for conventional use; infact it is never used in the current 
 **/
 void* kernel_reserved_area;
 /**
-Allocates multple pages and returns a pointer to the first page.
+Allocates multple kernel heap pages and returns a pointer to the first page.
 This function is not meant to be directly called, as this is not locked by the mutex mmac_lock.
 Please use memory_alloc_pages() instead.
 **/
@@ -125,7 +125,7 @@ void memory_init()
 	mutex_lock(mmac_lock);
 	klog(LOG_INFO,"MEM","Initialising and populating memory...\n");
 	mem_lastpage = pa_first_frame() * 0x1000;
-	klog(LOG_DEBUG,"MEM","Marked 0x%X (%d) frames as dirty\n",mem_lastpage,mem_lastpage);
+	klog(LOG_DEBUG,"MEM","Marked 0x%X (%x) frames as dirty\n",mem_lastpage,mem_lastpage);
 	mutex_unlock(mmac_lock);
 	klog(LOG_DEBUG,"MEM","Allocating Kernel Reserved Area...\n");
 	kernel_reserved_area = memory_alloc_pages(1);
