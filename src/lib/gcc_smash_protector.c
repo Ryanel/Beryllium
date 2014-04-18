@@ -6,8 +6,8 @@ void * __stack_chk_guard = NULL;
  
 void __stack_chk_guard_setup()
 {
-    unsigned char * p;
-    p = (unsigned char *) &__stack_chk_guard;
+    unsigned int * p;
+    p = (unsigned int *) &__stack_chk_guard;
  
     /* If you have the ability to generate random numbers in your kernel then use them,
        otherwise for 32-bit code: */
@@ -17,4 +17,9 @@ void __stack_chk_guard_setup()
 void __attribute__((noreturn)) __stack_chk_fail()
 { 
     panic("Stack was smashed!");
+    while(true)
+    {
+	asm("hlt");
+    }
+    asm("hlt");
 }

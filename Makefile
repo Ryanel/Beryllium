@@ -39,7 +39,8 @@ GENISO := xorriso -as mkisofs
 all: build-dir kernel gen-symbols add-symbols iso
 
 build-dir:
-	-@mkdir ${BUILD_DIRECTORY}
+	@echo "DIR    | ${BUILD_DIRECTORY}"
+	@mkdir -p ${BUILD_DIRECTORY}
 
 arch-boot: ${ARCH_BOOT_FILES}
 boot: ${BOOT_FILES}
