@@ -86,7 +86,7 @@ run:
 	@qemu-system-i386 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso
 
 iso:
-	@echo "ISO    |"
+	@echo "ISO    | ${BUILD_DIRECTORY}/cdrom/iso"
 	@cp ${BUILD_DIRECTORY}/kernel.elf iso/kernel.elf
 	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o ${BUILD_DIRECTORY}/cdrom.iso iso
 

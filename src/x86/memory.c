@@ -131,6 +131,7 @@ void memory_init()
 	kernel_reserved_area = memory_alloc_pages(1);
 	klog(LOG_DEBUG,"MEM","Creating heap...!\n");
 	klog(LOG_INFO,"MEM","Done allocating initial memory!\n");
+	memman_init();
 }
 /**
 Allocates amount bytes, and returns a pointer to the beginning of the allocated amount.

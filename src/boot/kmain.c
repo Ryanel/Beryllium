@@ -16,10 +16,18 @@
 #include <error.h>
 #include <elf.h>
 elf_t kernel_elf;
-extern tree_t   * device_tree;
+extern tree_t  * device_tree;
+
 #ifdef X86
 void x86_switch_to_usermode();
 #endif
+
+void init_vfs_devices();
+void kshell_init();
+void kshell_parse_char(char);
+char kb_read();
+void device_tree_enumerate(tree_node_t *  ,int);
+void device_manager_start();
 /**
 Kernel main function
 **/
@@ -49,7 +57,6 @@ void kmain()
 	klog(LOG_FAIL,"KRN","Kernel init rescue shell launching -- no init found!\n");
 	#ifdef X86
 	kshell_init();
-	int i = 0;
 	while(true)
 	{
 		kshell_parse_char(kb_read());

@@ -53,18 +53,6 @@ void kernel_x86_binding_init(int magic,struct multiboot *mboot)
 		module_end[0] = *(uint32_t*)(mboot->mods_addr+4);
 		placement_address = module_end[0];
 		klog(LOG_INFO,"MBT","Placement address is now 0x%X\n",placement_address);
-		char *tmp;
-		char *str1, *token, *subtoken;
-		char *saveptr1, *saveptr2;
-		int j = 1;
-		for (j = 1, str1 = module_start[0]; ; j++, str1 = 0)
-		{
-			token = strtok_r(str1, "\n", &saveptr1);
-			if (token == NULL)
-				break;
-		}
-		klog(LOG_INFO,"SYM","%d symbols loaded\n",j);
-
 	}
 	#ifdef KERNEL_SYMBOLS
 	if(mboot->num > 0)
