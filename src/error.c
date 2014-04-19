@@ -49,7 +49,6 @@ void halt()
 		
 	}
 }
-#ifdef X86
 void halt_regs(registers_t* regs)
 {
 	klog(LOG_INFO,"KERN","Halting!\n");
@@ -65,4 +64,3 @@ void halt_regs(registers_t* regs)
 	halt();
 	#endif
 }
-#endif

@@ -22,7 +22,7 @@ SRC_FILES := ${BOOT_FILES} ${KERNEL_FILES} ${DRIVER_FILES} ${LIB_FILES} ${ARCH_F
 #Compiler Options
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS := -ffreestanding -std=gnu99 -nostdlib -nostartfiles -fno-builtin -nostartfiles
+C_OPTIONS := -ffreestanding -std=gnu99 -nostartfiles -nostdinc
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function -Wno-unused-parameter 
 #C_OPTIONS += -fstack-protector-all

@@ -1,6 +1,5 @@
 #ifndef TYPE_H
 #define TYPE_H
-
 #ifdef B64
 typedef unsigned long long  uintptr_t;
 #else

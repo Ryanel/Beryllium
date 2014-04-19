@@ -4,7 +4,7 @@
  * WARNING: This file deals with memory but CANNOT use allocation. Make sure things are dynamic ONLY if we got the heap up
 **/
 #include <stdio.h>
-#include <stdint.h>
+#include <types.h>
 #include <string.h>
 #include <stdlib.h>
 #include <x86/paging.h>
