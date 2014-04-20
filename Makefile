@@ -4,6 +4,8 @@
 ARCH :=x86
 ARCH_DIRECTORY := src/${ARCH}
 
+ARCH_TOOLKIT_PREFIX := 
+
 BUILD_DIRECTORY := build
 
 COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
@@ -68,11 +70,11 @@ kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers fs 
 
 %.o: %.c
 	@echo " CC    |" $@
-	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -DGITHASH=${GIT_HASH} -I${INCLUDE_DIR} -o $@ $<
+	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 %.o: %.cpp
 	@echo " CX    |" $@
-	@${CPP} -c ${CPP_OPTIONS}  ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
+	@${CPP} -c ${CPP_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
 	@-rm -rf src/*.o src/boot/*.o src/lib/*.o src/drivers/*.o src/fs/*.o ${ARCH_DIRECTORY}/*.o ${ARCH_DIRECTORY}/boot/*.o ${ARCH_DIRECTORY}/drivers/*.o ${ARCH_DIRECTORY}/lib/*.o ${ARCH_DIRECTORY}/low/*.o
@@ -98,6 +100,8 @@ add-symbols: gen-symbols
 	@cp ${BUILD_DIRECTORY}/kernel.map iso/boot/symbols.mod
 x86:
 	@make all iso
+x64:
+	@make ASM="nasm -felf64" LD="${ARCH_TOOLKIT_PREFIX}-ld" LFLAGS="" CC="${ARCH_TOOLKIT_PREFIX}-gcc -DX64" C_OPTIONS="${C_OPTIONS} -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2 -mno-sse3 -mno-3dnow" ARCH=x64 all iso 
 arm:
 	@make integrator-cp
 integrator-cp:
