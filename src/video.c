@@ -39,6 +39,15 @@ void video_printcoloredchar(int x,int y, unsigned char c, unsigned char attribut
 	textmode_write_color(x,y,c, attribute);
 	#endif
 }
+
+void video_printstring(int x,int y, unsigned char *c)
+{
+	int i = 0;
+	while (c[i])
+	{
+		video_printchar(x + i, y ,c[i++]);
+	}
+}
 void video_scroll(int from,int to)
 {
 	#ifdef X86

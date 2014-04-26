@@ -53,7 +53,7 @@ void kmain()
 	klog(LOG_INFO,"KRN","Kernel took %dms to become fully operational!\n",timer_getHi());
 
 	//Launch a shell
-
+	//dbg_start();
 	klog(LOG_FAIL,"KRN","Kernel init rescue shell launching -- no init found!\n");
 	#ifdef X86
 	kshell_init();

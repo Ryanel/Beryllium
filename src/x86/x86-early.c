@@ -16,10 +16,7 @@ void serial_print_header();
 #endif
 extern uint32_t placement_address;
 extern elf_t kernel_elf;
-void boop()
-{
-
-}
+typedef void (*fptr)(void);
 /**
  Get the kernel up and running as fast as possible
 **/
@@ -49,9 +46,12 @@ void kernel_x86_binding_init(int magic,struct multiboot *mboot)
 	klog(LOG_INFO,"MBT","%d modules loaded with kernel\n",mboot->mods_count);
 	if(mboot->mods_count != 0)
 	{
-		module_start[0] = *((uint32_t*)mboot->mods_addr);
-		module_end[0] = *(uint32_t*)(mboot->mods_addr+4);
-		placement_address = module_end[0];
+		for(int i = 0; i != mboot->mods_count; i++)
+		{
+			klog(LOG_INFO,"MBT","Processing module %d/%d (0x%x)\n",i+1,mboot->mods_count,*((uint32_t*)mboot->mods_addr));
+			placement_address = *(uint32_t*)(mboot->mods_addr+4);
+		}
+		
 		klog(LOG_INFO,"MBT","Placement address is now 0x%X\n",placement_address);
 	}
 	#ifdef KERNEL_SYMBOLS
