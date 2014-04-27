@@ -45,7 +45,17 @@ void video_printstring(int x,int y, unsigned char *c)
 	int i = 0;
 	while (c[i])
 	{
-		video_printchar(x + i, y ,c[i++]);
+		video_printchar(x + i, y ,c[i]);
+		i++;
+	}
+}
+void video_printcoloredstring(int x,int y,unsigned char attribute, unsigned char *c)
+{
+	int i = 0;
+	while (c[i])
+	{
+		video_printcoloredchar(x + i, y ,c[i],attribute);
+		i++;
 	}
 }
 void video_scroll(int from,int to)
@@ -59,6 +69,13 @@ void video_setcursor(int x,int y)
 {
 	#ifdef X86
 	textmode_setcursor(x,y);
+	#endif
+}
+
+void video_clear()
+{
+	#ifdef X86
+	textmode_clear();
 	#endif
 }
 

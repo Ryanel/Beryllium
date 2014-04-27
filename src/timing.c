@@ -63,6 +63,11 @@ void timing_deregister_timer(void (*handler)(timer_t *))
 	}
 }
 
+void timing_remove_index(int index)
+{
+	handlers[index].repeat_rate = 0;
+}
+
 void list_timers()
 {
 	printf(" ID |%-11sNAME|NEXT    ms|REP ms\n","",0,0);
@@ -90,6 +95,11 @@ void list_timers()
 			printf("[%02x]:%-15s|%8d%2s|%-04dms\n",index,handlers[index].name,rep_in,unit,handlers[index].repeat_rate);
 		}
 	}
+}
+
+void list_timers_dbg()
+{
+	
 }
 
 void timing_reaper()

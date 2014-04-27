@@ -305,6 +305,11 @@ int vprintf_help(unsigned c, void **ptr)
 	return 0 ;
 }
 
+int vprintf_at_help(unsigned c, void **ptr)
+{
+	printc(c);
+}
+
 int vprintf_serial_help(unsigned c, void **ptr)
 {
 	#ifdef ENABLE_SERIAL
@@ -318,6 +323,11 @@ int vprintf_serial_help(unsigned c, void **ptr)
 int vprintf(const char *fmt, va_list args)
 {
 	return do_printf(fmt, args, vprintf_help, NULL);
+}
+
+int vprintf_at(const char *fmt, va_list args)
+{
+	return do_printf(fmt, args, vprintf_at_help, NULL);
 }
 
 int vprintf_serial(const char *fmt, va_list args)
@@ -335,6 +345,29 @@ int printf(const char *fmt, ...)
 	va_start(args, fmt);
 	rv = vprintf(fmt, args);
 	va_end(args);
+	return rv;
+}
+
+int printf_at(int x, int y,const char *fmt, ...)
+{
+	char buffer[256];
+	va_list args;
+	int rv;
+	va_start(args, fmt);
+	rv = vsprintf(buffer, fmt, args);
+	va_end(args);
+	video_printstring(x,y,buffer);
+	return rv;
+}
+int printf_at_cc(int x, int y,unsigned char color,const char *fmt, ...)
+{
+	char buffer[256];
+	va_list args;
+	int rv;
+	va_start(args, fmt);
+	rv = vsprintf(buffer, fmt, args);
+	va_end(args);
+	video_printcoloredstring(x,y,color,buffer);
 	return rv;
 }
 int serial_printf(const char *fmt, ...)

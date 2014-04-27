@@ -53,14 +53,14 @@ void kmain()
 	klog(LOG_INFO,"KRN","Kernel took %dms to become fully operational!\n",timer_getHi());
 
 	//Launch a shell
-	//dbg_start();
+	dbg_start();
 	klog(LOG_FAIL,"KRN","Kernel init rescue shell launching -- no init found!\n");
 	#ifdef X86
 	kshell_init();
 	while(true)
 	{
 		kshell_parse_char(kb_read());
-		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
+		wd_notify(WD_NOTIFY_KMAIN);
 	}
 	#endif
 	klog(LOG_FAIL,"KRN","No init process to start (kernel init stub not compiled)!\n");
@@ -73,6 +73,6 @@ void kmain()
 	list_timers();
 	while(true)
 	{
-		wd_notify(WD_NOTIFY_KMAIN); //TODO: Make watchdog wrappers
+		wd_notify(WD_NOTIFY_KMAIN);
 	}
 }
