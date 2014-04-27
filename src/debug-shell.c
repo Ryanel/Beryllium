@@ -18,7 +18,8 @@ void dbg_screen_0()
 	printf_at_cc(0,2,0x0F,"This shell contains debug information about the current status of Beryllium");
 	printf_at_cc(0,3,0x0F,"Below are a list of commands");
 	printf_at_cc(0,4,0x0F," - # | Switch Screens.");
-	printf_at_cc(0,5,0x0F," - q | Quit Debug Mode");
+	printf_at_cc(0,5,0x0F," -TAB| Select");
+	printf_at_cc(0,6,0x0F," - q | Quit Debug Mode");
 }
 
 void dbg_screen_1()
@@ -168,6 +169,9 @@ void dbg_parse_char(unsigned char c)
 				selecting_index = 0;
 			}
 			break;
+		case 'q':
+			is_debugging = 0;
+			timing_deregister_timer(dbg_update_display);
 		default:
 			break;
 	}
@@ -176,7 +180,7 @@ void dbg_parse_char(unsigned char c)
 
 void dbg_loop()
 {
-	while(1)
+	while(is_debugging)
 	{
 		//dbg_update_display();
 		dbg_parse_char(kb_read());

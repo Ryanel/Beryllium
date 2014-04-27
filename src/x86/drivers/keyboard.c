@@ -123,7 +123,16 @@ void kb_handler(struct regs *r)
         kb_extended = 1;
         return;
     }
-
+	if(scancode == 0xAA)
+	{
+		kb_shift = 0;
+		return;
+	}
+	if(scancode == 0x2A)
+	{
+		kb_shift = 1;
+		return;
+	}
     if (scancode & 0x80)
     {
 	    if(kbdus[scancode] == KB_TRAP_CTL)
@@ -136,9 +145,12 @@ void kb_handler(struct regs *r)
 			kb_shift = 1;
 			return;
 		}
-		return;
+		else
+		{
+			return;
+		}
     }
-
+	
 	if(buffer_i == 0xFF)
 	{
 		serial_printf("Kernel keyboard driver overloaded! Dropping character %c\n",kbdus[scancode]);

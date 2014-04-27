@@ -19,7 +19,7 @@ void kshell_init()
 }
 
 extern tree_t   * device_tree;
-
+void dbg_start();
 void kshell_parse_command(char *s)
 {
 	if 		(strcmp(s,"about") == 0)
@@ -53,6 +53,7 @@ void kshell_parse_command(char *s)
 		printf("wd\t| Watchdog information\n");
 		printf("wdcrash\t| Crash the watchdog\n");
 		printf("timers\t| Shows all current timers\n");
+		printf("debug\t| Enter debug mode\n");
 	}
 	else if (strcmp(s,"wd") == 0)
 	{
@@ -68,6 +69,10 @@ void kshell_parse_command(char *s)
 	}
 	else if (strcmp(s,"printsymbol") > 1)
 	{
+	}
+	else if (strcmp(s,"debug") == 0)
+	{
+		 dbg_start();
 	}
 	else if (strcmp(s,"") == 0)
 	{
