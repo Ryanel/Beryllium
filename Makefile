@@ -8,7 +8,7 @@ ARCH_TOOLKIT_PREFIX :=
 
 BUILD_DIRECTORY := build
 
-COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -D LOG_SERIAL -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
+COMPILE_OPTIONS := -D DEBUG -D ENABLE_SERIAL -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
 #Files
 BOOT_FILES := $(patsubst %.c,%.o,$(wildcard src/boot/*.c))
 ARCH_BOOT_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.s)) $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/boot/*.c))
@@ -27,6 +27,7 @@ CPP:=clang++
 C_OPTIONS := -ffreestanding -std=gnu99 -nostartfiles -nostdinc
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function -Wno-unused-parameter 
+C_OPTIONS += -Os
 #C_OPTIONS += -fstack-protector-all
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
 LFLAGS :=

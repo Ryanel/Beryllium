@@ -3,8 +3,11 @@
 #include <beryllium/timing.h>
 #include <beryllium/timer.h>
 #include <stdio.h>
+#include <beryllium/debug.h>
+#ifdef DEBUG
 int is_debugging = 0;
 int is_selecting = 0;
+unsigned int debug_called = 0;
 unsigned int selecting_index = 0;
 unsigned int selecting_max = 0;
 unsigned char last_command = ' ';
@@ -24,6 +27,9 @@ void dbg_screen_0()
 
 void dbg_screen_1()
 {
+	printf_at_cc(60 - 7,1,0x70,"Called:%20d",debug_called);
+	printf_at_cc(0,1,0x70,"Beryllium Kernel Debug Mode");
+	printf_at_cc(27,1,0x70,"|                  ");
 }
 void list_timers_dbg();
 extern timer_t handlers[0xFF];
@@ -100,6 +106,7 @@ void dbg_screen_2()
 
 void dbg_update_display()
 {
+	debug_called++;
 	if(!is_debugging)
 	{
 		return;
@@ -195,3 +202,9 @@ void dbg_start()
 	timing_register_timer("dbg_screen",10,dbg_update_display, 16);
 	dbg_loop();
 }
+#else
+void dbg_start()
+{
+	printf("Debug mode not compiled in! -- Returning\n");
+}
+#endif

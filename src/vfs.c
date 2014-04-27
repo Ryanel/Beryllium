@@ -256,7 +256,6 @@ char *canonicalize_path(char *cwd, char *input) {
 	return output;
 }
 
-#ifdef DEBUG
 #include <stdio.h>
 void vfs_print_node(vfs_node_t *node)
 {
@@ -340,7 +339,6 @@ void vfs_print_tree_node(tree_node_t * node, size_t height)
 		vfs_print_tree_node(child->value, height + 4);
 	}
 }
-#endif
 int vfs_mount(char * path, vfs_node_t * local_root) {
 	if (!vfs_tree) {
 		klog(LOG_SEVERE,"VFS", "VFS hasn't been initialized, you can't mount things yet!\n");

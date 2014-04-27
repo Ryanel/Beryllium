@@ -8,6 +8,7 @@
 #include <beryllium/watchdog.h>
 #include <beryllium/timing.h>
 #include <beryllium/device.h>
+#include <beryllium/debug.h>
 char command[0xFF];
 int command_i = 0;
 const char *prompt = "shell@beryllium / # ";
@@ -19,7 +20,6 @@ void kshell_init()
 }
 
 extern tree_t   * device_tree;
-void dbg_start();
 void kshell_parse_command(char *s)
 {
 	if 		(strcmp(s,"about") == 0)

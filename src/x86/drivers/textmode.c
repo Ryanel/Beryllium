@@ -45,7 +45,7 @@ void textmode_write_color(int x,int y,uint8_t data, uint8_t attr)
 
 void textmode_clear()
 {
-	memset((void *)video_memory, 0x00, 80 * 24);
+	memset((void *)video_memory, 0x00, 80 * 24 * 2);
 }
 
 uint8_t textmode_read(int x,int y)
