@@ -1,6 +1,7 @@
 #include <beryllium/vterm.h>
 #include <stdlib.h>
 #include <beryllium/video.h>
+
 term_t* term_create(int width, int height, int isPhysical)
 {
 	term_t* build     = malloc(sizeof(term_t));

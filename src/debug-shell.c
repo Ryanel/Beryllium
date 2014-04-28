@@ -54,6 +54,7 @@ void dbg_screen_2()
 	int current_time = timer_getHi();
 	char *unit = "ms";
 	int print_index = 0;
+	int sel = 0;
 	for(index = 0;index<0xFF;index++)
 	{
 		if(handlers[index].fire_tick == 0)
@@ -62,6 +63,7 @@ void dbg_screen_2()
 		}
 		else
 		{
+			sel++;
 			int rep_in = handlers[index].fire_tick - current_time;
 			if(rep_in > 1000)
 			{
@@ -76,11 +78,12 @@ void dbg_screen_2()
 			{
 				if(index == selecting_index)
 				{
-					printf_at_cc(0,3 + print_index++,0xB0,"[%02x]:%-54s|%8d%2s|%7dms",index,handlers[index].name,rep_in,unit,handlers[index].repeat_rate);
+					printf_at_cc(0,3 + print_index++,0xF0,"[%02x]:%-54s|%8d%2s|%7dms",index,handlers[index].name,rep_in,unit,handlers[index].repeat_rate);
 					continue;
 				}
 			}
 			printf_at(0,3 + print_index++,"[%02x]:%-54s|%8d%2s|%7dms",index,handlers[index].name,rep_in,unit,handlers[index].repeat_rate);
+			
 		}
 	}
 	
