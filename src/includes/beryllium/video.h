@@ -20,4 +20,8 @@ void video_resetattributetext();
 ///Can we use graphics?
 int video_graphics_capable();
 void video_draw_pixel(int x, int y, uint8_t r,uint8_t g,uint8_t b);
+
+void video_printstring(int x,int y, char *c);
+void video_printcoloredstring(int x,int y,unsigned char attribute, char *c);
+void video_clear();
 #endif

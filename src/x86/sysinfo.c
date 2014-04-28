@@ -7,11 +7,11 @@ uint32_t cpu_features_extended;
 
 void get_x86_cpu_info()
 {
-	printf("Getting CPU info\n");
 	uint32_t eax,ebx,ecx,edx = 0;
 	cpuid(0x1,eax,ebx,ecx,edx);
 	cpu_features = edx;
 	cpu_features_extended = ecx;
+	
 }
 
 int cpu_feature_avalable(uint32_t feature)

@@ -1,8 +1,11 @@
 #ifndef CPUID_H
 #define CPUID_H
-
+#include <types.h>
 #define cpuid(in, a, b, c, d) __asm__("cpuid": "=a" (a), "=b" (b), "=c" (c), "=d" (d) : "a" (in));
 
+void get_x86_cpu_info();
+int cpu_feature_avalable(uint32_t feature);
+int cpu_feature_extended_avalable(uint32_t feature);
 enum {
     CPUID_FEAT_ECX_SSE3         = 1 << 0, 
     CPUID_FEAT_ECX_PCLMUL       = 1 << 1,

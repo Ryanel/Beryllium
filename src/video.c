@@ -3,6 +3,7 @@
 #ifdef X86
 #include <x86/drivers/textmode.h>
 #include <x86/drivers/bga.h>
+void textmode_clear();
 #else
 #include <arm/intergrator-cp/drivers/qemu-PL110.h>
 #endif
@@ -40,7 +41,7 @@ void video_printcoloredchar(int x,int y, unsigned char c, unsigned char attribut
 	#endif
 }
 
-void video_printstring(int x,int y, unsigned char *c)
+void video_printstring(int x,int y, char *c)
 {
 	int i = 0;
 	while (c[i])
@@ -49,7 +50,7 @@ void video_printstring(int x,int y, unsigned char *c)
 		i++;
 	}
 }
-void video_printcoloredstring(int x,int y,unsigned char attribute, unsigned char *c)
+void video_printcoloredstring(int x,int y,unsigned char attribute, char *c)
 {
 	int i = 0;
 	while (c[i])

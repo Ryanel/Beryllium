@@ -7,6 +7,7 @@
 
 #include <x86/x86.h>
 #include <x86/drivers/serial.h>
+#include <x86/cpuid.h>
 #include <elf.h>
 
 uint32_t module_start[256];
@@ -34,7 +35,7 @@ void kernel_x86_binding_init(int magic,struct multiboot *mboot)
 	serial_init();
 	serial_print_header("Intel Compatible","i586");
 	#endif
-	
+	get_x86_cpu_info();
 	klog(LOG_INFO,"x86","Loading x86 components...\n");
 	
 	if(magic!=0x2BADB002)
@@ -46,7 +47,7 @@ void kernel_x86_binding_init(int magic,struct multiboot *mboot)
 	klog(LOG_INFO,"MBT","%d modules loaded with kernel\n",mboot->mods_count);
 	if(mboot->mods_count != 0)
 	{
-		for(int i = 0; i != mboot->mods_count; i++)
+		for(uint32_t i = 0; i != mboot->mods_count; i++)
 		{
 			klog(LOG_INFO,"MBT","Processing module %d/%d (0x%x)\n",i+1,mboot->mods_count,*((uint32_t*)mboot->mods_addr));
 			placement_address = *(uint32_t*)(mboot->mods_addr+4);

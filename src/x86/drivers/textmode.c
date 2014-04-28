@@ -1,7 +1,7 @@
 #include <x86/drivers/textmode.h>
 #include <types.h>
 #include <x86/ports.h>
-
+#include <string.h>
 volatile uint16_t *video_memory=(uint16_t*)0xB8000;
 
 uint8_t attributeByte = (0 << 4) | (15  & 0x0F);

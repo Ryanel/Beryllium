@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <types.h>
 #include <x86/drivers/serial.h>
+#include <beryllium/video.h>
 /* flags used in processing format string */
 #define	PR_LJ	0x01	/* left justify */
 #define	PR_CA	0x02	/* use A-F instead of a-f for hex */
@@ -308,6 +309,7 @@ int vprintf_help(unsigned c, void **ptr)
 int vprintf_at_help(unsigned c, void **ptr)
 {
 	printc(c);
+	return 0;
 }
 
 int vprintf_serial_help(unsigned c, void **ptr)

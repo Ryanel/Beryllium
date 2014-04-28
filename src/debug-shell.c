@@ -6,7 +6,12 @@
 #include <beryllium/debug.h>
 #include <stdio.h>
 #include <x86/cpuid.h>
+#include <terminal.h>
 #ifdef DEBUG
+
+char kb_read();
+void terminal_clear();
+
 int is_debugging = 0;
 int is_selecting = 0;
 uint64_t debug_called = 0;
@@ -32,13 +37,13 @@ int screen_1_pos_feature = 0;
 
 void dbg_screen_1_printfeature(int row, int extended,char * name,int feature)
 {
-	printf_at_cc(row * 20,screen_1_pos_feature + 2,0x0F,"%-10s |%d ",name,cpu_feature_avalable(feature));
+	printf_at_cc(row * 20,screen_1_pos_feature + 2,0x8F,"%-10s        %d|",name,cpu_feature_avalable(feature));
 	screen_1_pos_feature++;
 }
 
 void dbg_screen_1()
 {
-	printf_at_cc(0,1,0xF0,"CPU FEATURES                            ");
+	printf_at_cc(0,1,0xF0,"CPU FEATURES                                                ");
     dbg_screen_1_printfeature(0,0,"FPU  ",CPUID_FEAT_EDX_FPU  );        
     dbg_screen_1_printfeature(0,0,"VME  ",CPUID_FEAT_EDX_VME  );        
     dbg_screen_1_printfeature(0,0,"DE   ",CPUID_FEAT_EDX_DE   );        
@@ -60,8 +65,8 @@ void dbg_screen_1()
     dbg_screen_1_printfeature(0,0,"CLF  ",CPUID_FEAT_EDX_CLF  );        
     dbg_screen_1_printfeature(0,0,"DTES ",CPUID_FEAT_EDX_DTES );        
     dbg_screen_1_printfeature(0,0,"ACPI ",CPUID_FEAT_EDX_ACPI );
-	screen_1_pos_feature = 0;        
-    dbg_screen_1_printfeature(1,0,"MMX  ",CPUID_FEAT_EDX_MMX  );     
+    dbg_screen_1_printfeature(0,0,"MMX  ",CPUID_FEAT_EDX_MMX  );     
+	screen_1_pos_feature = 0;   
     dbg_screen_1_printfeature(1,0,"FXSR ",CPUID_FEAT_EDX_FXSR );        
     dbg_screen_1_printfeature(1,0,"SSE  ",CPUID_FEAT_EDX_SSE  );        
     dbg_screen_1_printfeature(1,0,"SSE2 ",CPUID_FEAT_EDX_SSE2 );        
@@ -70,7 +75,34 @@ void dbg_screen_1()
     dbg_screen_1_printfeature(1,0,"TM1  ",CPUID_FEAT_EDX_TM1  );        
     dbg_screen_1_printfeature(1,0,"IA64 ",CPUID_FEAT_EDX_IA64 );        
     dbg_screen_1_printfeature(1,0,"PBE  ",CPUID_FEAT_EDX_PBE  );
-	screen_1_pos_feature = 0;
+	printf_at_cc(1 * 20 ,screen_1_pos_feature + 2 ,0xF0,"EXTENDED FEATURES  |"); screen_1_pos_feature++;
+    dbg_screen_1_printfeature(1,1,"SSE3   ",CPUID_FEAT_ECX_SSE3   );
+    dbg_screen_1_printfeature(1,1,"PCLMUL ",CPUID_FEAT_ECX_PCLMUL );
+    dbg_screen_1_printfeature(1,1,"DTES64 ",CPUID_FEAT_ECX_DTES64 );
+    dbg_screen_1_printfeature(1,1,"MONITOR",CPUID_FEAT_ECX_MONITOR);
+    dbg_screen_1_printfeature(1,1,"DS_CPL ",CPUID_FEAT_ECX_DS_CPL );
+    dbg_screen_1_printfeature(1,1,"VMX    ",CPUID_FEAT_ECX_VMX    );
+    dbg_screen_1_printfeature(1,1,"SMX    ",CPUID_FEAT_ECX_SMX    );
+    dbg_screen_1_printfeature(1,1,"EST    ",CPUID_FEAT_ECX_EST    );
+    dbg_screen_1_printfeature(1,1,"TM2    ",CPUID_FEAT_ECX_TM2    );
+    dbg_screen_1_printfeature(1,1,"SSSE3  ",CPUID_FEAT_ECX_SSSE3  );
+    dbg_screen_1_printfeature(1,1,"CID    ",CPUID_FEAT_ECX_CID    );
+    dbg_screen_1_printfeature(1,1,"FMA    ",CPUID_FEAT_ECX_FMA    );
+    dbg_screen_1_printfeature(1,1,"CX16   ",CPUID_FEAT_ECX_CX16   );
+	screen_1_pos_feature = 0;  
+    dbg_screen_1_printfeature(2,1,"ETPRD  ",CPUID_FEAT_ECX_ETPRD  );
+    dbg_screen_1_printfeature(2,1,"PDCM   ",CPUID_FEAT_ECX_PDCM   );
+    dbg_screen_1_printfeature(2,1,"DCA    ",CPUID_FEAT_ECX_DCA    );
+    dbg_screen_1_printfeature(2,1,"SSE4_1 ",CPUID_FEAT_ECX_SSE4_1 );
+    dbg_screen_1_printfeature(2,1,"SSE4_2 ",CPUID_FEAT_ECX_SSE4_2 );
+    dbg_screen_1_printfeature(2,1,"x2APIC ",CPUID_FEAT_ECX_x2APIC );
+    dbg_screen_1_printfeature(2,1,"MOVBE  ",CPUID_FEAT_ECX_MOVBE  );
+    dbg_screen_1_printfeature(2,1,"POPCNT ",CPUID_FEAT_ECX_POPCNT );
+    dbg_screen_1_printfeature(2,1,"AES    ",CPUID_FEAT_ECX_AES    );
+    dbg_screen_1_printfeature(2,1,"XSAVE  ",CPUID_FEAT_ECX_XSAVE  );
+    dbg_screen_1_printfeature(2,1,"OSXSAVE",CPUID_FEAT_ECX_OSXSAVE);
+    dbg_screen_1_printfeature(2,1,"AVX    ",CPUID_FEAT_ECX_AVX    );
+	screen_1_pos_feature = 0;  
 	redraw_screen  = 0;
 }
 void list_timers_dbg();
@@ -92,11 +124,11 @@ void dbg_screen_2()
 	printf_at(0,1,"Timers: %d",total);
 	selecting_max = total - 1;
 	printf_at_cc(0,2,0xF0," ID |%-50sNAME|NEXT    ms|REP    ms","",0,0);
-	int index = 0;
-	int current_time = timer_getHi();
+	unsigned int index = 0;
+	unsigned int current_time = timer_getHi();
 	char *unit = "ms";
-	int print_index = 0;
-	int sel = 0;
+	unsigned int print_index = 0;
+	uint32_t sel = 0;
 	for(index = 0;index<0xFF;index++)
 	{
 		if(handlers[index].fire_tick == 0)
@@ -173,7 +205,7 @@ void dbg_update_display()
 		{
 			video_printcoloredchar(i,0,' ',0xF0);
 		}
-		printf_at_cc(0,0,0xF0,"Debug Mode | Screen %d %-10s | Command: %c |",current_screen,current_screen_name,last_command);
+		printf_at_cc(0,0,0xF0,"Debug Mode | Screen %d %-10s | Command: %c | !",current_screen,current_screen_name,last_command);
 		switch(current_screen)
 		{
 			case 0:
