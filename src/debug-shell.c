@@ -193,9 +193,9 @@ void dbg_update_display()
 	{
 		for(int i = 0; i!=80; i++)
 		{
-			video_printcoloredchar(i,0,' ',0xF0);
+			video_printcoloredchar(i,0,' ',0xE0);
 		}
-		printf_at_cc(0,0,0xF0,"Debug Mode | Screen %d %-10s | Command: %c |",current_screen,current_screen_name,last_command);
+		printf_at_cc(0,0,0xE0,"Debug Mode | Screen %d %-10s | Command: %c |",current_screen,current_screen_name,last_command);
 	}
 	if(redraw_screen)
 	{
@@ -203,9 +203,9 @@ void dbg_update_display()
 		video_printstring(74,24,"DEBUG"); //Title
 		for(int i = 0; i!=80; i++)
 		{
-			video_printcoloredchar(i,0,' ',0xF0);
+			video_printcoloredchar(i,0,' ',0xE0);
 		}
-		printf_at_cc(0,0,0xF0,"Debug Mode | Screen %d %-10s | Command: %c | !",current_screen,current_screen_name,last_command);
+		printf_at_cc(0,0,0xE0,"Debug Mode | Screen %d %-10s | Command: %c | !",current_screen,current_screen_name,last_command);
 		switch(current_screen)
 		{
 			case 0:
