@@ -63,5 +63,5 @@ int wd_get_hangups()
 }
 void wd_init()
 {
-	timing_register_timer("kernel_wd",10,wd_evaluate, 10);
+	timing_register_timer("kernel_wd",25,wd_evaluate, 25);
 }
