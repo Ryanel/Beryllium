@@ -43,23 +43,14 @@ void klog(int mode, const char *title, const char *fmt, ...)
 		#else
 		if(mode == LOG_OK)
 		{
-			#ifdef LOG_SERIAL
-			serial_printf("[OKAY]");
-			#endif
 			printf("[OKAY]");
 		}
 		else if (mode == LOG_FAIL)
 		{
-			#ifdef LOG_SERIAL
-			serial_printf("[FAIL]");
-			#endif
 			printf("[FAIL]");
 		}
 		else
 		{
-			#ifdef LOG_SERIAL
-			serial_printf("[%s]:",title);
-			#endif
 			printf("[%s]:",title);
 			
 		}
@@ -67,7 +58,7 @@ void klog(int mode, const char *title, const char *fmt, ...)
 		va_list args;
 		va_start(args, fmt);
 		#ifdef LOG_SERIAL
-		vprintf_serial(fmt, args);
+		//vprintf_serial(fmt, args);
 		#endif
 		vprintf(fmt,args);
 		va_end(args);
