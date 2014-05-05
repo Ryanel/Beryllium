@@ -8,7 +8,7 @@
 #include <x86/cpuid.h>
 #include <terminal.h>
 #ifdef DEBUG
-
+#ifdef X86
 char kb_read();
 void terminal_clear();
 
@@ -299,4 +299,5 @@ void dbg_start()
 {
 	printf("Debug mode not compiled in! -- Returning\n");
 }
+#endif
 #endif

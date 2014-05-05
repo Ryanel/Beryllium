@@ -17,9 +17,11 @@ void __stack_chk_guard_setup()
 void __attribute__((noreturn)) __stack_chk_fail()
 { 
     panic("Stack was smashed!");
+    #ifdef X86
     while(true)
     {
 	asm("hlt");
     }
     asm("hlt");
+    #endif
 }
