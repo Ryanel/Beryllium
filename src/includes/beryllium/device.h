@@ -2,6 +2,7 @@
 #define DEVICE_H
 #include <beryllium/driver.h>
 #include <mutex.h>
+#include <lib/tree.h>
 #define DEVICE_INTERFACE_KERNEL   0x0
 #define DEVICE_INTERFACE_PCI      0x1
 #define DEVICE_INTERFACE_USB      0x2
@@ -50,4 +51,5 @@ uint32_t device_start(device_t * dev);
 uint32_t device_stop(device_t * dev);
 void device_manager_insert(device_t * device,device_t * parent);
 device_t * device_search(char *name);
+void device_tree_enumerate(tree_node_t * node, size_t height);
 #endif

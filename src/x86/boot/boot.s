@@ -6,7 +6,7 @@
 
 MBOOT_PAGE_ALIGN    equ 1<<0    ; Load kernel and modules on a page boundary
 MBOOT_MEM_INFO      equ 1<<1    ; Provide your kernel with memory info
-MBOOT_VIDEO_MODE    equ 1<<2    ; Provide your kernel with memory info
+MBOOT_VIDEO_MODE    equ 1<<0    ; Provide your kernel with memory info
 MBOOT_HEADER_MAGIC  equ 0x1BADB002 ; Multiboot Magic value
 ; NOTE: We do not use MBOOT_AOUT_KLUDGE. It means that GRUB does not
 ; pass us a symbol table.
@@ -42,12 +42,24 @@ stack_top:
 section .text
 [GLOBAL start]
 [EXTERN kernel_x86_binding_init]
-
 start:
 	mov esp, stack_top
-	;mov ebp, 0
+	mov ebp, 0
 	push ebx
 	push eax
+	
+	;Disable VGA Blinking
+	mov dx, 0x3DA
+	in al, dx
+	mov dx, 0x3C0
+	mov al, 0x30
+	out dx, al
+	inc dx
+	in al, dx
+	and al, 0xF7
+	dec dx
+	out dx, al 
+	
 	cli
 	call kernel_x86_binding_init
 	pop eax

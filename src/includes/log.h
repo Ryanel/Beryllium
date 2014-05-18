@@ -11,7 +11,10 @@
 ///Normal information
 #define LOG_INFO 4
 //Debug and non-essential information
-#define LOG_DEBUG 5
+#define LOG_DEBUG 10
+
+#define LOG_OK 5
+#define LOG_FAIL 6
 /**
 Writes to the kernel log.
 **/

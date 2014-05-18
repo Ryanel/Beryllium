@@ -1,7 +1,7 @@
 #include <x86/drivers/textmode.h>
 #include <types.h>
 #include <x86/ports.h>
-
+#include <string.h>
 volatile uint16_t *video_memory=(uint16_t*)0xB8000;
 
 uint8_t attributeByte = (0 << 4) | (15  & 0x0F);
@@ -30,7 +30,7 @@ void textmode_write(int x,int y,uint8_t data)
 {
 	uint16_t attribute = attributeByte << 8;
 	volatile uint16_t *write_to;
-	write_to = video_memory + ((y * 80) + x);
+	write_to = video_memory + (y * 80) + x;
 	*write_to = data | attribute;
 }
 
@@ -41,6 +41,11 @@ void textmode_write_color(int x,int y,uint8_t data, uint8_t attr)
 	volatile uint16_t *write_to;
 	write_to = video_memory + ((y * 80) + x);
 	*write_to = data | attribute;
+}
+
+void textmode_clear()
+{
+	memset((void *)video_memory, 0x00, 80 * 24 * 2);
 }
 
 uint8_t textmode_read(int x,int y)

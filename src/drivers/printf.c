@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <types.h>
 #include <x86/drivers/serial.h>
+#include <beryllium/video.h>
 /* flags used in processing format string */
 #define	PR_LJ	0x01	/* left justify */
 #define	PR_CA	0x02	/* use A-F instead of a-f for hex */
@@ -297,17 +298,45 @@ You must write your own putchar()
 int vprintf_help(unsigned c, void **ptr)
 {
 	printc(c);
+	#ifdef LOG_SERIAL
 	#ifdef ENABLE_SERIAL
-		serial_write(c);
+	serial_write(c);
+	#endif
 	#endif
 	return 0 ;
 }
+
+int vprintf_at_help(unsigned c, void **ptr)
+{
+	printc(c);
+	return 0;
+}
+
+int vprintf_serial_help(unsigned c, void **ptr)
+{
+	#ifdef ENABLE_SERIAL
+	serial_write(c);
+	#endif
+	return 0 ;
+}
+
 /*****************************************************************************
 *****************************************************************************/
 int vprintf(const char *fmt, va_list args)
 {
 	return do_printf(fmt, args, vprintf_help, NULL);
 }
+
+int vprintf_at(const char *fmt, va_list args)
+{
+	return do_printf(fmt, args, vprintf_at_help, NULL);
+}
+
+int vprintf_serial(const char *fmt, va_list args)
+{
+	return do_printf(fmt, args, vprintf_serial_help, NULL);
+}
+
 /*****************************************************************************
 *****************************************************************************/
 int printf(const char *fmt, ...)
@@ -317,6 +346,39 @@ int printf(const char *fmt, ...)
 
 	va_start(args, fmt);
 	rv = vprintf(fmt, args);
+	va_end(args);
+	return rv;
+}
+
+int printf_at(int x, int y,const char *fmt, ...)
+{
+	char buffer[256];
+	va_list args;
+	int rv;
+	va_start(args, fmt);
+	rv = vsprintf(buffer, fmt, args);
+	va_end(args);
+	video_printstring(x,y,buffer);
+	return rv;
+}
+int printf_at_cc(int x, int y,unsigned char color,const char *fmt, ...)
+{
+	char buffer[256];
+	va_list args;
+	int rv;
+	va_start(args, fmt);
+	rv = vsprintf(buffer, fmt, args);
+	va_end(args);
+	video_printcoloredstring(x,y,color,buffer);
+	return rv;
+}
+int serial_printf(const char *fmt, ...)
+{
+	va_list args;
+	int rv;
+
+	va_start(args, fmt);
+	rv = vprintf_serial(fmt, args);
 	va_end(args);
 	return rv;
 }

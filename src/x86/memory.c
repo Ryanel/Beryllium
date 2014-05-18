@@ -6,7 +6,7 @@ Hooks into src/memory.c
 #include <x86/paging.h>
 #include <x86/page_allocator.h>
 #include <x86/lib/placement_malloc.h>
-#include <x86/memory.h>
+#include <beryllium/memory.h>
 #include <types.h>
 #include <stdio.h>
 #include <log.h>
@@ -26,7 +26,7 @@ int mem_lastpage = 0;
 ///Kernel memory allocation mutex (boolean semaphore). This is NOT the lock on memory, only for the memory_alloc allocators.
 mutex_t *mmac_lock;
 /// The kernel's heap
-heap_t *kheap; 
+//heap_t *kheap; 
 /**
 The kernel reserved area is exactly 4kb of memory. It is a sort of "shield" against the heap's conventional memory.
 This is filled completely with 0xFF, and in the event of an EMERGENCY it can be written to to store up to 4kb of debug information.
@@ -34,7 +34,7 @@ This memory is not for conventional use; infact it is never used in the current 
 **/
 void* kernel_reserved_area;
 /**
-Allocates multple pages and returns a pointer to the first page.
+Allocates multple kernel heap pages and returns a pointer to the first page.
 This function is not meant to be directly called, as this is not locked by the mutex mmac_lock.
 Please use memory_alloc_pages() instead.
 **/
@@ -125,12 +125,12 @@ void memory_init()
 	mutex_lock(mmac_lock);
 	klog(LOG_INFO,"MEM","Initialising and populating memory...\n");
 	mem_lastpage = pa_first_frame() * 0x1000;
-	klog(LOG_DEBUG,"MEM","Marked 0x%X (%d) frames as dirty\n",mem_lastpage,mem_lastpage);
+	klog(LOG_DEBUG,"MEM","Marked 0x%X (%x) frames as dirty\n",mem_lastpage,mem_lastpage);
 	mutex_unlock(mmac_lock);
 	klog(LOG_DEBUG,"MEM","Allocating Kernel Reserved Area...\n");
 	kernel_reserved_area = memory_alloc_pages(1);
 	klog(LOG_DEBUG,"MEM","Creating heap...!\n");
-	klog(LOG_INFO,"MEM","Done allocating initial memory!\n");
+	//memman_init();
 }
 /**
 Allocates amount bytes, and returns a pointer to the beginning of the allocated amount.

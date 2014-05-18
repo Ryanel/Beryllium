@@ -156,17 +156,17 @@ void device_manager_insert_kernel()
 	kernel_ns->flags      = 0;
 	kernel_ns->interface  = DEVICE_INTERFACE_KERNEL;
 	device_manager_insert(kernel_ns, device_search("device_root"));
-
+	#ifdef X86
 	device_manager_insert(&pit_device, device_search("kernel_ns"));
 	device_manager_insert(&serial_device, device_search("kernel_ns"));
 	device_manager_insert(&keyboard_device, device_search("kernel_ns"));
-
+	#endif
 	has_inserted_staticially = 1;
 }
 uint32_t device_stop(device_t * dev)
 {
 	if(dev == NULL) return 0xFFFFFFFF;
-	
+	klog(LOG_DEBUG,"DEV","Shutting down device %s... \n",dev->name);
 	if(dev->status!=DEVICE_STATUS_ONLINE) //Device is already online, so do nothing to it
 	{
 		return dev->status;
@@ -194,29 +194,27 @@ Starts a device. Returns an error code or the device status set
 uint32_t device_start(device_t * dev)
 {
 	if(dev == NULL) return 0xFFFFFFFF;
-	klog(LOG_DEBUG,"DEV","Bringing up device %s... \n",dev->name);
+	
 	if(dev->status==DEVICE_STATUS_ONLINE) //Device is already online, so do nothing to it
 	{
 		return DEVICE_STATUS_ONLINE;
 	}
-	else //Bring up device
+	klog(LOG_DEBUG,"DEV","Bringing up device %s... \n",dev->name);
+	if(dev->driver == NULL)
 	{
-		if(dev->driver == NULL)
-		{
-			return 0xFFFFFFFE;
-		}
-		mutex_lock(dev->mutex);
-		int ret = dev->driver->start();
-		if(ret == 0)
-		{
-			dev->status = DEVICE_STATUS_ONLINE;
-		}
-		else
-		{
-			klog(LOG_ERROR,"DEV","Could not bring up device %s (returned 0x%X)!\n",dev->name,ret);
-			dev->status = DEVICE_STATUS_ABORTED;
-		}
-		mutex_unlock(dev->mutex);
+		return 0xFFFFFFFE;
 	}
+	//mutex_lock(dev->mutex);
+	int ret = dev->driver->start();
+	if(ret == 0)
+	{
+		dev->status = DEVICE_STATUS_ONLINE;
+	}
+	else
+	{
+		klog(LOG_ERROR,"DEV","Could not bring up device %s (returned 0x%X)!\n",dev->name,ret);
+		dev->status = DEVICE_STATUS_ABORTED;
+	}
+	//mutex_unlock(dev->mutex);
 	return dev->status; 
 }

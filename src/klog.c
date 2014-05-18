@@ -29,18 +29,38 @@ void klog(int mode, const char *title, const char *fmt, ...)
 			case LOG_DEBUG:
 				video_setattributetext(background,0x7);///was 0x8;
 				break;
+			case LOG_OK:
+				video_setattributetext(background,0xA);///was 0x8;
+				break;
+			case LOG_FAIL:
+				video_setattributetext(background,0x4);///was 0x8;
+				break;
 			default:
 				video_setattributetext(background,0x8);
 		}
 		#ifdef KLOG_TITLE_TIME
 		printf("[%08d]:",timer_getHi());
 		#else
-		printf("[%s]:",title);
+		if(mode == LOG_OK)
+		{
+			printf("[OKAY]");
+		}
+		else if (mode == LOG_FAIL)
+		{
+			printf("[FAIL]");
+		}
+		else
+		{
+			printf("[%s]:",title);
+			
+		}
 		#endif
 		va_list args;
-		int rv;
 		va_start(args, fmt);
-		rv = vprintf(fmt, args);
+		#ifdef LOG_SERIAL
+		//vprintf_serial(fmt, args);
+		#endif
+		vprintf(fmt,args);
 		va_end(args);
 		video_resetattributetext();
 	}

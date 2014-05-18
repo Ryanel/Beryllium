@@ -124,6 +124,7 @@ const char *exception_messages[] =
     "Reserved",
     "Reserved"
 };
+void halt_regs(struct regs *r);
 extern void irq_handler(struct regs *r);
 extern void fault_handler(struct regs *r)
 {
@@ -134,8 +135,8 @@ extern void fault_handler(struct regs *r)
             irq_handler(r);
         }
         klog(LOG_PANIC,"SYS","Encountered interrupt %d (%s)!\n",r->int_no,exception_messages[r->int_no]);
-        halt_regs(r);
-		asm("hlt");
+        //halt_regs(r);
+	asm("hlt");
     }
     else
     {

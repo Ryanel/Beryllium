@@ -20,5 +20,5 @@ mkdir build-binutils
 cd build-binutils
 echo "Installing to $PREFIX"
 ../binutils-2.22/configure --target=$TARGET --prefix=$PREFIX --disable-nls
-make all
+make -j4 all
 make install

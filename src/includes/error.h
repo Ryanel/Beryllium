@@ -5,5 +5,7 @@
 #endif
 void panic(const char* reason);
 void halt();
+#ifdef X86
 void halt_regs(registers_t* regs);
+#endif
 #endif

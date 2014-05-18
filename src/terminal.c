@@ -113,15 +113,7 @@ void print(const char *c)
 }
 void terminal_clear()
 {
-	int i=0;
-	while(i!=23)
-	{
-		video_scroll(0,23);
-		i++;
-	}
-	term_x = 0;
-	term_y = 0;
-	//FIXME: CLEAR THE FRAMEBUFFER INSTEAD
+	video_clear();
 }
 ///
 ///Initialises the whole thing
